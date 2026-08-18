@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────
+# Dependencies
+# ─────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+
+# ─────────────────────────────────────────────
+# OS generated files
+# ─────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─────────────────────────────────────────────
+# IDE / Editor
+# ─────────────────────────────────────────────
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# ─────────────────────────────────────────────
+# Environment & Secrets
+# ─────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─────────────────────────────────────────────
+# Build output
+# ─────────────────────────────────────────────
+dist/
+build/
+out/
+
+# ─────────────────────────────────────────────
+# Logs
+# ─────────────────────────────────────────────
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─────────────────────────────────────────────
+# Package manager lock files (keep pnpm-lock)
+# ─────────────────────────────────────────────
+package-lock.json
+yarn.lock
+
+# ─────────────────────────────────────────────
+# Testing
+# ─────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─────────────────────────────────────────────
+# Misc
+# ─────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.rar
+.cache/
+.temp/
+.tmp/
+scripts/
+scripts/
+scripts/

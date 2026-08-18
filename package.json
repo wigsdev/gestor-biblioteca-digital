@@ -1,0 +1,36 @@
+{
+  "name": "gestor-biblioteca-digital",
+  "version": "0.1.0",
+  "description": "BookManager — Sistema de gestión de biblioteca digital. Aplicación web interactiva con JavaScript Vanilla.",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html || xdg-open index.html || start index.html"
+  },
+  "keywords": [
+    "javascript",
+    "vanilla-js",
+    "biblioteca",
+    "crud",
+    "dom-manipulation",
+    "html5",
+    "css3",
+    "responsive"
+  ],
+  "author": "wigsdev",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wigsdev/gestor-biblioteca-digital.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wigsdev/gestor-biblioteca-digital/issues"
+  },
+  "homepage": "https://github.com/wigsdev/gestor-biblioteca-digital#readme",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.21.0",
+      "onFail": "download"
+    }
+  }
+}
