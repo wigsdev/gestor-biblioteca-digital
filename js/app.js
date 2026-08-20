@@ -1,59 +1,59 @@
-// BookManager — Lógica principal
-// Ver docs/guia-desarrollo.md para selectores, estructura y convenciones
+// BookManager — Main logic
+// See docs/guia-desarrollo.md for selectors, structure and conventions
 
-// 'use strict' (opcional): activa modo estricto de JavaScript,
-// prohíbe variables sin declarar y convierte errores silenciosos en visibles.
-// Descomentar si el equipo decide usarlo:
+// 'use strict' (optional): enables strict mode,
+// prevents undeclared variables and surfaces silent errors.
+// Uncomment if team agrees to use it:
 // 'use strict';
 
-// ── T-01c: Datos iniciales ──
+// ── T-01c: Initial data ──
 
 
-// ── T-03: Generación de IDs ──
+// ── T-03: ID generation ──
 
 
-// ── T-02: Renderizado del catálogo ──
+// ── T-02: Catalog rendering ──
 
 
-// ── T-04a: Agregar libro ──
+// ── T-04a: Add book ──
 
 
-// ── T-04b: Validaciones ──
+// ── T-04b: Form validations ──
 
 
-// ── T-05: Eliminar libros ──
+// ── T-05: Delete book ──
 
 
-// ── T-06a: Cargar edición ──
+// ── T-06a: Load edit data ──
 
 
-// ── T-06b: Guardar edición ──
+// ── T-06b: Save edit changes ──
 
 
-// ── T-07: Sistema de préstamos ──
+// ── T-07: Loan system ──
 
 
-// ── T-08: Buscador ──
+// ── T-08: Search ──
 
 
-// ── T-09a: Filtro por categoría ──
+// ── T-09a: Filter by category ──
 
 
-// ── T-09b: Filtro por estado ──
+// ── T-09b: Filter by status ──
 
 
-// ── T-10: Contadores ──
+// ── T-10: Stats/counters ──
 
 
-// ── T-11: Ordenamiento ──
+// ── T-11: Sort ──
 
 
-// ── T-13: Integración ──
+// ── T-13: Integration ──
 
 
-// ── Punto de entrada ──
+// ── Entry point ──
 document.addEventListener('DOMContentLoaded', () => {
-    // Aquí se inicializa la app (T-02):
+    // App init (T-02):
     // renderizarLibros(libros);
     // actualizarEstadisticas();
 });

@@ -9,22 +9,24 @@ Leer antes de comenzar cualquier tarea asignada.
 
 ### Regla principal
 
-| Propósito | Se usa | Ejemplo |
-|-----------|--------|---------|
-| **JavaScript** (seleccionar elementos) | `id` | `id="formulario-libro"` |
-| **CSS** (estilizar elementos) | `class` | `class="formulario-campo"` |
+| Propósito | Se usa | Idioma | Ejemplo |
+|-----------|--------|--------|---------|
+| **JavaScript** (seleccionar elementos) | `id` | Inglés | `id="book-form"` |
+| **CSS** (estilizar elementos) | `class` | Inglés | `class="form-input"` |
+| **Propiedades del objeto libro** | variables JS | Español | `libro.titulo`, `libro.autor` |
 
 Un elemento puede tener ambos:
 ```html
-<input id="titulo" class="formulario-campo" type="text">
+<input id="title" class="form-input" type="text">
 ```
 
-- JS accede por ID: `document.querySelector('#titulo')`
-- CSS estiliza por clase: `.formulario-campo { ... }`
+- JS accede por ID: `document.querySelector('#title')`
+- CSS estiliza por clase: `.form-input { ... }`
 
-### Idioma: todo en español
+### ¿Por qué inglés para IDs y clases, español para datos?
 
-Clases, IDs, variables JS, nombres de funciones — todo en español. Coincide con el idioma del proyecto, el contenido y el equipo.
+- IDs y clases son convención técnica del código → inglés (estándar de la industria)
+- Los datos del libro (`titulo`, `autor`, `categoria`, `anio`, `disponible`) están en español porque así lo define el enunciado del proyecto
 
 ### Nomenclatura de clases (prefijo de contexto)
 
@@ -32,22 +34,22 @@ Las clases usan un prefijo que indica a qué bloque pertenecen:
 
 | Prefijo | Contexto |
 |---------|----------|
-| `encabezado` | Header de la app |
-| `formulario-` | Formulario de registro/edición |
-| `controles-` | Buscador, filtros, ordenamiento |
-| `estadisticas-` | Contadores del catálogo |
-| `catalogo-` | Contenedor de la lista de libros |
-| `libro-` | Card individual de un libro |
+| `header` | Header de la app |
+| `form-` | Formulario de registro/edición |
+| `controls-` | Buscador, filtros, ordenamiento |
+| `stats-` | Estadísticas/contadores |
+| `catalog-` | Contenedor de la lista de libros |
+| `book-` | Card individual de un libro |
 | `btn-` | Botones |
-| `pie` | Footer de la app |
+| `footer` | Footer de la app |
 
 ### Modificadores de estado
 
 Para estados visuales se usa doble guión:
 
 ```
-.libro-estado--disponible   → libro disponible (color verde)
-.libro-estado--prestado     → libro prestado (color rojo/naranja)
+.book-status--available   → libro disponible (color verde)
+.book-status--borrowed    → libro prestado (color rojo/naranja)
 ```
 
 ---
@@ -60,41 +62,41 @@ Estos son los IDs que se usarán desde `app.js`. **No cambiar estos nombres.**
 
 | ID | Elemento | Propósito |
 |----|----------|-----------|
-| `formulario-libro` | `<form>` | Formulario principal |
-| `titulo` | `<input>` | Campo título |
-| `autor` | `<input>` | Campo autor |
-| `categoria` | `<select>` | Campo categoría |
-| `anio` | `<input>` | Campo año |
-| `error-titulo` | `<span>` | Mensaje error título |
-| `error-autor` | `<span>` | Mensaje error autor |
-| `error-categoria` | `<span>` | Mensaje error categoría |
-| `error-anio` | `<span>` | Mensaje error año |
-| `btn-submit` | `<button>` | Botón enviar (Agregar/Guardar) |
-| `btn-cancelar` | `<button>` | Botón cancelar edición |
+| `book-form` | `<form>` | Formulario principal |
+| `title` | `<input>` | Campo título |
+| `author` | `<input>` | Campo autor |
+| `category` | `<select>` | Campo categoría |
+| `year` | `<input>` | Campo año |
+| `error-title` | `<span>` | Mensaje error título |
+| `error-author` | `<span>` | Mensaje error autor |
+| `error-category` | `<span>` | Mensaje error categoría |
+| `error-year` | `<span>` | Mensaje error año |
+| `btn-submit` | `<button>` | Botón enviar (Add/Save) |
+| `btn-cancel` | `<button>` | Botón cancelar edición |
 
 ### Controles
 
 | ID | Elemento | Propósito |
 |----|----------|-----------|
-| `buscador` | `<input>` | Campo de búsqueda |
-| `filtro-categoria` | `<select>` | Filtro por categoría |
-| `filtro-estado` | `<select>` | Filtro por estado |
-| `ordenamiento` | `<select>` | Selector de orden |
+| `search` | `<input>` | Campo de búsqueda |
+| `filter-category` | `<select>` | Filtro por categoría |
+| `filter-status` | `<select>` | Filtro por estado |
+| `sort` | `<select>` | Selector de orden |
 
 ### Estadísticas
 
 | ID | Elemento | Propósito |
 |----|----------|-----------|
-| `estadisticas` | `<section>` | Contenedor de stats |
+| `stats` | `<section>` | Contenedor de stats |
 | `stat-total` | `<strong>` | Número total de libros |
-| `stat-disponibles` | `<strong>` | Número de disponibles |
-| `stat-prestados` | `<strong>` | Número de prestados |
+| `stat-available` | `<strong>` | Número de disponibles |
+| `stat-borrowed` | `<strong>` | Número de prestados |
 
 ### Catálogo
 
 | ID | Elemento | Propósito |
 |----|----------|-----------|
-| `lista-libros` | `<div>` | Contenedor donde JS renderiza las cards |
+| `book-list` | `<div>` | Contenedor donde JS renderiza las cards |
 
 ---
 
@@ -103,76 +105,76 @@ Estos son los IDs que se usarán desde `app.js`. **No cambiar estos nombres.**
 ### Layout general
 
 ```
-.encabezado            → <header>
-.principal             → <main>
-.pie                   → <footer>
+.header
+.main
+.footer
 ```
 
 ### Formulario
 
 ```
-.formulario-seccion    → <section> contenedora
-.formulario            → <form>
-.formulario-grupo      → <div> que agrupa label + input + error
-.formulario-etiqueta   → <label>
-.formulario-campo      → <input type="text">, <input type="number">
-.formulario-select     → <select>
-.formulario-error      → <span> de mensaje de error
-.formulario-acciones   → <div> que agrupa botones submit y cancelar
+.form-section      → <section> contenedora
+.form              → <form>
+.form-group        → <div> que agrupa label + input + error
+.form-label        → <label>
+.form-input        → <input type="text">, <input type="number">
+.form-select       → <select>
+.form-error        → <span> de mensaje de error
+.form-actions      → <div> que agrupa botones submit y cancel
 ```
 
 ### Controles
 
 ```
-.controles-seccion     → <section> contenedora
-.controles-busqueda    → <div> del buscador
-.controles-campo       → <input> del buscador
-.controles-filtros     → <div> que agrupa los selects
-.controles-select      → <select> de filtro/orden
+.controls-section  → <section> contenedora
+.controls-search   → <div> del buscador
+.controls-input    → <input> del buscador
+.controls-filters  → <div> que agrupa los selects
+.controls-select   → <select> de filtro/orden
 ```
 
 ### Estadísticas
 
 ```
-.estadisticas-seccion  → <section> contenedora
-.estadisticas-item     → cada <span> con el contador
+.stats-section     → <section> contenedora
+.stats-item        → cada <span> con el contador
 ```
 
 ### Catálogo
 
 ```
-.catalogo-seccion      → <section> contenedora
-.catalogo-grid         → <div> contenedor grid de cards
+.catalog-section   → <section> contenedora
+.catalog-grid      → <div> contenedor grid de cards
 ```
 
 ### Cards de libro (generadas por JS en T-02)
 
 ```
-.libro-card                → <article> contenedor de cada libro
-.libro-titulo              → <h3> título del libro
-.libro-autor               → <p> autor
-.libro-meta                → <p> categoría · año
-.libro-estado              → <span> estado del libro
-.libro-estado--disponible  → modificador: disponible (verde)
-.libro-estado--prestado    → modificador: prestado (rojo/naranja)
-.libro-acciones            → <div> contenedor de botones de acción
+.book-card                → <article> contenedor de cada libro
+.book-title               → <h3> título del libro
+.book-author              → <p> autor
+.book-meta                → <p> categoría · año
+.book-status              → <span> estado del libro
+.book-status--available   → modificador: disponible (verde)
+.book-status--borrowed    → modificador: prestado (rojo/naranja)
+.book-actions             → <div> contenedor de botones de acción
 ```
 
 ### Botones
 
 ```
-.btn                   → estilos base de todos los botones
-.btn-primario          → botón principal (agregar/guardar)
-.btn-secundario        → botón secundario (cancelar)
-.btn-editar            → botón editar (en card)
-.btn-eliminar          → botón eliminar (en card)
-.btn-prestar           → botón prestar/devolver (en card)
+.btn               → estilos base de todos los botones
+.btn-primary       → botón principal (agregar/guardar)
+.btn-secondary     → botón secundario (cancelar)
+.btn-edit          → botón editar (en card)
+.btn-delete        → botón eliminar (en card)
+.btn-loan          → botón prestar/devolver (en card)
 ```
 
 ### Utilidades
 
 ```
-.oculto                → display: none (ocultar elementos)
+.hidden            → display: none (ocultar elementos)
 ```
 
 ---
@@ -181,30 +183,30 @@ Estos son los IDs que se usarán desde `app.js`. **No cambiar estos nombres.**
 
 ```
 <body>
-├── <header class="encabezado">
+├── <header class="header">
 │     <h1> BookManager
 │     <p>  Sistema de gestión de biblioteca digital
 │
-├── <main class="principal">
+├── <main class="main">
 │   │
-│   ├── <section class="formulario-seccion">
+│   ├── <section class="form-section">
 │   │     <h2> Agregar libro
-│   │     <form id="formulario-libro" class="formulario">
-│   │       <div class="formulario-grupo">
-│   │         <label class="formulario-etiqueta" for="titulo">
-│   │         <input class="formulario-campo" id="titulo" type="text"
+│   │     <form id="book-form" class="form">
+│   │       <div class="form-group">
+│   │         <label class="form-label" for="title">
+│   │         <input class="form-input" id="title" type="text"
 │   │                placeholder="Título del libro">
-│   │         <span class="formulario-error" id="error-titulo"></span>
+│   │         <span class="form-error" id="error-title"></span>
 │   │       </div>
-│   │       <div class="formulario-grupo">
-│   │         <label class="formulario-etiqueta" for="autor">
-│   │         <input class="formulario-campo" id="autor" type="text"
+│   │       <div class="form-group">
+│   │         <label class="form-label" for="author">
+│   │         <input class="form-input" id="author" type="text"
 │   │                placeholder="Nombre del autor">
-│   │         <span class="formulario-error" id="error-autor"></span>
+│   │         <span class="form-error" id="error-author"></span>
 │   │       </div>
-│   │       <div class="formulario-grupo">
-│   │         <label class="formulario-etiqueta" for="categoria">
-│   │         <select class="formulario-select" id="categoria">
+│   │       <div class="form-group">
+│   │         <label class="form-label" for="category">
+│   │         <select class="form-select" id="category">
 │   │           <option value="">Seleccionar categoría</option>
 │   │           <option value="Novela">Novela</option>
 │   │           <option value="Ciencia ficción">Ciencia ficción</option>
@@ -213,29 +215,29 @@ Estos son los IDs que se usarán desde `app.js`. **No cambiar estos nombres.**
 │   │           <option value="Fantasía">Fantasía</option>
 │   │           <option value="Otros">Otros</option>
 │   │         </select>
-│   │         <span class="formulario-error" id="error-categoria"></span>
+│   │         <span class="form-error" id="error-category"></span>
 │   │       </div>
-│   │       <div class="formulario-grupo">
-│   │         <label class="formulario-etiqueta" for="anio">
-│   │         <input class="formulario-campo" id="anio" type="number"
+│   │       <div class="form-group">
+│   │         <label class="form-label" for="year">
+│   │         <input class="form-input" id="year" type="number"
 │   │                placeholder="Año de publicación" min="1900">
-│   │         <span class="formulario-error" id="error-anio"></span>
+│   │         <span class="form-error" id="error-year"></span>
 │   │       </div>
-│   │       <div class="formulario-acciones">
-│   │         <button id="btn-submit" class="btn btn-primario"
+│   │       <div class="form-actions">
+│   │         <button id="btn-submit" class="btn btn-primary"
 │   │                 type="submit">Agregar libro</button>
-│   │         <button id="btn-cancelar" class="btn btn-secundario oculto"
+│   │         <button id="btn-cancel" class="btn btn-secondary hidden"
 │   │                 type="button">Cancelar</button>
 │   │       </div>
 │   │     </form>
 │   │
-│   ├── <section class="controles-seccion">
-│   │     <div class="controles-busqueda">
-│   │       <input id="buscador" class="controles-campo" type="text"
+│   ├── <section class="controls-section">
+│   │     <div class="controls-search">
+│   │       <input id="search" class="controls-input" type="text"
 │   │              placeholder="Buscar por título o autor...">
 │   │     </div>
-│   │     <div class="controles-filtros">
-│   │       <select id="filtro-categoria" class="controles-select">
+│   │     <div class="controls-filters">
+│   │       <select id="filter-category" class="controls-select">
 │   │         <option value="">Todas las categorías</option>
 │   │         <option value="Novela">Novela</option>
 │   │         <option value="Ciencia ficción">Ciencia ficción</option>
@@ -244,37 +246,37 @@ Estos son los IDs que se usarán desde `app.js`. **No cambiar estos nombres.**
 │   │         <option value="Fantasía">Fantasía</option>
 │   │         <option value="Otros">Otros</option>
 │   │       </select>
-│   │       <select id="filtro-estado" class="controles-select">
+│   │       <select id="filter-status" class="controls-select">
 │   │         <option value="">Todos los estados</option>
-│   │         <option value="disponible">Disponibles</option>
-│   │         <option value="prestado">Prestados</option>
+│   │         <option value="available">Disponibles</option>
+│   │         <option value="borrowed">Prestados</option>
 │   │       </select>
-│   │       <select id="ordenamiento" class="controles-select">
+│   │       <select id="sort" class="controls-select">
 │   │         <option value="">Ordenar por...</option>
-│   │         <option value="titulo-asc">Título A-Z</option>
-│   │         <option value="titulo-desc">Título Z-A</option>
-│   │         <option value="anio-asc">Año más antiguo</option>
-│   │         <option value="anio-desc">Año más reciente</option>
+│   │         <option value="title-asc">Título A-Z</option>
+│   │         <option value="title-desc">Título Z-A</option>
+│   │         <option value="year-asc">Año más antiguo</option>
+│   │         <option value="year-desc">Año más reciente</option>
 │   │       </select>
 │   │     </div>
 │   │
-│   ├── <section id="estadisticas" class="estadisticas-seccion">
-│   │     <span class="estadisticas-item">
+│   ├── <section id="stats" class="stats-section">
+│   │     <span class="stats-item">
 │   │       Total: <strong id="stat-total">0</strong>
 │   │     </span>
-│   │     <span class="estadisticas-item">
-│   │       Disponibles: <strong id="stat-disponibles">0</strong>
+│   │     <span class="stats-item">
+│   │       Disponibles: <strong id="stat-available">0</strong>
 │   │     </span>
-│   │     <span class="estadisticas-item">
-│   │       Prestados: <strong id="stat-prestados">0</strong>
+│   │     <span class="stats-item">
+│   │       Prestados: <strong id="stat-borrowed">0</strong>
 │   │     </span>
 │   │
-│   └── <section class="catalogo-seccion">
-│         <div id="lista-libros" class="catalogo-grid">
+│   └── <section class="catalog-section">
+│         <div id="book-list" class="catalog-grid">
 │           <!-- Vacío: JS renderiza las cards aquí (T-02) -->
 │         </div>
 │
-├── <footer class="pie">
+├── <footer class="footer">
 │     <p> BookManager © 2026 — Proyecto Integrador G4
 │
 └── <script src="js/app.js">
@@ -284,27 +286,27 @@ Estos son los IDs que se usarán desde `app.js`. **No cambiar estos nombres.**
 
 ## 5. Estructura de una card (referencia para T-02)
 
-Cada libro se renderiza como un `<article>` dentro de `#lista-libros`:
+Cada libro se renderiza como un `<article>` dentro de `#book-list`:
 
 ```html
-<article class="libro-card">
-  <h3 class="libro-titulo">Cien años de soledad</h3>
-  <p class="libro-autor">Gabriel García Márquez</p>
-  <p class="libro-meta">Novela · 1967</p>
-  <span class="libro-estado libro-estado--disponible">Disponible</span>
-  <div class="libro-acciones">
-    <button class="btn btn-editar" data-id="1">Editar</button>
-    <button class="btn btn-eliminar" data-id="1">Eliminar</button>
-    <button class="btn btn-prestar" data-id="1">Prestar</button>
+<article class="book-card">
+  <h3 class="book-title">Cien años de soledad</h3>
+  <p class="book-author">Gabriel García Márquez</p>
+  <p class="book-meta">Novela · 1967</p>
+  <span class="book-status book-status--available">Disponible</span>
+  <div class="book-actions">
+    <button class="btn btn-edit" data-id="1">Editar</button>
+    <button class="btn btn-delete" data-id="1">Eliminar</button>
+    <button class="btn btn-loan" data-id="1">Prestar</button>
   </div>
 </article>
 ```
 
 Si el libro está prestado:
 ```html
-<span class="libro-estado libro-estado--prestado">Prestado</span>
+<span class="book-status book-status--borrowed">Prestado</span>
 ...
-<button class="btn btn-prestar" data-id="1">Devolver</button>
+<button class="btn btn-loan" data-id="1">Devolver</button>
 ```
 
 **Importante:** cada botón de acción debe tener `data-id` con el ID del libro.
@@ -315,33 +317,33 @@ Si el libro está prestado:
 
 ```js
 // Formulario
-const formulario = document.querySelector('#formulario-libro');
-const inputTitulo = document.querySelector('#titulo');
-const inputAutor = document.querySelector('#autor');
-const selectCategoria = document.querySelector('#categoria');
-const inputAnio = document.querySelector('#anio');
+const bookForm = document.querySelector('#book-form');
+const inputTitle = document.querySelector('#title');
+const inputAuthor = document.querySelector('#author');
+const selectCategory = document.querySelector('#category');
+const inputYear = document.querySelector('#year');
 const btnSubmit = document.querySelector('#btn-submit');
-const btnCancelar = document.querySelector('#btn-cancelar');
+const btnCancel = document.querySelector('#btn-cancel');
 
 // Errores
-const errorTitulo = document.querySelector('#error-titulo');
-const errorAutor = document.querySelector('#error-autor');
-const errorCategoria = document.querySelector('#error-categoria');
-const errorAnio = document.querySelector('#error-anio');
+const errorTitle = document.querySelector('#error-title');
+const errorAuthor = document.querySelector('#error-author');
+const errorCategory = document.querySelector('#error-category');
+const errorYear = document.querySelector('#error-year');
 
 // Controles
-const buscador = document.querySelector('#buscador');
-const filtroCategoria = document.querySelector('#filtro-categoria');
-const filtroEstado = document.querySelector('#filtro-estado');
-const ordenamiento = document.querySelector('#ordenamiento');
+const search = document.querySelector('#search');
+const filterCategory = document.querySelector('#filter-category');
+const filterStatus = document.querySelector('#filter-status');
+const sort = document.querySelector('#sort');
 
 // Estadísticas
 const statTotal = document.querySelector('#stat-total');
-const statDisponibles = document.querySelector('#stat-disponibles');
-const statPrestados = document.querySelector('#stat-prestados');
+const statAvailable = document.querySelector('#stat-available');
+const statBorrowed = document.querySelector('#stat-borrowed');
 
 // Catálogo
-const listaLibros = document.querySelector('#lista-libros');
+const bookList = document.querySelector('#book-list');
 ```
 
 ---
@@ -360,23 +362,25 @@ const listaLibros = document.querySelector('#lista-libros');
 | `"Fantasía"` | Fantasía |
 | `"Otros"` | Otros |
 
+> **Nota:** los values de categoría están en español porque son los datos del libro (coinciden con `libro.categoria`).
+
 ### Estado (filtro)
 
 | value | Texto visible |
 |-------|---------------|
 | `""` | Todos los estados |
-| `"disponible"` | Disponibles |
-| `"prestado"` | Prestados |
+| `"available"` | Disponibles |
+| `"borrowed"` | Prestados |
 
 ### Ordenamiento
 
 | value | Texto visible |
 |-------|---------------|
 | `""` | Ordenar por... |
-| `"titulo-asc"` | Título A-Z |
-| `"titulo-desc"` | Título Z-A |
-| `"anio-asc"` | Año más antiguo |
-| `"anio-desc"` | Año más reciente |
+| `"title-asc"` | Título A-Z |
+| `"title-desc"` | Título Z-A |
+| `"year-asc"` | Año más antiguo |
+| `"year-desc"` | Año más reciente |
 
 ---
 
@@ -393,51 +397,53 @@ const listaLibros = document.querySelector('#lista-libros');
 }
 ```
 
+> **Las propiedades del objeto están en español** (requisito del enunciado del proyecto).
+
 ---
 
 ## 9. Variables CSS recomendadas
 
 ```css
 :root {
-  /* Colores */
-  --color-primario: #2563eb;
-  --color-primario-hover: #1d4ed8;
-  --color-secundario: #64748b;
-  --color-exito: #16a34a;
-  --color-peligro: #dc2626;
-  --color-advertencia: #f59e0b;
-  --color-fondo: #f8fafc;
-  --color-superficie: #ffffff;
-  --color-texto: #1e293b;
-  --color-texto-claro: #64748b;
-  --color-borde: #e2e8f0;
+  /* Colors */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-secondary: #64748b;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-warning: #f59e0b;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #1e293b;
+  --color-text-light: #64748b;
+  --color-border: #e2e8f0;
   --color-error: #dc2626;
 
-  /* Tipografía */
-  --fuente-principal: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --tamano-base: 1rem;
-  --tamano-sm: 0.875rem;
-  --tamano-lg: 1.125rem;
-  --tamano-xl: 1.5rem;
-  --tamano-2xl: 2rem;
+  /* Typography */
+  --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
 
-  /* Espaciado */
-  --espacio-xs: 0.25rem;
-  --espacio-sm: 0.5rem;
-  --espacio-md: 1rem;
-  --espacio-lg: 1.5rem;
-  --espacio-xl: 2rem;
-  --espacio-2xl: 3rem;
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
 
-  /* Bordes */
-  --radio-sm: 0.25rem;
-  --radio-md: 0.5rem;
-  --radio-lg: 0.75rem;
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
 
-  /* Sombras */
-  --sombra-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --sombra-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --sombra-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 ```
 
@@ -447,7 +453,7 @@ const listaLibros = document.querySelector('#lista-libros');
 
 ## 10. Breakpoints responsive
 
-| Breakpoint | Rango | Columnas en `.catalogo-grid` |
+| Breakpoint | Rango | Columnas en `.catalog-grid` |
 |------------|-------|------------------------------|
 | Desktop | 1024px+ | 3 columnas |
 | Tablet | 768px – 1023px | 2 columnas |
@@ -485,29 +491,29 @@ El proyecto debe usar como mínimo estos métodos (requisito del enunciado):
 
 | Evento | Elemento (ID) | Tarea |
 |--------|---------------|-------|
-| `submit` | `#formulario-libro` | T-04a |
-| `click` | `.btn-eliminar` (delegado en `#lista-libros`) | T-05 |
-| `click` | `.btn-editar` (delegado en `#lista-libros`) | T-06a |
-| `click` | `.btn-prestar` (delegado en `#lista-libros`) | T-07 |
-| `click` | `#btn-cancelar` | T-06b |
-| `input` | `#buscador` | T-08 |
-| `change` | `#filtro-categoria` | T-09a |
-| `change` | `#filtro-estado` | T-09b |
-| `change` | `#ordenamiento` | T-11 |
+| `submit` | `#book-form` | T-04a |
+| `click` | `.btn-delete` (delegado en `#book-list`) | T-05 |
+| `click` | `.btn-edit` (delegado en `#book-list`) | T-06a |
+| `click` | `.btn-loan` (delegado en `#book-list`) | T-07 |
+| `click` | `#btn-cancel` | T-06b |
+| `input` | `#search` | T-08 |
+| `change` | `#filter-category` | T-09a |
+| `change` | `#filter-status` | T-09b |
+| `change` | `#sort` | T-11 |
 
-**Delegación de eventos:** Los botones de las cards no existen en el HTML inicial (se crean con JS). Se debe escuchar `click` en `#lista-libros` y verificar la clase del elemento clickeado:
+**Delegación de eventos:** Los botones de las cards no existen en el HTML inicial (se crean con JS). Se debe escuchar `click` en `#book-list` y verificar la clase del elemento clickeado:
 
 ```js
-document.querySelector('#lista-libros').addEventListener('click', (e) => {
-    if (e.target.classList.contains('btn-eliminar')) {
+document.querySelector('#book-list').addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-delete')) {
         const id = Number(e.target.dataset.id);
         eliminarLibro(id);
     }
-    if (e.target.classList.contains('btn-editar')) {
+    if (e.target.classList.contains('btn-edit')) {
         const id = Number(e.target.dataset.id);
         editarLibro(id);
     }
-    if (e.target.classList.contains('btn-prestar')) {
+    if (e.target.classList.contains('btn-loan')) {
         const id = Number(e.target.dataset.id);
         togglePrestamo(id);
     }
@@ -525,7 +531,7 @@ document.querySelector('#lista-libros').addEventListener('click', (e) => {
 | Categoría | value !== "" | "Selecciona una categoría" |
 | Año | Numérico, entre 1900 y año actual | "Ingresa un año válido (1900 - 2026)" |
 
-- Mensajes en los `<span>` con clase `.formulario-error`
+- Mensajes en los `<span>` con clase `.form-error`
 - **NO usar `alert()`**
 - Limpiar mensajes previos al inicio de cada validación
 
@@ -577,7 +583,7 @@ document.querySelector('#lista-libros').addEventListener('click', (e) => {
 
 ### ¿Por qué es necesario?
 
-Sin este evento, JavaScript podría intentar seleccionar un elemento (`#lista-libros`, `#formulario-libro`, etc.) que aún no se ha creado, causando errores.
+Sin este evento, JavaScript podría intentar seleccionar un elemento (`#book-list`, `#book-form`, etc.) que aún no se ha creado, causando errores.
 
 ### Código en app.js
 
