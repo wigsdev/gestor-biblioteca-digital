@@ -1,54 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BookManager — Gestión de Biblioteca</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!doctype html>
+    <html lang="es">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="description"
+          content="Sistema de gestión de biblioteca digital - BookManager"
+        />
+        <title>BookManager - Biblioteca Digital</title>
+        <link rel="stylesheet" href="css/styles.css" />
+      </head>
+      <body>
+        <header class="encabezado">
+          <h1>BookManager</h1>
+          <p>Sistema de gestión de biblioteca digital</p>
+        </header>
 
-    <!--
-        BookManager — Sistema de gestión de biblioteca digital
+        <main class="principal">
+          <section class="formulario-seccion" aria-labelledby="titulo-form">
+            <h2 id="titulo-form">Agregar libro</h2>
 
-        Antes de modificar este archivo, revisar:
-        → docs/guia-desarrollo.md (IDs, clases, estructura completa)
-        → docs/backlog.md (criterios de aceptación de T-01a)
-    -->
+            <form id="formulario-libro" class="formulario" novalidate>
+              <div class="formulario-grupo">
+                <label class="formulario-etiqueta" for="titulo"
+                  >Título del libro</label
+                >
+                <input
+                  class="formulario-campo"
+                  id="titulo"
+                  type="text"
+                  placeholder="Ej. Cien años de soledad"
+                />
+                <span
+                  class="formulario-error"
+                  id="error-titulo"
+                  aria-live="polite"
+                ></span>
+              </div>
 
-    <!-- T-01a: Encabezado -->
-    <header class="encabezado">
-        <h1>Gestor de Biblioteca Digital</h1>
-    </header>
+              <div class="formulario-grupo">
+                <label class="formulario-etiqueta" for="autor"
+                  >Autor del libro</label
+                >
+                <input
+                  class="formulario-campo"
+                  id="autor"
+                  type="text"
+                  placeholder="Ej. Gabriel García Márquez"
+                />
+                <span
+                  class="formulario-error"
+                  id="error-autor"
+                  aria-live="polite"
+                ></span>
+              </div>
 
-    <!-- T-01a: Contenido principal -->
-    <main class="principal">
+              <div class="formulario-grupo">
+                <label class="formulario-etiqueta" for="categoria"
+                  >Categoría</label
+                >
+                <select class="formulario-select" id="categoria">
+                  <option value="">Seleccionar categoría</option>
+                  <option value="Novela">Novela</option>
+                  <option value="Ciencia ficción">Ciencia ficción</option>
+                  <option value="Historia">Historia</option>
+                  <option value="Tecnología">Tecnología</option>
+                  <option value="Fantasía">Fantasía</option>
+                  <option value="Otros">Otros</option>
+                </select>
+                <span
+                  class="formulario-error"
+                  id="error-categoria"
+                  aria-live="polite"
+                ></span>
+              </div>
 
-        <!-- Formulario de registro/edición -->
-        <section class="formulario-seccion">
-        </section>
+              <div class="formulario-grupo">
+                <label class="formulario-etiqueta" for="anio"
+                  >Año de publicación</label
+                >
+                <input
+                  class="formulario-campo"
+                  id="anio"
+                  type="number"
+                  placeholder="Ej. 1967"
+                  min="1900"
+                />
+                <span
+                  class="formulario-error"
+                  id="error-anio"
+                  aria-live="polite"
+                ></span>
+              </div>
 
-        <!-- Buscador, filtros y ordenamiento -->
-        <section class="controles-seccion">
-        </section>
+              <div class="formulario-acciones">
+                <button id="btn-submit" class="btn btn-primario" type="submit">
+                  Agregar libro
+                </button>
+                <button
+                  id="btn-cancelar"
+                  class="btn btn-secundario oculto"
+                  type="button"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </section>
 
-        <!-- Estadísticas del catálogo -->
-        <section id="estadisticas" class="estadisticas-seccion">
-        </section>
-
-        <!-- Catálogo de libros (cards generadas por JS) -->
-        <section class="catalogo-seccion">
-            <div id="lista-libros" class="catalogo-grid">
-                <!-- JS renderiza las cards aquí -->
+          <section
+            class="controles-seccion"
+            aria-label="Controles de búsqueda y filtrado"
+          >
+            <div class="controles-busqueda">
+              <!-- Tipo search y aria-label añadidos -->
+              <input
+                id="buscador"
+                class="controles-campo"
+                type="search"
+                placeholder="Buscar por título o autor..."
+                aria-label="Buscar libro en el catálogo"
+              />
             </div>
-        </section>
 
-    </main>
+            <div class="controles-filtros">
+              <select
+                id="filtro-categoria"
+                class="controles-select"
+                aria-label="Filtrar por categoría"
+              >
+                <option value="">Todas las categorías</option>
+                <option value="Novela">Novela</option>
+                <option value="Ciencia ficción">Ciencia ficción</option>
+                <option value="Historia">Historia</option>
+                <option value="Tecnología">Tecnología</option>
+                <option value="Fantasía">Fantasía</option>
+                <option value="Otros">Otros</option>
+              </select>
 
-    <!-- T-01a: Pie de página -->
-    <footer class="pie">
-    </footer>
+              <select
+                id="filtro-estado"
+                class="controles-select"
+                aria-label="Filtrar por estado"
+              >
+                <option value="">Todos los estados</option>
+                <option value="disponible">Disponibles</option>
+                <option value="prestado">Prestados</option>
+              </select>
 
-    <script src="js/app.js"></script>
-</body>
+              <select
+                id="ordenamiento"
+                class="controles-select"
+                aria-label="Ordenar catálogo"
+              >
+                <option value="">Ordenar por...</option>
+                <option value="titulo-asc">Título A-Z</option>
+                <option value="titulo-desc">Título Z-A</option>
+                <option value="anio-asc">Año más antiguo</option>
+                <option value="anio-desc">Año más reciente</option>
+              </select>
+            </div>
+          </section>
+
+          <section
+            id="estadisticas"
+            class="estadisticas-seccion"
+            aria-live="polite"
+          >
+            <span class="estadisticas-item">
+              Total: <strong id="stat-total">0</strong>
+            </span>
+            <span class="estadisticas-item">
+              Disponibles: <strong id="stat-disponibles">0</strong>
+            </span>
+            <span class="estadisticas-item">
+              Prestados: <strong id="stat-prestados">0</strong>
+            </span>
+          </section>
+
+          <section class="catalogo-seccion" aria-label="Catálogo de libros">
+            <div id="lista-libros" class="catalogo-grid"></div>
+          </section>
+        </main>
+
+        <footer class="pie">
+          <p>BookManager © 2026 — Proyecto Integrador G4</p>
+        </footer>
+
+        <script src="js/app.js"></script>
+      </body>
+    </html>
+  </body>
 </html>
