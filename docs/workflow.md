@@ -120,47 +120,163 @@ docs: actualizar README con instrucciones de instalación
 
 ## 4. Pull Request Convention
 
+### ¿Qué es un Pull Request (PR)?
+
+Es la solicitud formal para integrar tu código a `main`. El Team Leader lo revisa, y si cumple con los criterios de la tarea, lo aprueba y hace merge.
+
+### Paso a paso para crear tu PR
+
+**Paso 1:** Pushea tu branch a GitHub (si no lo hiciste ya)
+```bash
+git push -u origin feature/T-XXx-descripcion
+```
+
+**Paso 2:** Ve a GitHub → tu repositorio → aparecerá un banner "Compare & pull request". Clic ahí.
+(O ve a la pestaña "Pull requests" → "New pull request")
+
+**Paso 3:** Llena el PR con la información siguiente. La plantilla se carga automáticamente.
+
+---
+
 ### Título del PR
 
+Formato:
 ```
 <tipo>(T-XX): descripción concisa
 ```
 
 Ejemplos:
-- `feat(T-02): renderizar catálogo de libros con cards dinámicas`
+- `feat(T-01a): crear estructura HTML con modal y contenedores`
 - `feat(T-04a): implementar lógica de agregar libro al catálogo`
 - `style(T-12b): diseño responsive para móvil`
 
-### Plantilla del cuerpo del PR
+---
 
+### Cuerpo del PR (plantilla)
+
+La plantilla se carga automática. Solo tienes que **rellenar** cada sección:
+
+#### Sección "Tarea"
 ```markdown
 ## Tarea
-Closes #<número_issue>
+Closes #1
+```
+- Busca el **número** de tu issue asignado en GitHub (aparece como #1, #2, etc.)
+- Escribe `Closes #` + ese número
+- Esto vincula el PR con la tarea y la cierra automáticamente al hacer merge
 
+#### Sección "Descripción"
+```markdown
 ## Descripción
-Breve explicación de qué se implementó y decisiones tomadas.
+Breve explicación de qué hiciste y decisiones que tomaste.
+```
+- 1 o 2 oraciones explicando el trabajo realizado
+- Si tomaste alguna decisión técnica diferente a lo esperado, menciónala
 
+#### Sección "Cambios realizados"
+```markdown
 ## Cambios realizados
 - Cambio 1
 - Cambio 2
 - Cambio 3
+```
+- Esto es tu **respuesta a los entregables** de la tarea
+- Revisa los "Entregables" listados en tu issue y describe qué hiciste por cada uno
+- Ejemplo para T-01a:
+  ```markdown
+  - Creé index.html con estructura semántica (header, main, sections, footer)
+  - Agregué modal oculto con formulario de 5 campos
+  - Implementé header con botón "Agregar libro" (id="btn-add")
+  - Enlacé styles.css y app.js
+  ```
 
+#### Sección "Criterios de aceptación cumplidos"
+```markdown
 ## Criterios de aceptación cumplidos
-- [x] Criterio 1
-- [x] Criterio 2
-- [x] Criterio 3
+- [x] Criterio cumplido
+- [x] Otro criterio cumplido
+- [ ] Criterio que NO pude cumplir (explicar por qué)
+```
+- **Copia los criterios de aceptación de tu issue** (están en el issue de GitHub)
+- Marca con `[x]` los que cumpliste
+- Si alguno no pudiste cumplirlo, déjalo con `[ ]` y explica por qué
+- El Team Leader comparará esto con el código real
 
+#### Sección "Capturas de pantalla" (si aplica)
+```markdown
 ## Capturas de pantalla (si aplica)
 | Desktop | Mobile |
 |---------|--------|
 | img     | img    |
+```
+- Si tu tarea tiene componentes visuales (HTML/CSS), incluye capturas
+- Si es solo lógica JS sin cambio visual, puedes omitir esta sección
+
+#### Sección "Checklist del autor"
+```markdown
+## Checklist del autor
+- [x] Mi código sigue las convenciones del proyecto
+- [x] He verificado que funciona en el navegador sin errores en consola
+- [x] Los commits siguen Conventional Commits
+- [x] No hay código comentado ni console.log de debug
+- [x] El branch está actualizado con main
+```
+- Marca solo lo que realmente verificaste
+- Si no estás seguro de algo, déjalo sin marcar — el reviewer lo revisará
+
+---
+
+### ¿Qué pasa después de crear el PR?
+
+1. El Team Leader recibe notificación
+2. Revisa tu código contra los criterios de la tarea
+3. Si todo está bien → **aprueba y hace merge** → issue se cierra automáticamente
+4. Si hay correcciones → te deja comentarios → tú corriges en tu branch y pusheas de nuevo → el PR se actualiza solo
+5. No crees un PR nuevo para corregir. El mismo PR se actualiza con cada push a tu branch.
+
+---
+
+### Ejemplo completo de un PR (T-01a)
+
+**Título:** `feat(T-01a): crear estructura HTML con modal y contenedores`
+
+**Cuerpo:**
+```markdown
+## Tarea
+Closes #1
+
+## Descripción
+Creé la estructura HTML completa con semántica, modal oculto para el formulario,
+y todos los contenedores necesarios para que el equipo trabaje.
+
+## Cambios realizados
+- Creé index.html con header, main (4 sections), footer
+- Agregué modal (modal-overlay, modal-header, modal-body) oculto con .hidden
+- Formulario con 5 campos: title, author, category, year, cover + spans de error
+- Header con logo "BookManager" + botón "Agregar libro" (id="btn-add")
+- Controles: search, filter-category, filter-status, sort
+- Stats: stat-total, stat-available, stat-borrowed
+- Catálogo: book-list vacío para JS
+
+## Criterios de aceptación cumplidos
+- [x] El archivo carga sin errores en consola
+- [x] Todos los IDs definidos en la guía de desarrollo
+- [x] Header con botón "Agregar libro" id="btn-add"
+- [x] Modal existe con clase "hidden"
+- [x] Formulario tiene 5 campos + spans de error
+- [x] Botón submit y cancelar
+- [x] Controles con IDs correctos
+- [x] Enlazados styles.css y app.js
+- [x] Meta viewport configurado
+- [x] Etiquetas semánticas usadas
+- [x] Labels con atributo for
 
 ## Checklist del autor
-- [ ] Mi código sigue las convenciones del proyecto
-- [ ] He verificado que funciona en el navegador sin errores en consola
-- [ ] Los commits siguen Conventional Commits
-- [ ] No hay código comentado ni console.log de debug
-- [ ] El branch está actualizado con main
+- [x] Mi código sigue las convenciones del proyecto
+- [x] He verificado que funciona en el navegador sin errores en consola
+- [x] Los commits siguen Conventional Commits
+- [x] No hay código comentado ni console.log de debug
+- [x] El branch está actualizado con main
 ```
 
 ---

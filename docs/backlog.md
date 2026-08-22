@@ -86,8 +86,12 @@ Crear `index.html` con la estructura semántica completa y todos los contenedore
 
 **Entregables:**
 - `index.html` con estructura semántica (header, main, section, article, footer)
-- Contenedores con IDs: book-form, title, author, category, year, search, filter-category, filter-status, sort, stats, book-list
-- Formulario con inputs: título, autor, categoría (select), año + botón submit + botón cancelar
+- Header con título "BookManager" + botón "Agregar libro" (id="btn-add")
+- Modal oculto (id="modal-overlay", class="hidden") con: modal-header (título + botón cerrar), modal-body (formulario)
+- Formulario dentro del modal con IDs: book-form, title, author, category, year, cover + spans de error
+- Controles: search, filter-category, filter-status, sort
+- Estadísticas: stats, stat-total, stat-available, stat-borrowed
+- Catálogo: book-list
 - Enlace a `css/styles.css` y `js/app.js`
 - Meta viewport para responsive
 
@@ -96,8 +100,11 @@ Crear `index.html` con la estructura semántica completa y todos los contenedore
 **Criterios de aceptación:**
 - [ ] El archivo carga sin errores en consola
 - [ ] Todos los contenedores tienen los IDs definidos en la guía de desarrollo
-- [ ] El formulario tiene todos los campos requeridos con sus spans de error
-- [ ] El formulario tiene botón submit y botón cancelar (oculto por defecto)
+- [ ] El header tiene botón "Agregar libro" con id="btn-add"
+- [ ] El modal existe en el HTML con clase "hidden" (no visible al cargar)
+- [ ] El formulario tiene los 5 campos (title, author, category, year, cover) + spans de error
+- [ ] El formulario tiene botón submit y botón cancelar
+- [ ] Los controles (search, filtros, sort) existen con sus IDs
 - [ ] Se enlazan correctamente styles.css y app.js
 - [ ] Tiene `<meta name="viewport">` configurado
 - [ ] HTML usa etiquetas semánticas (header, main, section, footer)
@@ -121,18 +128,24 @@ Crear `css/styles.css` con reset, variables de diseño y layout base para deskto
 
 **Entregables:**
 - Reset CSS (box-sizing, margin/padding 0)
-- Variables en `:root` para: colores, tipografía, espaciado, border-radius, sombras
+- Variables en `:root` para: colores, tipografía, espaciado, border-radius, sombras, overlay
 - Layout desktop con CSS Grid o Flexbox
+- Estilos del modal: overlay (position fixed, background overlay), contenedor centrado, header, body
 - Estilos base de formulario, botones, inputs y cards
+- Estilos de cards con imagen (`.book-cover`) y placeholder (`.book-cover-placeholder`)
+- Clase utilitaria `.hidden { display: none; }`
 
 **Referencia técnica:** Ver [`docs/guia-desarrollo.md`](./guia-desarrollo.md) para nomenclatura de clases y variables recomendadas.
 
 **Criterios de aceptación:**
 - [ ] Existe `css/styles.css` vinculado correctamente
 - [ ] Reset CSS aplicado
-- [ ] Variables CSS definidas en `:root` (mínimo: 3 colores, 1 fuente, 2 espaciados)
+- [ ] Variables CSS definidas en `:root` (colores, fuente, espaciados, overlay)
 - [ ] Layout desktop organizado con Grid/Flexbox
+- [ ] Modal estilizado: overlay cubre pantalla, modal centrado, responsive
+- [ ] Cards con espacio para imagen y placeholder si no hay
 - [ ] Botones e inputs tienen estilos base funcionales
+- [ ] Clase `.hidden` implementada (display: none)
 - [ ] No usa frameworks CSS externos
 
 ---
@@ -153,16 +166,18 @@ Crear `js/app.js` con el array de libros precargados (mínimo 8) y el punto de e
 
 **Entregables:**
 - Array `libros` con 8+ objetos
-- Propiedades por libro: `id`, `titulo`, `autor`, `categoria`, `anio`, `disponible`
+- Propiedades por libro: `id`, `titulo`, `autor`, `categoria`, `anio`, `disponible`, `imagen`
 - Variedad de categorías (mínimo 4 distintas)
 - Mix de estados (disponibles y prestados)
+- Algunos libros con URL de imagen, algunos con `""` (para probar placeholder)
 - `DOMContentLoaded` como punto de entrada
 
 **Criterios de aceptación:**
 - [ ] Array `libros` tiene 8+ objetos
-- [ ] Cada objeto tiene las 6 propiedades requeridas
+- [ ] Cada objeto tiene las 7 propiedades: id, titulo, autor, categoria, anio, disponible, imagen
 - [ ] Hay al menos 4 categorías diferentes
 - [ ] Hay libros con `disponible: true` y `disponible: false`
+- [ ] Hay libros con URL de imagen y libros con `imagen: ""`
 - [ ] IDs únicos y secuenciales
 - [ ] `DOMContentLoaded` inicializa la app
 - [ ] Sin errores en consola al cargar
@@ -185,14 +200,17 @@ Implementar la función que genera dinámicamente las tarjetas de libros en el D
 
 **Entregables:**
 - Función `renderizarLibros(listaLibros)` que acepta un array como parámetro
-- Cards con: título, autor, categoría, año, estado
+- Cards con: imagen (o placeholder), título, autor, categoría, año, estado, ID
+- La imagen va primero en la card. Si `libro.imagen` es vacío, mostrar placeholder
 - Botones por card: Editar, Eliminar, Prestar/Devolver con `data-id`
 - Limpieza del contenedor antes de re-renderizar
 
 **Criterios de aceptación:**
 - [ ] Al cargar se muestran los 8+ libros precargados
 - [ ] Ningún libro está hardcodeado en HTML
-- [ ] Cada card muestra toda la información requerida
+- [ ] Cada card muestra: imagen (o placeholder), título, autor, categoría·año, estado, ID
+- [ ] La imagen se muestra primero en la card
+- [ ] Si un libro no tiene imagen, se muestra un div placeholder
 - [ ] Botones tienen atributo `data-id` con el ID del libro
 - [ ] Se usa `forEach()` o `map()` para recorrer
 - [ ] La función acepta cualquier array (es reutilizable)
@@ -240,22 +258,29 @@ Función que genera el siguiente ID único basándose en el mayor ID existente e
 | **Commit ejemplo** | `feat(T-04a): implementar captura y registro de nuevo libro` |
 
 **Descripción:**
-Capturar datos del formulario, crear el objeto libro y agregarlo al catálogo.
+Capturar datos del formulario, crear el objeto libro y agregarlo al catálogo. Incluye lógica de abrir/cerrar modal.
 
 **Entregables:**
-- `addEventListener("submit", ...)` con `preventDefault()`
-- Captura de valores de inputs
-- Objeto libro con `generarId()` + `disponible: true`
+- Botón "Agregar libro" (`#btn-add`) abre el modal vacío
+- `addEventListener("submit", ...)` con `preventDefault()` en `#book-form`
+- Captura de valores de inputs (incluido `cover`)
+- Objeto libro con `generarId()` + `disponible: true` + `imagen`
 - `push()` al array
 - Llamada a `renderizarLibros()` después de agregar
-- Limpieza del formulario post-registro
+- Cerrar modal después de guardar exitosamente
+- Limpiar formulario post-registro
+- Cerrar modal al clic en ✕, en overlay, o en "Cancelar"
 
 **Criterios de aceptación:**
+- [ ] Clic en "Agregar libro" (header) abre el modal vacío
 - [ ] Se puede agregar un libro con datos correctos
 - [ ] Aparece inmediatamente en la lista
 - [ ] ID generado automáticamente
 - [ ] `disponible` se asigna como `true`
+- [ ] Campo imagen se captura (puede estar vacío)
+- [ ] Modal se cierra después de guardar exitosamente
 - [ ] Formulario se limpia tras registro exitoso
+- [ ] Modal se cierra al clic en ✕, overlay o "Cancelar"
 - [ ] Se usa `addEventListener("submit", ...)` + `preventDefault()`
 - [ ] Se usa `push()` para agregar al array
 
@@ -336,22 +361,23 @@ Funcionalidad del botón "Eliminar" que remueve el libro del array y actualiza l
 | **Commit ejemplo** | `feat(T-06a): cargar datos del libro en formulario para edición` |
 
 **Descripción:**
-Al clic en "Editar", cargar los datos del libro en el formulario y cambiar a modo edición.
+Al clic en "Editar" (✏️), abrir el modal con los datos del libro cargados y cambiar a modo edición.
 
 **Entregables:**
-- Función `editarLibro(id)` que llena inputs con datos del libro
+- Función `abrirModalEditar(id)` que abre el modal con datos del libro
 - `find()` para localizar el libro
-- Cambiar texto del botón submit ("Agregar" → "Guardar cambios")
+- Llenar todos los inputs (incluido cover/imagen)
+- Cambiar título del modal a "Editar libro"
+- Cambiar texto del botón submit a "Guardar cambios"
 - Variable `libroEditandoId` para trackear el modo
-- Opción de cancelar edición
 
 **Criterios de aceptación:**
-- [ ] Clic "Editar" → formulario se llena con datos del libro
+- [ ] Clic "Editar" → modal se abre con datos del libro (incluida imagen)
 - [ ] Se usa `find()` para localizar por ID
+- [ ] Título del modal cambia a "Editar libro"
 - [ ] Botón cambia a "Guardar cambios"
 - [ ] Se guarda referencia del libro en edición
-- [ ] Clic "Editar" en otro libro → se actualizan los datos
-- [ ] Existe forma de cancelar y volver a modo agregar
+- [ ] Clic "Editar" en otro libro → modal se actualiza con nuevos datos
 
 ---
 
@@ -367,22 +393,24 @@ Al clic en "Editar", cargar los datos del libro en el formulario y cambiar a mod
 | **Commit ejemplo** | `feat(T-06b): guardar cambios del libro editado en el array` |
 
 **Descripción:**
-Guardar los cambios del formulario en modo edición, modificando el objeto existente en el array.
+Guardar los cambios del formulario en modo edición, modificando el objeto existente en el array. Cerrar modal después de guardar.
 
 **Entregables:**
 - Modificar propiedades del objeto existente (no crear uno nuevo)
+- Actualizar también la propiedad `imagen`
 - Validaciones activas en modo edición
-- Post-guardado: re-renderizar, limpiar form, volver a modo "agregar"
+- Post-guardado: cerrar modal, limpiar form, resetear modo, re-renderizar
 - ID y `disponible` no se modifican
 
 **Criterios de aceptación:**
 - [ ] Al guardar, el libro se actualiza (no se duplica)
-- [ ] Se modifican propiedades del objeto existente
+- [ ] Se modifican propiedades del objeto existente (incluida imagen)
 - [ ] ID NO cambia
 - [ ] `disponible` NO cambia
 - [ ] Validaciones se aplican igual que al agregar
-- [ ] Formulario vuelve a modo "agregar" después de guardar
-- [ ] Botón vuelve a su texto original
+- [ ] Modal se cierra después de guardar
+- [ ] Título del modal vuelve a "Agregar libro"
+- [ ] Botón vuelve a "Guardar"
 - [ ] Interfaz refleja los nuevos datos
 
 ---
@@ -589,14 +617,16 @@ Diseño responsive para pantallas desktop (1024px+) y tablet (768px - 1023px).
 
 **Entregables:**
 - Grid de cards: 3 columnas desktop, 2 columnas tablet
-- Layout de formulario y filtros adaptado
+- Layout de stats y filtros adaptado
+- Modal: centrado, max-width 500px en ambos breakpoints
 - Media query para tablet (768px - 1023px)
 - Tipografía y espaciado ajustados
 
 **Criterios de aceptación:**
 - [ ] Desktop (1024px+): grid 3 columnas
 - [ ] Tablet (768-1023px): grid 2 columnas
-- [ ] Formulario y filtros reorganizados en tablet
+- [ ] Stats y filtros reorganizados en tablet
+- [ ] Modal se ve correctamente centrado en desktop y tablet
 - [ ] Usa CSS Grid y/o Flexbox
 - [ ] Al menos 1 media query
 - [ ] Sin overflow horizontal
@@ -620,14 +650,14 @@ Diseño responsive para móvil (< 768px).
 
 **Entregables:**
 - Cards en 1 columna
-- Formulario full-width y touch-friendly
+- Modal full-width con margen lateral mínimo
 - Filtros/buscador apilados verticalmente
 - Botones mínimo 44px (touch target)
 - Media query para < 768px
 
 **Criterios de aceptación:**
 - [ ] Mobile (< 768px): cards en 1 columna
-- [ ] Formulario full-width y usable
+- [ ] Modal ocupa ancho completo (con margen mínimo a los lados)
 - [ ] Botones con min 44px de altura (touch-friendly)
 - [ ] Filtros y buscador apilados verticalmente
 - [ ] Sin scroll horizontal
