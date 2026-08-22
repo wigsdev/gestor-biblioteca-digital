@@ -86,7 +86,7 @@ Crear `index.html` con la estructura semántica completa y todos los contenedore
 
 **Entregables:**
 - `index.html` con estructura semántica (header, main, section, article, footer)
-- Contenedores con IDs: formulario-libro, titulo, autor, categoria, anio, buscador, filtro-categoria, filtro-estado, ordenamiento, estadisticas, lista-libros
+- Contenedores con IDs: book-form, title, author, category, year, search, filter-category, filter-status, sort, stats, book-list
 - Formulario con inputs: título, autor, categoría (select), año + botón submit + botón cancelar
 - Enlace a `css/styles.css` y `js/app.js`
 - Meta viewport para responsive
