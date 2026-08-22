@@ -325,7 +325,7 @@ Una tarea se considera **completada** cuando:
 
 ---
 
-## 7. Flujo completo de una tarea
+## 7. Flujo completo de una tarea (paso a paso)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -348,12 +348,22 @@ Una tarea se considera **completada** cuando:
 │ 3. IMPLEMENTACIÓN                                           │
 │    Desarrollar siguiendo criterios de aceptación            │
 │    Commits con Conventional Commits                         │
-│    Verificar en navegador antes de hacer push               │
+│    Verificar en navegador antes de continuar                │
 └────────────────────────┬────────────────────────────────────┘
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. PUSH & PR                                                │
+│ 4. SINCRONIZAR CON MAIN (obligatorio antes de push)         │
+│    git checkout main                                        │
+│    git pull origin main                                     │
+│    git checkout feature/T-XXx-descripcion                   │
+│    git merge main                                           │
+│    (si hay conflictos → resolver → git add . → git commit)  │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 5. PUSH & PR                                                │
 │    git push -u origin feature/T-XXx-descripcion             │
 │    Crear PR con la plantilla → asignar reviewer             │
 │    Estado: 🔍 En revisión                                   │
@@ -361,7 +371,7 @@ Una tarea se considera **completada** cuando:
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 5. CODE REVIEW                                              │
+│ 6. CODE REVIEW                                              │
 │    Team Leader revisa con el checklist                       │
 │    Si hay cambios → dev corrige y pushea                    │
 │    Si aprobado → merge a main                               │
@@ -369,13 +379,72 @@ Una tarea se considera **completada** cuando:
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 6. CIERRE                                                   │
-│    Merge a main (squash merge recomendado)                  │
+│ 7. CIERRE                                                   │
+│    Merge a main (squash merge)                              │
 │    Eliminar branch remoto                                   │
 │    Issue se cierra automáticamente (Closes #XX)             │
 │    Estado: ✅ Completada                                    │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### Detalle de cada paso con comandos
+
+**Paso 1 — Asignación:**
+El Team Leader te asigna un issue en GitHub. Recibes una notificación. Lee el issue completo y consulta `docs/guia-desarrollo.md` (sección 17) para ver qué secciones de la guía necesitas.
+
+**Paso 2 — Setup:**
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/T-XXx-descripcion
+```
+Siempre crear la rama desde `main` actualizado. Nunca desde otra rama.
+
+**Paso 3 — Implementación:**
+```bash
+# Editar archivos...
+git add .
+git commit -m "feat(T-XXx): descripción del cambio"
+```
+Puedes hacer varios commits mientras trabajas. Verificar que funciona abriendo `index.html` en el navegador y revisando la consola (F12).
+
+**Paso 4 — Sincronizar con main (OBLIGATORIO):**
+```bash
+git checkout main
+git pull origin main
+git checkout feature/T-XXx-descripcion
+git merge main
+```
+¿Por qué? Mientras tú trabajabas, otro colaborador pudo haber mergeado cambios a main. Si no sincronizas, tu PR puede tener conflictos.
+
+- Si NO hay conflictos → continúa al paso 5
+- Si HAY conflictos → Git te indica qué archivos tienen conflicto. Ábrelos, resuelve manualmente (elige qué código queda), luego:
+  ```bash
+  git add .
+  git commit -m "chore(T-XXx): resolver conflictos con main"
+  ```
+
+**Paso 5 — Push y crear PR:**
+```bash
+git push -u origin feature/T-XXx-descripcion
+```
+Luego en GitHub:
+1. Ve al repositorio → aparecerá banner "Compare & pull request"
+2. Llena la plantilla (ver sección 4 de este documento)
+3. **NO mergear** — esperar aprobación del Team Leader
+
+**Paso 6 — Code Review:**
+El Team Leader revisa. Si pide cambios:
+```bash
+# Corregir en tu rama (no crear rama nueva)
+git add .
+git commit -m "fix(T-XXx): corregir observación del review"
+git push origin feature/T-XXx-descripcion
+```
+El PR se actualiza automáticamente. No crees un PR nuevo.
+
+**Paso 7 — Cierre:**
+El Team Leader aprueba → hace squash and merge → elimina el branch → el issue se cierra solo.
 
 ---
 
