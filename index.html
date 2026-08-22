@@ -3,151 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sistema de gestión de biblioteca digital - BookManager">
-    <title>BookManager - Biblioteca Digital</title>
-    <meta name="description" content="Organiza tu catálogo de libros digital con BookManager. Sistema semántico para la gestión de préstamos, devoluciones y estadísticas. ¡Administra tu biblioteca hoy!" />
-    <title>BookManager | Sistema de Gestión de Biblioteca Digital Organizada</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="icon" type="image/svg+xml" href="Imagenes/icon.svg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="BookManager | Tu Biblioteca Digital Organizada" />
-    <meta property="og:description" content="BookManager es el sistema definitivo para gestionar tu biblioteca. Controla tu catálogo de libros, préstamos, devoluciones y estadísticas." />
-    <meta property="og:image" content="img/logo.png" />
-    <meta property="og:url" content="https://www.BookManager.com" /> 
-    <meta name="robots" content="index, follow" /> 
-
+    <title>BookManager — Gestión de Biblioteca</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
+    <!--
+        BookManager — Sistema de gestión de biblioteca digital
+
+        Antes de modificar este archivo, revisar:
+        → docs/guia-desarrollo.md (IDs, clases, estructura completa)
+        → docs/backlog.md (criterios de aceptación de T-01a)
+    -->
+
+    <!-- T-01a: Header -->
     <header class="header">
-        <img src=Imagenes/logo.jpg alt="Logo de BookManager" class="header-logo">
-        <div class="header-brand">
-            <h1>BookManager</h1>
-            <p>Sistema de gestión de biblioteca digital</p>
-        </div>
-        <nav class="header-nav">
-            <a href="#book-list" class="nav-link">Catálogo</a>
-            <!-- Botón preparado para que JS abra el formulario -->
-            <button id="btn-open-form" class="nav-btn">Agregar Libro</button>
-        </nav>
     </header>
 
+    <!-- T-01a: Main content -->
     <main class="main">
-        
-        <!-- 1. SECCIÓN: Formulario -->
-        <section class="form-section" aria-labelledby="form-title">
-            <h2 id="form-title">Agregar libro</h2>
-            
-            <form id="book-form" class="form" novalidate>
-                
-                <div class="form-group">
-                    <label class="form-label" for="title">Título del libro</label>
-                    <input class="form-input" id="title" type="text" placeholder="Ej. Cien años de soledad">
-                    <span class="form-error" id="error-title" aria-live="polite"></span>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="author">Autor del libro</label>
-                    <input class="form-input" id="author" type="text" placeholder="Ej. Gabriel García Márquez">
-                    <span class="form-error" id="error-author" aria-live="polite"></span>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="category">Categoría</label>
-                    <select class="form-select" id="category">
-                        <option value="">Seleccionar categoría</option>
-                        <option value="Novela">Novela</option>
-                        <option value="Ciencia ficción">Ciencia ficción</option>
-                        <option value="Historia">Historia</option>
-                        <option value="Tecnología">Tecnología</option>
-                        <option value="Fantasía">Fantasía</option>
-                        <option value="Otros">Otros</option>
-                    </select>
-                    <span class="form-error" id="error-category" aria-live="polite"></span>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="year">Año de publicación</label>
-                    <input class="form-input" id="year" type="number" placeholder="Ej. 1967" min="1900">
-                    <span class="form-error" id="error-year" aria-live="polite"></span>
-                </div>
-
-                <!-- CAMPO ESTADO COMENTADO POR PREGUNTAR SI VA O NO -->
-                <!-- 
-                <div class="form-group">
-                    <label class="form-label" for="status">Estado</label>
-                    <select class="form-select" id="status">
-                        <option value="available">Disponible</option>
-                        <option value="borrowed">Prestado</option>
-                    </select>
-                </div>
-                -->
-
-                <div class="form-actions">
-                    <button id="btn-submit" class="btn btn-primary" type="submit">Agregar libro</button>
-                    <button id="btn-cancel" class="btn btn-secondary hidden" type="button">Cancelar</button>
-                </div>
-                
-            </form>
+        <!-- Book form section -->
+        <section class="form-section">
         </section>
 
-        <!-- 2. SECCIÓN: BUSCADORES Y FILTROS-->
-        <section class="controls-section" aria-label="Controles de búsqueda y filtrado">
-            <div class="controls-search">
-                <input id="search" class="controls-input" type="search" placeholder="Buscar por título o autor..." aria-label="Buscar libro en el catálogo">
-            </div>Ñ
-            
-            <div class="controls-filters">
-                <select id="filter-category" class="controls-select" aria-label="Filtrar por categoría">
-                    <option value="">Todas las categorías</option>
-                    <option value="Novela">Novela</option>
-                    <option value="Ciencia ficción">Ciencia ficción</option>
-                    <option value="Historia">Historia</option>
-                    <option value="Tecnología">Tecnología</option>
-                    <option value="Fantasía">Fantasía</option>
-                    <option value="Otros">Otros</option>
-                </select>
-                
-                <select id="filter-status" class="controls-select" aria-label="Filtrar por estado">
-                    <option value="">Todos los estados</option>
-                    <option value="available">Disponibles</option>
-                    <option value="borrowed">Prestados</option>
-                </select>
-                
-                <select id="sort" class="controls-select" aria-label="Ordenar catálogo">
-                    <option value="">Ordenar por...</option>
-                    <option value="title-asc">Título A-Z</option>
-                    <option value="title-desc">Título Z-A</option>
-                    <option value="year-asc">Año más antiguo</option>
-                    <option value="year-desc">Año más reciente</option>
-                </select>
-            </div>
+        <!-- Search, filters and sort controls -->
+        <section class="controls-section">
         </section>
 
-        <!-- 3. SECCIÓN: Estadísticas del catálogo -->
-        <section id="stats" class="stats-section" aria-live="polite">
-            <span class="stats-item">
-                Total: <strong id="stat-total">0</strong>
-            </span>
-            <span class="stats-item">
-                Disponibles: <strong id="stat-available">0</strong>
-            </span>
-            <span class="stats-item">
-                Prestados: <strong id="stat-borrowed">0</strong>
-            </span>
+        <!-- Catalog stats -->
+        <section id="stats" class="stats-section">
         </section>
-        <section class="catalog-section" aria-label="Catálogo de libros">
+
+        <!-- Book catalog (cards rendered by JS) -->
+        <section class="catalog-section">
             <div id="book-list" class="catalog-grid">
+                <!-- JS renders book cards here -->
             </div>
         </section>
 
     </main>
 
+    <!-- T-01a: Footer -->
     <footer class="footer">
-        <p>BookManager © 2026 — Proyecto Integrador G4</p>
     </footer>
 
-    <!-- Enlace al archivo de lógica JavaScript -->
     <script src="js/app.js"></script>
 </body>
 </html>
