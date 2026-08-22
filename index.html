@@ -10,8 +10,12 @@
     <title>
       BookManager | Sistema de Gestión de Biblioteca Digital Organizada
     </title>
+
+    <!-- Enlaces técnicos -->
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="icon" type="image/svg+xml" href="Imagenes/icon.svg" />
+
+    <!-- Open Graph Tags -->
     <meta property="og:type" content="website" />
     <meta
       property="og:title"
@@ -21,11 +25,12 @@
       property="og:description"
       content="BookManager es el sistema definitivo para gestionar tu biblioteca. Controla tu catálogo de libros, préstamos, devoluciones y estadísticas."
     />
-    <meta property="og:image" content="Imagenes/icon.svg" />
+    <meta property="og:image" content="Imagenes/logo.jpg" />
     <meta property="og:url" content="https://www.bookmanager.com" />
     <meta name="robots" content="index, follow" />
   </head>
   <body>
+    <!-- HEADER CORREGIDO -->
     <header class="header">
       <div class="header-brand">
         <img
@@ -33,106 +38,121 @@
           alt="Logo de BookManager"
           class="header-logo"
         />
-        <div class="header-titles">
-          <h1>BookManager</h1>
-          <p>Sistema de gestión de biblioteca digital</p>
-        </div>
+        <h1>BookManager</h1>
       </div>
-
-      <nav class="header-nav">
-        <a href="#book-list" class="nav-link">Catálogo</a>
-        <button id="btn-open-form" class="nav-btn">Agregar Libro</button>
-      </nav>
+      <button id="btn-add" class="btn btn-add">+ Agregar libro</button>
     </header>
 
+    <!-- MODAL -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <h2 id="modal-title">Agregar Nuevo Libro</h2>
+            <p class="modal-subtitle">
+              Complete los datos para registrar un nuevo libro en el catálogo.
+            </p>
+          </div>
+          <button id="modal-close" class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- EL FORMULARIO SE MOVIÓ AQUÍ ADENTRO -->
+          <form id="book-form" class="form" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="title">Título del libro</label>
+              <input
+                class="form-input"
+                id="title"
+                type="text"
+                placeholder="Ej. Cien años de soledad"
+              />
+              <span
+                class="form-error"
+                id="error-title"
+                aria-live="polite"
+              ></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="author">Autor del libro</label>
+              <input
+                class="form-input"
+                id="author"
+                type="text"
+                placeholder="Ej. Gabriel García Márquez"
+              />
+              <span
+                class="form-error"
+                id="error-author"
+                aria-live="polite"
+              ></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="category">Categoría</label>
+              <select class="form-select" id="category">
+                <option value="">Seleccionar categoría</option>
+                <option value="Novela">Novela</option>
+                <option value="Ciencia ficción">Ciencia ficción</option>
+                <option value="Historia">Historia</option>
+                <option value="Tecnología">Tecnología</option>
+                <option value="Fantasía">Fantasía</option>
+                <option value="Otros">Otros</option>
+              </select>
+              <span
+                class="form-error"
+                id="error-category"
+                aria-live="polite"
+              ></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="year">Año de publicación</label>
+              <input
+                class="form-input"
+                id="year"
+                type="number"
+                placeholder="Ej. 1967"
+                min="1900"
+              />
+              <span
+                class="form-error"
+                id="error-year"
+                aria-live="polite"
+              ></span>
+            </div>
+
+            <!-- CAMPO AGREGADO --- 3 -->
+            <div class="form-group">
+              <label class="form-label" for="cover"
+                >URL de imagen (opcional)</label
+              >
+              <input
+                class="form-input"
+                id="cover"
+                type="url"
+                placeholder="https://..."
+              />
+            </div>
+
+            <div class="form-actions">
+              <button id="btn-submit" class="btn btn-primary" type="submit">
+                Agregar libro
+              </button>
+              <button
+                id="btn-cancel"
+                class="btn btn-secondary hidden"
+                type="button"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <main class="main">
-      <!-- 1. SECCIÓN: Formulario -->
-      <section class="form-section" aria-labelledby="form-title">
-        <h2 id="form-title">Agregar libro</h2>
-
-        <form id="book-form" class="form" novalidate>
-          <div class="form-group">
-            <label class="form-label" for="title">Título del libro</label>
-            <input
-              class="form-input"
-              id="title"
-              type="text"
-              placeholder="Ej. Cien años de soledad"
-            />
-            <span class="form-error" id="error-title" aria-live="polite"></span>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="author">Autor del libro</label>
-            <input
-              class="form-input"
-              id="author"
-              type="text"
-              placeholder="Ej. Gabriel García Márquez"
-            />
-            <span
-              class="form-error"
-              id="error-author"
-              aria-live="polite"
-            ></span>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="category">Categoría</label>
-            <select class="form-select" id="category">
-              <option value="">Seleccionar categoría</option>
-              <option value="Novela">Novela</option>
-              <option value="Ciencia ficción">Ciencia ficción</option>
-              <option value="Historia">Historia</option>
-              <option value="Tecnología">Tecnología</option>
-              <option value="Fantasía">Fantasía</option>
-              <option value="Otros">Otros</option>
-            </select>
-            <span
-              class="form-error"
-              id="error-category"
-              aria-live="polite"
-            ></span>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="year">Año de publicación</label>
-            <input
-              class="form-input"
-              id="year"
-              type="number"
-              placeholder="Ej. 1967"
-              min="1900"
-            />
-            <span class="form-error" id="error-year" aria-live="polite"></span>
-          </div>
-
-          <!-- CAMPO ESTADO COMENTADO PARA VER SI VA O NO EL ESTADO -->
-          <!-- 
-                <div class="form-group">
-                    <label class="form-label" for="status">Estado</label>
-                    <select class="form-select" id="status">
-                        <option value="available">Disponible</option>
-                        <option value="borrowed">Prestado</option>
-                    </select>
-                </div>
-                -->
-
-          <div class="form-actions">
-            <button id="btn-submit" class="btn btn-primary" type="submit">
-              Agregar libro
-            </button>
-            <button
-              id="btn-cancel"
-              class="btn btn-secondary hidden"
-              type="button"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </section>
-
       <!-- 2. SECCIÓN: Controles (Buscador y Filtros superiores) -->
       <section
         class="controls-section"
@@ -200,7 +220,7 @@
         </span>
       </section>
 
-      <!-- 4. SECCIÓN: Catálogo de libros - PONER CON JS-->
+      <!-- 4. SECCIÓN: Catálogo de libros  -->
       <section class="catalog-section" aria-label="Catálogo de libros">
         <div id="book-list" class="catalog-grid"></div>
       </section>
