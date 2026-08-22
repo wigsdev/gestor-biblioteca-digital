@@ -142,7 +142,7 @@ Crear `css/styles.css` con reset, variables de diseño y layout base para deskto
 - [ ] Reset CSS aplicado
 - [ ] Variables CSS definidas en `:root` (colores, fuente, espaciados, overlay)
 - [ ] Layout desktop organizado con Grid/Flexbox
-- [ ] Modal estilizado: overlay cubre pantalla, modal centrado, responsive
+- [ ] Modal estilizado: overlay cubre pantalla, modal centrado en desktop
 - [ ] Cards con espacio para imagen y placeholder si no hay
 - [ ] Botones e inputs tienen estilos base funcionales
 - [ ] Clase `.hidden` implementada (display: none)
@@ -267,9 +267,10 @@ Capturar datos del formulario, crear el objeto libro y agregarlo al catálogo. I
 - Objeto libro con `generarId()` + `disponible: true` + `imagen`
 - `push()` al array
 - Llamada a `renderizarLibros()` después de agregar
+- Llamada a `actualizarEstadisticas()` después de agregar
 - Cerrar modal después de guardar exitosamente
 - Limpiar formulario post-registro
-- Cerrar modal al clic en ✕, en overlay, o en "Cancelar"
+- Cerrar modal al clic en ✕ (`#modal-close`), en el overlay (`#modal-overlay`), o en "Cancelar" (`#btn-cancel`)
 
 **Criterios de aceptación:**
 - [ ] Clic en "Agregar libro" (header) abre el modal vacío
@@ -283,6 +284,7 @@ Capturar datos del formulario, crear el objeto libro y agregarlo al catálogo. I
 - [ ] Modal se cierra al clic en ✕, overlay o "Cancelar"
 - [ ] Se usa `addEventListener("submit", ...)` + `preventDefault()`
 - [ ] Se usa `push()` para agregar al array
+- [ ] Se invoca `actualizarEstadisticas()` después de agregar
 
 ---
 
@@ -336,14 +338,16 @@ Funcionalidad del botón "Eliminar" que remueve el libro del array y actualiza l
 **Entregables:**
 - Función `eliminarLibro(id)`
 - Uso de `filter()` para generar nuevo array
-- Event listener (delegación de eventos recomendada)
-- Re-renderizado post-eliminación
+- Delegación de eventos en `#book-list` para detectar clic en `.btn-delete`
+- Llamada a `renderizarLibros()` post-eliminación
+- Llamada a `actualizarEstadisticas()` post-eliminación
 
 **Criterios de aceptación:**
 - [ ] Clic en "Eliminar" → libro desaparece
 - [ ] Se elimina del array (no solo del DOM)
 - [ ] Se usa `filter()` para excluir el libro
 - [ ] Interfaz actualizada con `renderizarLibros()`
+- [ ] Se invoca `actualizarEstadisticas()` después de eliminar
 - [ ] Identificación por `data-id`
 - [ ] Funciona sin importar la posición en el array
 
@@ -365,6 +369,7 @@ Al clic en "Editar" (✏️), abrir el modal con los datos del libro cargados y 
 
 **Entregables:**
 - Función `abrirModalEditar(id)` que abre el modal con datos del libro
+- Delegación de eventos en `#book-list` para detectar clic en `.btn-edit`
 - `find()` para localizar el libro
 - Llenar todos los inputs (incluido cover/imagen)
 - Cambiar título del modal a "Editar libro"
@@ -409,8 +414,7 @@ Guardar los cambios del formulario en modo edición, modificando el objeto exist
 - [ ] `disponible` NO cambia
 - [ ] Validaciones se aplican igual que al agregar
 - [ ] Modal se cierra después de guardar
-- [ ] Título del modal vuelve a "Agregar libro"
-- [ ] Botón vuelve a "Guardar"
+- [ ] Después de guardar, el modal se resetea (título vuelve a "Agregar libro", botón vuelve a "Guardar", `libroEditandoId` se limpia)
 - [ ] Interfaz refleja los nuevos datos
 
 ---
@@ -431,9 +435,11 @@ Toggle que cambia el estado `disponible` del libro y actualiza la interfaz.
 
 **Entregables:**
 - Función `togglePrestamo(id)` que invierte `disponible`
+- Delegación de eventos en `#book-list` para detectar clic en `.btn-loan`
 - Botón dinámico: "Prestar" ↔ "Devolver"
 - Estado visual actualizado en la card
 - `find()` para localizar el libro
+- Llamada a `actualizarEstadisticas()` después del cambio
 
 **Criterios de aceptación:**
 - [ ] Libro disponible → botón "Prestar"
@@ -443,6 +449,7 @@ Toggle que cambia el estado `disponible` del libro y actualiza la interfaz.
 - [ ] Propiedad `disponible` se invierte (true ↔ false)
 - [ ] Se usa `find()` para localizar por ID
 - [ ] Se re-renderiza después del cambio
+- [ ] Se invoca `actualizarEstadisticas()` después de prestar/devolver
 
 ---
 
@@ -551,7 +558,7 @@ Selector que filtra libros según estado de disponibilidad.
 | **Commit ejemplo** | `feat(T-10): mostrar estadísticas dinámicas del catálogo` |
 
 **Descripción:**
-Mostrar contadores dinámicos: total, disponibles y prestados.
+Mostrar contadores dinámicos: total, disponibles y prestados. Las tareas T-04a, T-05 y T-07 deben invocar esta función. T-10 solo la implementa.
 
 **Entregables:**
 - Función `actualizarEstadisticas()`
