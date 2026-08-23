@@ -53,12 +53,12 @@ const createBook = (book) => {
 	const available = createElment("span", "book__available", book.available);
 	const cta = createElment("div", "book__cta", "");
 	const btnBorrow = createButton("borrow", "btn--borrow", "Borrow", "");
-	const btnEdit = createButton("edit", "btn--edit", "Edit", "icon-edit");
+	const btnEdit = createButton("edit", "btn--edit", "Edit", "ri-pencil-line");
 	const btnDelete = createButton(
 		"delete",
 		"btn--delete",
 		"Delete",
-		"icon-delete",
+		"ri-delete-bin-6-line",
 	);
 
 	cta.append(btnBorrow, btnEdit, btnDelete);
