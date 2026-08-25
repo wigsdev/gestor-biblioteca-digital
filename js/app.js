@@ -7,69 +7,155 @@
 // 'use strict';
 
 // ── T-01c: Initial data ──
-const books = [];
+
+// Array de libros precargados.
+// Propiedades: id, titulo, autor, categoria, anio, disponible, imagen
+// - imagen: URL de portada ("" si no hay, para probar el placeholder en T-02)
+const libros = [
+    {
+        id: 1,
+        titulo: "Cien años de soledad",
+        autor: "Gabriel García Márquez",
+        categoria: "Novela",
+        anio: 1967,
+        disponible: true,
+        imagen: "https://covers.openlibrary.org/b/isbn/9780307474728-L.jpg"
+    },
+    {
+        id: 2,
+        titulo: "Fundación",
+        autor: "Isaac Asimov",
+        categoria: "Ciencia ficción",
+        anio: 1951,
+        disponible: false,
+        imagen: "https://covers.openlibrary.org/b/isbn/9780553293357-L.jpg"
+    },
+    {
+        id: 3,
+        titulo: "Sapiens: De animales a dioses",
+        autor: "Yuval Noah Harari",
+        categoria: "Historia",
+        anio: 2011,
+        disponible: true,
+        imagen: ""
+    },
+    {
+        id: 4,
+        titulo: "Clean Code",
+        autor: "Robert C. Martin",
+        categoria: "Tecnología",
+        anio: 2008,
+        disponible: false,
+        imagen: "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg"
+    },
+    {
+        id: 5,
+        titulo: "El nombre del viento",
+        autor: "Patrick Rothfuss",
+        categoria: "Fantasía",
+        anio: 2007,
+        disponible: true,
+        imagen: ""
+    },
+    {
+        id: 6,
+        titulo: "1984",
+        autor: "George Orwell",
+        categoria: "Novela",
+        anio: 1949,
+        disponible: false,
+        imagen: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg"
+    },
+    {
+        id: 7,
+        titulo: "Breve historia del tiempo",
+        autor: "Stephen Hawking",
+        categoria: "Otros",
+        anio: 1988,
+        disponible: true,
+        imagen: ""
+    },
+    {
+        id: 8,
+        titulo: "Dune",
+        autor: "Frank Herbert",
+        categoria: "Ciencia ficción",
+        anio: 1965,
+        disponible: true,
+        imagen: "https://covers.openlibrary.org/b/isbn/9780441013593-L.jpg"
+    }
+];
+
 
 // ── T-03: ID generation ──
-const selectElement = (id) => {
-	document.getElementById(id);
-};
-
-const DOM = {
-	bookList: selectElement("book-list"),
-};
 
 // ── T-02: Catalog rendering ──
 const fragment = document.createDocumentFragment();
-const createElment = (tag, cssClass, text) => {
-	const element = document.createElement(tag);
-	element.classList.add(cssClass);
-	element.textContent = text;
-	return element;
+
+const createElement = (element, cssClasss, text) => {
+	const tag = document.createElement(element);
+	if (cssClasss) {
+		const arrClass = cssClasss.split(" ");
+		tag.classList.add(...arrClass);
+	}
+	tag.className = cssClasss;
+	tag.textContent = text;
+	return tag;
 };
 
-const createButton = (id, cssClass, text, icon) => {
+const createButton = (cssClass, id, text) => {
 	const button = document.createElement("button");
-	const span = document.createElement("span");
-	const i = document.createElement("i");
-	button.setAttribute("id", id);
-	button.setAttribute("class", cssClass);
-	span.classList.add("sr-only");
-	span.textContent = text;
-	i.setAttribute("class", icon);
-	if (icon !== "") {
-		button.append(span, i);
-		return button;
-	}
+	button.classList.add("btn", cssClass);
+	button.setAttribute("type", "button");
+	button.setAttribute("data-id", id);
 	button.textContent = text;
 	return button;
 };
 
-const createBook = (book) => {
-	const article = createElment("article", "book", "");
-	const title = createElment("h3", "book__title", book.title);
-	const author = createElment("h4", "book__author", book.author);
-	const category = createElment("p", "book__category", book.category);
-	const year = createElment("p", "book__year", book.year);
-	const available = createElment("span", "book__available", book.available);
-	const cta = createElment("div", "book__cta", "");
-	const btnBorrow = createButton("borrow", "btn--borrow", "Borrow", "");
-	const btnEdit = createButton("edit", "btn--edit", "Edit", "ri-pencil-line");
-	const btnDelete = createButton(
-		"delete",
-		"btn--delete",
-		"Delete",
-		"ri-delete-bin-6-line",
+const book = (book) => {
+	const { id, titulo, autor, categoria, anio, disponible, imagen } = book;
+
+	const article = createElement("article", "book-card", "");
+	const cover = createElement("img", "book-image", "");
+	cover.setAttribute("src", imagen || "assets/no-cover.jpg");
+	const body = createElement("div", "book-card-body", "");
+	const meta = createElement("div", "book-meta", "");
+	const metaText = createElement(
+		"span",
+		"book-meta-text",
+		`${categoria} · ${anio}`,
 	);
-
-	cta.append(btnBorrow, btnEdit, btnDelete);
-
-	article.append(title, author, category, year, available, cta);
+	const metaState = createElement(
+		"span",
+		`book-status ${disponible ? "book-status--available" : "book-status--borrowed"}`,
+		`${disponible ? "Disponible" : "Prestado"}`,
+	);
+	const title = createElement("h3", "boot-title", titulo);
+	const author = createElement("p", "book-author", autor);
+	const bookId = createElement("span", "book-id", `ID: ${id}`);
+	const actions = createElement("div", "book-actions", "");
+	const btnLoan = createButton(
+		"btn-loan",
+		id,
+		`${disponible ? "Prestar" : "Devolver"}`,
+	);
+	const btnEdit = createButton("btn-edit", id, "✏️");
+	const btnDelete = createButton("btn-delete", id, "🗑️");
+	meta.append(metaText, metaState);
+	body.append(meta, title, author, bookId);
+	actions.append(btnLoan, btnEdit, btnDelete);
+	article.append(cover, body, actions);
 	return article;
 };
 
-books.forEach((book) => {
-	fragment.append(createBook(book));
-});
+const renderizarLibros = () => {
+	// (bookList)t03.innerHTML = "";
+	libros.forEach((libro) => {
+		fragment.append(book(libro));
+	});
+	// (bookList)t03.append(fragment);
+};
+
 
 // ── T-04a: Add book ──
 
@@ -98,7 +184,7 @@ books.forEach((book) => {
 // ── Entry point ──
 document.addEventListener("DOMContentLoaded", () => {
 	// App init (T-02):
-	// renderizarLibros(libros);
-	DOM.bookList.append(fragment);
+  renderizarLibros();
+
 	// actualizarEstadisticas();
 });
