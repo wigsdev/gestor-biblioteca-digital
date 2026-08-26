@@ -162,7 +162,7 @@ const renderizarLibros = (books) => {
 	const bookList = document.getElementById("book-list");
 	const fragment = document.createDocumentFragment();
 
-	books.innerHTML = "";
+	bookList.innerHTML = "";
 
 	books.forEach((libro) => {
 		fragment.append(book(libro));
