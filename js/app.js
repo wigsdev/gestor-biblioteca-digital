@@ -171,6 +171,8 @@ const renderizarLibros = (books) => {
 	bookList.append(fragment);
 };
 
+// ── T-03b: Stats/counters ──
+
 // ── T-04a: Add book ──
 
 // ── T-04b: Form validations ──
@@ -188,8 +190,6 @@ const renderizarLibros = (books) => {
 // ── T-09a: Filter by category ──
 
 // ── T-09b: Filter by status ──
-
-// ── T-10: Stats/counters ──
 
 // ── T-11: Sort ──
 
