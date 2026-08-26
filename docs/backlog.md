@@ -246,13 +246,43 @@ Función que genera el siguiente ID único basándose en el mayor ID existente e
 
 ---
 
+### T-03b — Contadores y estadísticas
+
+| Campo | Valor |
+|-------|-------|
+| **Prioridad** | `priority: high` |
+| **Tipo** | `type: feature` |
+| **Dependencias** | T-02 |
+| **Complejidad** | Baja (1 día) |
+| **Branch** | `feature/T-03b-contadores` |
+| **Commit ejemplo** | `feat(T-03b): mostrar estadísticas dinámicas del catálogo` |
+
+**Descripción:**
+Mostrar contadores dinámicos: total, disponibles y prestados. Las tareas T-04a, T-05 y T-07 invocan esta función — por eso debe estar mergeada antes que ellas. T-03b solo la implementa.
+
+**Entregables:**
+- Función `actualizarEstadisticas()`
+- Calcula y renderiza: total, disponibles, prestados
+- Se invoca después de cada operación que modifique el array
+
+**Criterios de aceptación:**
+- [ ] Muestra: Total, Disponibles, Prestados
+- [ ] Valores calculados con JS (no hardcodeados)
+- [ ] Se actualiza al agregar
+- [ ] Se actualiza al eliminar
+- [ ] Se actualiza al prestar/devolver
+- [ ] Se usa `filter()` para contar por estado
+- [ ] Se usa `.length` para totales
+
+---
+
 ### T-04a — Agregar libro al catálogo
 
 | Campo | Valor |
 |-------|-------|
 | **Prioridad** | `priority: high` |
 | **Tipo** | `type: feature` |
-| **Dependencias** | T-01a, T-01c, T-02, T-03 |
+| **Dependencias** | T-01a, T-01c, T-02, T-03, T-03b |
 | **Complejidad** | Media (1-2 días) |
 | **Branch** | `feature/T-04a-agregar-libro` |
 | **Commit ejemplo** | `feat(T-04a): implementar captura y registro de nuevo libro` |
@@ -327,7 +357,7 @@ Validar todos los campos del formulario mostrando mensajes de error en la interf
 |-------|-------|
 | **Prioridad** | `priority: high` |
 | **Tipo** | `type: feature` |
-| **Dependencias** | T-02 |
+| **Dependencias** | T-02, T-03b |
 | **Complejidad** | Baja (1 día) |
 | **Branch** | `feature/T-05-eliminar-libros` |
 | **Commit ejemplo** | `feat(T-05): implementar eliminación de libro con filter` |
@@ -425,7 +455,7 @@ Guardar los cambios del formulario en modo edición, modificando el objeto exist
 |-------|-------|
 | **Prioridad** | `priority: high` |
 | **Tipo** | `type: feature` |
-| **Dependencias** | T-02 |
+| **Dependencias** | T-02, T-03b |
 | **Complejidad** | Media (1-2 días) |
 | **Branch** | `feature/T-07-sistema-prestamos` |
 | **Commit ejemplo** | `feat(T-07): implementar toggle de préstamo/devolución` |
@@ -543,36 +573,6 @@ Selector que filtra libros según estado de disponibilidad.
 - [ ] Se usa `filter()`
 - [ ] Evento `change`
 - [ ] Retorna array filtrado (no muta original)
-
----
-
-### T-10 — Contadores y estadísticas
-
-| Campo | Valor |
-|-------|-------|
-| **Prioridad** | `priority: medium` |
-| **Tipo** | `type: feature` |
-| **Dependencias** | T-02 |
-| **Complejidad** | Baja (1 día) |
-| **Branch** | `feature/T-10-contadores` |
-| **Commit ejemplo** | `feat(T-10): mostrar estadísticas dinámicas del catálogo` |
-
-**Descripción:**
-Mostrar contadores dinámicos: total, disponibles y prestados. Las tareas T-04a, T-05 y T-07 deben invocar esta función. T-10 solo la implementa.
-
-**Entregables:**
-- Función `actualizarEstadisticas()`
-- Calcula y renderiza: total, disponibles, prestados
-- Se invoca después de cada operación que modifique el array
-
-**Criterios de aceptación:**
-- [ ] Muestra: Total, Disponibles, Prestados
-- [ ] Valores calculados con JS (no hardcodeados)
-- [ ] Se actualiza al agregar
-- [ ] Se actualiza al eliminar
-- [ ] Se actualiza al prestar/devolver
-- [ ] Se usa `filter()` para contar por estado
-- [ ] Se usa `.length` para totales
 
 ---
 
@@ -712,17 +712,18 @@ T-01a (HTML) ─── critical
  │    └── T-12b (Mobile) ─── high
  ├── T-01c (Datos JS) ─── critical
  │    ├── T-03 (Generar ID) ─── high
+ │    │    └── T-03b (Contadores) ─── high ← prerequisito de T-04a, T-05, T-07
  │    └── T-02 (Renderizado) ─── critical [+ T-01a]
- │         ├── T-04a (Agregar) ─── high [+ T-03]
- │         │    ├── T-04b (Validaciones) ─── high
- │         │    └── T-06a (Cargar edición) ─── high
- │         │         └── T-06b (Guardar edición) ─── high
- │         ├── T-05 (Eliminar) ─── high
- │         ├── T-07 (Préstamos) ─── high
+ │         ├── T-03b (Contadores) ─── high
+ │         │    ├── T-04a (Agregar) ─── high [+ T-03]
+ │         │    │    ├── T-04b (Validaciones) ─── high
+ │         │    │    └── T-06a (Cargar edición) ─── high
+ │         │    │         └── T-06b (Guardar edición) ─── high
+ │         │    ├── T-05 (Eliminar) ─── high
+ │         │    └── T-07 (Préstamos) ─── high
  │         ├── T-08 (Buscador) ─── medium
  │         ├── T-09a (Filtro categoría) ─── medium
  │         ├── T-09b (Filtro estado) ─── medium
- │         ├── T-10 (Contadores) ─── medium
  │         ├── T-11 (Ordenamiento) ─── medium
  │         └── T-13 (Integración) ─── low [+ T-08, T-09a, T-09b, T-11]
 ```
@@ -732,9 +733,10 @@ T-01a (HTML) ─── critical
 | Fase | Tareas | Objetivo |
 |------|--------|----------|
 | **1 — Base** | T-01a → T-01b + T-01c (paralelo) → T-02 | Proyecto funcional mínimo (se ven los libros) |
-| **2 — CRUD** | T-03 + T-05 + T-07 (paralelo) → T-04a → T-04b + T-06a (paralelo) → T-06b | Todas las operaciones CRUD funcionando |
-| **3 — UX** | T-08 + T-09a + T-09b + T-10 + T-11 (paralelo) + T-12a + T-12b | Búsqueda, filtros, responsive |
-| **4 — Integración** | T-13 + QA final | Todo funciona combinado sin conflictos |
+| **2 — Prerrequisitos CRUD** | T-03 + T-03b (paralelo) | Generación de IDs y estadísticas disponibles antes del CRUD |
+| **3 — CRUD** | T-04a + T-05 + T-07 (paralelo) → T-04b + T-06a (paralelo) → T-06b | Todas las operaciones CRUD funcionando |
+| **4 — UX** | T-08 + T-09a + T-09b + T-11 (paralelo) + T-12a + T-12b | Búsqueda, filtros, ordenamiento, responsive |
+| **5 — Integración** | T-13 + QA final | Todo funciona combinado sin conflictos |
 
 > El Team Leader decide la ejecución real según disponibilidad del equipo.
 
@@ -749,6 +751,7 @@ T-01a (HTML) ─── critical
 | T-01c | — | — | — | 🔲 Backlog |
 | T-02 | — | — | — | 🔲 Backlog |
 | T-03 | — | — | — | 🔲 Backlog |
+| T-03b | — | — | — | 🔲 Backlog |
 | T-04a | — | — | — | 🔲 Backlog |
 | T-04b | — | — | — | 🔲 Backlog |
 | T-05 | — | — | — | 🔲 Backlog |
@@ -758,7 +761,6 @@ T-01a (HTML) ─── critical
 | T-08 | — | — | — | 🔲 Backlog |
 | T-09a | — | — | — | 🔲 Backlog |
 | T-09b | — | — | — | 🔲 Backlog |
-| T-10 | — | — | — | 🔲 Backlog |
 | T-11 | — | — | — | 🔲 Backlog |
 | T-12a | — | — | — | 🔲 Backlog |
 | T-12b | — | — | — | 🔲 Backlog |
@@ -772,8 +774,8 @@ T-01a (HTML) ─── critical
 |---------|-------|
 | Total de tareas | 19 |
 | Tareas critical (P0) | 4 |
-| Tareas high (P1) | 10 |
-| Tareas medium (P2) | 4 |
+| Tareas high (P1) | 11 |
+| Tareas medium (P2) | 3 |
 | Tareas low (P3) | 1 |
 | Tareas de 1 día | 8 |
 | Tareas de 1-2 días | 11 |

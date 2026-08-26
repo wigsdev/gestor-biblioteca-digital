@@ -564,7 +564,7 @@ function cerrarModal() {
 |--------|-------------|
 | `push()` | T-04a — agregar libro al array |
 | `find()` | T-06a, T-06b, T-07 — localizar libro por ID |
-| `filter()` | T-05, T-08, T-09a, T-09b, T-10 — eliminar, buscar, filtrar, contar |
+| `filter()` | T-05, T-08, T-09a, T-09b, T-03b — eliminar, buscar, filtrar, contar |
 | `map()` | T-02 o T-03 — renderizar cards o extraer IDs |
 | `forEach()` | T-02 — recorrer libros para renderizar |
 | `some()` o `every()` | T-13 — validación combinada de filtros |
@@ -658,7 +658,7 @@ document.querySelector('#book-list').addEventListener('click', (e) => {
 | T-08 | Función `buscarLibros()` + evento input |
 | T-09a | Función `filtrarPorCategoria()` + evento change |
 | T-09b | Función `filtrarPorEstado()` + evento change |
-| T-10 | Función `actualizarEstadisticas()` |
+| T-03b | Función `actualizarEstadisticas()` |
 | T-11 | Función `ordenarLibros()` + evento change |
 | T-13 | Función `aplicarFiltrosYOrden()` (integración) |
 
@@ -752,6 +752,15 @@ document.addEventListener('DOMContentLoaded', () => {
 |-----------|---------|
 | Estructura del objeto (propiedad `id`) | Sección 9: Objeto libro |
 | Métodos sugeridos | Sección 12: Métodos obligatorios (map para extraer IDs) |
+
+---
+
+### T-03b — Contadores y estadísticas
+
+| Consultar | Sección |
+|-----------|---------|
+| Selectores de stats | Sección 6: Selectores JavaScript (`#stat-total`, `#stat-available`, `#stat-borrowed`) |
+| Métodos (filter, length) | Sección 12: Métodos obligatorios |
 
 ---
 
@@ -851,15 +860,6 @@ document.addEventListener('DOMContentLoaded', () => {
 | Valores de las opciones | Sección 8: Valores de las opciones (Estado) |
 | Evento change | Sección 13: Eventos requeridos |
 | Métodos (filter) | Sección 12: Métodos obligatorios |
-
----
-
-### T-10 — Contadores y estadísticas
-
-| Consultar | Sección |
-|-----------|---------|
-| Selectores de stats | Sección 6: Selectores JavaScript (`#stat-total`, `#stat-available`, `#stat-borrowed`) |
-| Métodos (filter, length) | Sección 12: Métodos obligatorios |
 
 ---
 
