@@ -89,9 +89,6 @@ const libros = [
 // ── T-03: ID generation ──
 
 // ── T-02: Catalog rendering ──
-const bookList = document.getElementById("book-list");
-const fragment = document.createDocumentFragment();
-
 const createElement = (element, cssClass, text = "") => {
 	const tag = document.createElement(element);
 	if (cssClass) {
@@ -112,8 +109,12 @@ const createButton = (cssClass, id, text) => {
 };
 
 const createImg = (src, cssClass, alt) => {
+	if (!src) {
+		const noSrc = createElement("div", "book-no-cover", "📖");
+		return noSrc;
+	}
 	const img = document.createElement("img");
-	img.setAttribute("src", src || "assets/no-cover.jpg");
+	img.setAttribute("src", src);
 	img.setAttribute("alt", alt);
 	img.classList.add(cssClass);
 	return img;
@@ -122,27 +123,26 @@ const createImg = (src, cssClass, alt) => {
 const book = (libro) => {
 	const { id, titulo, autor, categoria, anio, disponible, imagen } = libro;
 
-	const article = createElement("article", "book");
-	const container = createElement("div", "book-container");
+	const article = createElement("article", "book-card");
 	const cover = createImg(imagen, "book-cover", titulo);
 	const header = createElement("header", "book-header");
 	const categoryYear = createElement(
 		"span",
-		"book-category-year",
+		"book-meta-text",
 		`${categoria} · ${anio}`,
 	);
 	const available = createElement(
 		"span",
-		`book-available ${disponible ? "book-available-yes" : "book-available-not"}`,
+		`book-status ${disponible ? "book-status--available" : "book-available--borrowed"}`,
 		`${disponible ? "Disponible" : "Prestado"}`,
 	);
-	const body = createElement("div", "book-body");
+	const body = createElement("div", "book-card-body");
 	const title = createElement("h3", "book-title", titulo);
 	const author = createElement("p", "book-author", autor);
 	const idBook = createElement("span", "book-id", `ID: ${id}`);
-	const footer = createElement("footer", "book-footer");
+	const footer = createElement("footer", "book-actions");
 	const btnBorrow = createButton(
-		"btn-borrow",
+		"btn-loan",
 		id,
 		`${disponible ? "Prestar" : "Devolver"}`,
 	);
@@ -153,17 +153,18 @@ const book = (libro) => {
 	body.append(title, author, idBook);
 	footer.append(btnBorrow, btnEdit, btnDelete);
 
-	container.append(cover, header, body, footer);
-
-	article.append(container);
+	article.append(cover, header, body, footer);
 
 	return article;
 };
 
-const renderizarLibros = () => {
-	bookList.innerHTML = "";
+const renderizarLibros = (books) => {
+	const bookList = document.getElementById("book-list");
+	const fragment = document.createDocumentFragment();
 
-	libros.forEach((libro) => {
+	books.innerHTML = "";
+
+	books.forEach((libro) => {
 		fragment.append(book(libro));
 	});
 
@@ -197,6 +198,6 @@ const renderizarLibros = () => {
 // ── Entry point ──
 document.addEventListener("DOMContentLoaded", () => {
 	// App init (T-02):
-	renderizarLibros();
+	renderizarLibros(libros);
 	// actualizarEstadisticas();
 });
