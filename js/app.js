@@ -172,7 +172,23 @@ const renderizarLibros = (books) => {
 };
 
 // ── T-03b: Stats/counters ──
+const actualizarEstadisticas = () => {
+	const statTotal = document.getElementById("stat-total");
+	const statAvailable = document.getElementById("stat-available");
+	const statBorrowed = document.getElementById("stat-borrowed");
 
+	const available = libros.reduce((acc, libro) => {
+		return libro.disponible ? acc + 1 : acc;
+	}, 0);
+
+	const borrowed = libros.reduce((acc, libro) => {
+		return libro.disponible ? acc : acc + 1;
+	}, 0);
+
+	statTotal.textContent = libros.length;
+	statAvailable.textContent = available;
+	statBorrowed.textContent = borrowed;
+};
 // ── T-04a: Add book ──
 
 // ── T-04b: Form validations ──
@@ -199,5 +215,5 @@ const renderizarLibros = (books) => {
 document.addEventListener("DOMContentLoaded", () => {
 	// App init (T-02):
 	renderizarLibros(libros);
-	// actualizarEstadisticas();
+	actualizarEstadisticas();
 });
