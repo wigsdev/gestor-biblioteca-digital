@@ -195,6 +195,29 @@ const actualizarEstadisticas = () => {
 
 // ── T-05: Delete book ──
 
+	const deleteBook = (id) => {
+		const index = libros.findIndex((libro)=> libro.id === id);
+
+		if(index !== -1){
+			libros.splice(index, 1);
+			renderizarLibros(libros);
+			actualizarEstadisticas();
+		}
+		return;
+	};
+
+	document.querySelector("#book-list").addEventListener("click",(event) =>{
+	const deleteButton = event.target.closest(".btn-delete");
+
+	if(!deleteButton){
+		return;
+	}
+		
+	const id = Number(deleteButton.dataset.id);
+	deleteBook(id);
+} );
+
+
 // ── T-06a: Load edit data ──
 
 // ── T-06b: Save edit changes ──
