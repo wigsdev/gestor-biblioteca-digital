@@ -19,7 +19,7 @@ const libros = [
 		categoria: "Novela",
 		anio: 1967,
 		disponible: true,
-		imagen: "https://covers.openlibrary.org/b/isbn/9780307474728-L.jpg",
+		imagen: "assets/book-cover.jpg",
 	},
 	{
 		id: 2,
@@ -109,15 +109,14 @@ const createButton = (cssClass, id, text) => {
 };
 
 const createImg = (src, cssClass, alt) => {
-	if (!src) {
-		const noSrc = createElement("div", "book-no-cover", "📖");
-		return noSrc;
-	}
-	const img = document.createElement("img");
-	img.setAttribute("src", src);
-	img.setAttribute("alt", alt);
-	img.classList.add(cssClass);
-	return img;
+  if (!src) {
+    return createElement("div", "book-no-cover", "📖");
+  }
+  const img = document.createElement("img");
+  img.setAttribute("src", src);
+  img.setAttribute("alt", alt);
+  img.classList.add(cssClass);
+  return img;
 };
 
 const book = (libro) => {
