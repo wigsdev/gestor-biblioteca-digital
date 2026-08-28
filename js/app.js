@@ -192,6 +192,66 @@ const actualizarEstadisticas = () => {
 // ── T-04a: Add book ──
 
 // ── T-04b: Form validations ──
+// Valida los campos del formulario de libro (título, autor, categoría, año).
+// Escribe los mensajes de error en los <span class="form-error"> del DOM
+// (no usa alert()) y limpia los mensajes previos en cada ejecución.
+// Retorna true si todo es válido, false si hay al menos un error.
+const validarFormulario = () => {
+	const inputTitle = document.getElementById("title");
+	const inputAuthor = document.getElementById("author");
+	const selectCategory = document.getElementById("category");
+	const inputYear = document.getElementById("year");
+ 
+	const errorTitle = document.getElementById("error-title");
+	const errorAuthor = document.getElementById("error-author");
+	const errorCategory = document.getElementById("error-category");
+	const errorYear = document.getElementById("error-year");
+ 
+	// Limpiar mensajes previos antes de validar de nuevo
+	errorTitle.textContent = "";
+	errorAuthor.textContent = "";
+	errorCategory.textContent = "";
+	errorYear.textContent = "";
+ 
+	let esValido = true;
+ 
+	// Título: no vacío, mínimo 2 caracteres
+	const titulo = inputTitle.value.trim();
+	if (titulo.length < 2) {
+		errorTitle.textContent = "El título es obligatorio (mín. 2 caracteres)";
+		esValido = false;
+	}
+ 
+	// Autor: no vacío, mínimo 2 caracteres
+	const autor = inputAuthor.value.trim();
+	if (autor.length < 2) {
+		errorAuthor.textContent = "El autor es obligatorio (mín. 2 caracteres)";
+		esValido = false;
+	}
+ 
+	// Categoría: debe haber una opción seleccionada
+	if (selectCategory.value === "") {
+		errorCategory.textContent = "Selecciona una categoría";
+		esValido = false;
+	}
+ 
+	// Año: numérico, entre 1900 y el año actual
+	const anioActual = new Date().getFullYear();
+	const anio = Number(inputYear.value);
+	if (
+		inputYear.value.trim() === "" ||
+		Number.isNaN(anio) ||
+		anio < 1900 ||
+		anio > anioActual
+	) {
+		errorYear.textContent = `Ingresa un año válido (1900 - ${anioActual})`;
+		esValido = false;
+	}
+ 
+	// imagen (#cover) no se valida: es un campo opcional
+ 
+	return esValido;
+};
 
 // ── T-05: Delete book ──
 
