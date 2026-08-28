@@ -383,69 +383,46 @@ Funcionalidad del botón "Eliminar" que remueve el libro del array y actualiza l
 
 ---
 
-### T-06a — Cargar datos para edición
+### T-06 — Editar libros del catálogo
 
 | Campo | Valor |
 |-------|-------|
 | **Prioridad** | `priority: high` |
 | **Tipo** | `type: feature` |
-| **Dependencias** | T-02, T-04a |
+| **Dependencias** | T-02, T-04a, T-04b |
 | **Complejidad** | Media (1-2 días) |
-| **Branch** | `feature/T-06a-cargar-edicion` |
-| **Commit ejemplo** | `feat(T-06a): cargar datos del libro en formulario para edición` |
+| **Branch** | `feature/T-06-editar-libros` |
+| **Commit ejemplo** | `feat(T-06): implementar edición de libros del catálogo` |
 
 **Descripción:**
-Al clic en "Editar" (✏️), abrir el modal con los datos del libro cargados y cambiar a modo edición.
+Al hacer clic en "Editar" (✏️), abrir el modal con los datos del libro precargados, permitir modificar sus propiedades y guardar los cambios actualizando el objeto existente en el array y la interfaz.
 
 **Entregables:**
-- Función `abrirModalEditar(id)` que abre el modal con datos del libro
+- Función `abrirModalEditar(id)` que abre el modal precargado con datos del libro
 - Delegación de eventos en `#book-list` para detectar clic en `.btn-edit`
-- `find()` para localizar el libro
-- Llenar todos los inputs (incluido cover/imagen)
-- Cambiar título del modal a "Editar libro"
-- Cambiar texto del botón submit a "Guardar cambios"
-- Variable `libroEditandoId` para trackear el modo
+- `find()` para localizar el libro por ID
+- Precargar todos los campos (`titulo`, `autor`, `categoria`, `anio`, `imagen`)
+- Cambiar título del modal a "Editar libro" y botón a "Guardar cambios"
+- Variable `libroEditandoId` para trackear el modo de edición
+- Función `guardarEdicion()` para modificar el objeto existente en el array (sin alterar `id` ni `disponible`)
+- Validaciones activas al guardar (utilizando `validarFormulario()`)
+- Post-guardado: cerrar modal, limpiar formulario, resetear modo a "Agregar libro" y re-renderizar catálogo/estadísticas
 
 **Criterios de aceptación:**
-- [ ] Clic "Editar" → modal se abre con datos del libro (incluida imagen)
-- [ ] Se usa `find()` para localizar por ID
+- [ ] Clic en "Editar" (✏️) → modal se abre con los datos precargados (incluida imagen)
+- [ ] Se usa `find()` para localizar el libro por ID
 - [ ] Título del modal cambia a "Editar libro"
-- [ ] Botón cambia a "Guardar cambios"
-- [ ] Se guarda referencia del libro en edición
-- [ ] Clic "Editar" en otro libro → modal se actualiza con nuevos datos
-
----
-
-### T-06b — Guardar cambios de edición
-
-| Campo | Valor |
-|-------|-------|
-| **Prioridad** | `priority: high` |
-| **Tipo** | `type: feature` |
-| **Dependencias** | T-06a |
-| **Complejidad** | Media (1-2 días) |
-| **Branch** | `feature/T-06b-guardar-edicion` |
-| **Commit ejemplo** | `feat(T-06b): guardar cambios del libro editado en el array` |
-
-**Descripción:**
-Guardar los cambios del formulario en modo edición, modificando el objeto existente en el array. Cerrar modal después de guardar.
-
-**Entregables:**
-- Modificar propiedades del objeto existente (no crear uno nuevo)
-- Actualizar también la propiedad `imagen`
-- Validaciones activas en modo edición
-- Post-guardado: cerrar modal, limpiar form, resetear modo, re-renderizar
-- ID y `disponible` no se modifican
-
-**Criterios de aceptación:**
-- [ ] Al guardar, el libro se actualiza (no se duplica)
-- [ ] Se modifican propiedades del objeto existente (incluida imagen)
-- [ ] ID NO cambia
-- [ ] `disponible` NO cambia
-- [ ] Validaciones se aplican igual que al agregar
-- [ ] Modal se cierra después de guardar
-- [ ] Después de guardar, el modal se resetea (título vuelve a "Agregar libro", botón vuelve a "Guardar", `libroEditandoId` se limpia)
-- [ ] Interfaz refleja los nuevos datos
+- [ ] Botón del modal cambia a "Guardar cambios"
+- [ ] Se guarda la referencia `libroEditandoId`
+- [ ] Clic en "Editar" en otro libro → modal se actualiza con los nuevos datos
+- [ ] Al guardar, el libro se actualiza en el array (no se duplica)
+- [ ] Se modifican propiedades del objeto existente (`titulo`, `autor`, `categoria`, `anio`, `imagen`)
+- [ ] ID NO se modifica
+- [ ] `disponible` NO se modifica
+- [ ] Validaciones del formulario se aplican al guardar
+- [ ] Modal se cierra después de guardar exitosamente
+- [ ] Tras guardar o cancelar, el modal se resetea (título vuelve a "Agregar libro", botón vuelve a "Guardar", `libroEditandoId` se limpia a `null`)
+- [ ] La interfaz y estadísticas reflejan los nuevos datos
 
 ---
 
@@ -717,8 +694,7 @@ T-01a (HTML) ─── critical
  │         ├── T-03b (Contadores) ─── high
  │         │    ├── T-04a (Agregar) ─── high [+ T-03]
  │         │    │    ├── T-04b (Validaciones) ─── high
- │         │    │    └── T-06a (Cargar edición) ─── high
- │         │    │         └── T-06b (Guardar edición) ─── high
+ │         │    │    └── T-06 (Editar libros) ─── high
  │         │    ├── T-05 (Eliminar) ─── high
  │         │    └── T-07 (Préstamos) ─── high
  │         ├── T-08 (Buscador) ─── medium
@@ -734,7 +710,7 @@ T-01a (HTML) ─── critical
 |------|--------|----------|
 | **1 — Base** | T-01a → T-01b + T-01c (paralelo) → T-02 | Proyecto funcional mínimo (se ven los libros) |
 | **2 — Prerrequisitos CRUD** | T-03 + T-03b (paralelo) | Generación de IDs y estadísticas disponibles antes del CRUD |
-| **3 — CRUD** | T-04a + T-05 + T-07 (paralelo) → T-04b + T-06a (paralelo) → T-06b | Todas las operaciones CRUD funcionando |
+| **3 — CRUD** | T-04a + T-05 + T-07 (paralelo) → T-04b → T-06 | Todas las operaciones CRUD funcionando |
 | **4 — UX** | T-08 + T-09a + T-09b + T-11 (paralelo) + T-12a + T-12b | Búsqueda, filtros, ordenamiento, responsive |
 | **5 — Integración** | T-13 + QA final | Todo funciona combinado sin conflictos |
 
@@ -755,8 +731,7 @@ T-01a (HTML) ─── critical
 | T-04a | — | — | — | 🔲 Backlog |
 | T-04b | — | — | — | 🔲 Backlog |
 | T-05 | — | — | — | 🔲 Backlog |
-| T-06a | — | — | — | 🔲 Backlog |
-| T-06b | — | — | — | 🔲 Backlog |
+| T-06 | — | — | — | 🔲 Backlog |
 | T-07 | — | — | — | 🔲 Backlog |
 | T-08 | — | — | — | 🔲 Backlog |
 | T-09a | — | — | — | 🔲 Backlog |
@@ -772,10 +747,10 @@ T-01a (HTML) ─── critical
 
 | Métrica | Valor |
 |---------|-------|
-| Total de tareas | 19 |
+| Total de tareas | 18 |
 | Tareas critical (P0) | 4 |
-| Tareas high (P1) | 11 |
+| Tareas high (P1) | 10 |
 | Tareas medium (P2) | 3 |
 | Tareas low (P3) | 1 |
 | Tareas de 1 día | 8 |
-| Tareas de 1-2 días | 11 |
+| Tareas de 1-2 días | 10 |

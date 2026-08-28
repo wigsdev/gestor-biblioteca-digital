@@ -319,6 +319,5 @@ Sin imagen (placeholder):
 | T-01c | Los 8 libros precargados incluyen propiedad `imagen` (con URLs o "") |
 | T-02 | Cards renderizan `<img>` si hay URL, o placeholder si no. Imagen va primero en la card. |
 | T-04a | Después de agregar, cerrar modal. Capturar campo imagen. |
-| T-06a | Al clic en ✏️, abrir modal con datos del libro (incluida imagen) |
-| T-06b | Después de guardar, cerrar modal |
+| T-06 | Al clic en ✏️, abrir modal precargado con datos del libro (incluida imagen) y cerrar modal tras guardar |
 | T-12a/b | Modal responsive (full-width en mobile, centrado en desktop/tablet) |

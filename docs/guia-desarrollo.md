@@ -563,7 +563,7 @@ function cerrarModal() {
 | Método | Dónde se usa |
 |--------|-------------|
 | `push()` | T-04a — agregar libro al array |
-| `find()` | T-06a, T-06b, T-07 — localizar libro por ID |
+| `find()` | T-06, T-07 — localizar libro por ID |
 | `filter()` | T-05, T-08, T-09a, T-09b, T-03b — eliminar, buscar, filtrar, contar |
 | `map()` | T-02 o T-03 — renderizar cards o extraer IDs |
 | `forEach()` | T-02 — recorrer libros para renderizar |
@@ -582,7 +582,7 @@ function cerrarModal() {
 | `click` | `#btn-cancel` | Cerrar modal + limpiar |
 | `submit` | `#book-form` | T-04a — agregar/editar libro |
 | `click` | `.btn-delete` (delegado en `#book-list`) | T-05 |
-| `click` | `.btn-edit` (delegado en `#book-list`) | T-06a |
+| `click` | `.btn-edit` (delegado en `#book-list`) | T-06 |
 | `click` | `.btn-loan` (delegado en `#book-list`) | T-07 |
 | `input` | `#search` | T-08 |
 | `change` | `#filter-category` | T-09a |
@@ -652,8 +652,7 @@ document.querySelector('#book-list').addEventListener('click', (e) => {
 | T-04a | Lógica de agregar libro + abrir/cerrar modal |
 | T-04b | Función `validarFormulario()` |
 | T-05 | Función `eliminarLibro()` |
-| T-06a | Función `abrirModalEditar()` (cargar datos en modal) |
-| T-06b | Lógica de guardar cambios + cerrar modal |
+| T-06 | Funciones `abrirModalEditar()` y `guardarEdicion()` (cargar datos, guardar cambios y resetear modal) |
 | T-07 | Función `togglePrestamo()` |
 | T-08 | Función `buscarLibros()` + evento input |
 | T-09a | Función `filtrarPorCategoria()` + evento change |
@@ -797,25 +796,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ---
 
-### T-06a — Abrir modal para edición
+### T-06 — Editar libros del catálogo
 
 | Consultar | Sección |
 |-----------|---------|
-| Selectores del formulario | Sección 6: Selectores JavaScript |
-| Función abrirModalEditar | Sección 7: Funciones del modal |
+| Selectores del formulario y modal | Sección 6: Selectores JavaScript |
+| Funciones abrirModalEditar y cerrarModal | Sección 7: Funciones del modal |
 | Clase del botón editar | Sección 3 (`.btn-edit`) |
 | Ejemplo de delegación de eventos | Sección 13: Eventos requeridos |
-| Métodos (find) | Sección 12: Métodos obligatorios |
-
----
-
-### T-06b — Guardar cambios + cerrar modal
-
-| Consultar | Sección |
-|-----------|---------|
-| Función cerrarModal | Sección 7: Funciones del modal |
-| Selectores del modal (título, botón) | Sección 6: Selectores JavaScript |
 | Estructura del objeto (qué NO cambiar: id, disponible) | Sección 9: Objeto libro |
+| Métodos (find) | Sección 12: Métodos obligatorios |
 
 ---
 
