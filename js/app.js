@@ -191,6 +191,53 @@ const actualizarEstadisticas = () => {
 };
 // ── T-04a: Add book ──
 
+let libroEditandoId = null;
+
+const btnAdd = document.querySelector("#btn-add");
+const modalOverlay = document.querySelector("#modal-overlay");
+const modalClose = document.querySelector("#modal-close");
+const bookForm = document.querySelector("#book-form");
+const btnCancel = document.querySelector("#btn-cancel");
+
+const inputTitle = document.querySelector("#title");
+const inputAuthor = document.querySelector("#author");
+const inputCategory = document.querySelector("#category");
+const inputYear = document.querySelector("#year");
+const inputCover = document.querySelector("#cover");
+
+const modalTitle = document.querySelector("#modal-title");
+const btnSubmit = document.querySelector("#btn-submit");
+
+const abrirModal = () => {
+	bookForm.reset();
+	libroEditandoId = null;
+	modalOverlay.classList.remove("hidden");
+	modalTitle.textContent = "Agregar libro";
+	btnSubmit.textContent = "Guardar";
+};
+
+const cerrarModal = () => {
+	modalOverlay.classList.add("hidden");
+	bookForm.reset();
+	libroEditandoId = null;
+	modalTitle.textContent = "Agregar libro";
+	btnSubmit.textContent = "Guardar";
+};
+
+const agregarLibro = () => {
+	const nuevoLibro = {
+		id: generarId(),
+		titulo: inputTitle.value.trim(),
+		autor: inputAuthor.value.trim(),
+		categoria: inputCategory.value,
+		anio: Number(inputYear.value),
+		disponible: true,
+		imagen: inputCover.value.trim(),
+	};
+
+	libros.push(nuevoLibro);
+};
+
 // ── T-04b: Form validations ──
 // Valida los campos del formulario de libro (título, autor, categoría, año).
 // Escribe los mensajes de error en los <span class="form-error"> del DOM
@@ -299,4 +346,33 @@ document.addEventListener("DOMContentLoaded", () => {
 	// App init (T-02):
 	renderizarLibros(libros);
 	actualizarEstadisticas();
+
+	// Modal: open
+	btnAdd.addEventListener("click", abrirModal);
+
+	// Modal: close
+	modalClose.addEventListener("click", cerrarModal);
+	btnCancel.addEventListener("click", cerrarModal);
+	modalOverlay.addEventListener("click", (e) => {
+		if (e.target === modalOverlay) cerrarModal();
+	});
+
+	// Form: submit (add or edit)
+	bookForm.addEventListener("submit", (e) => {
+		e.preventDefault();
+
+		// 1. Validar el formulario antes de procesar
+    	if (!validarFormulario()) return;
+
+    	// 2. Si pasa las validaciones, agregar o guardar
+		if (libroEditandoId !== null) {
+			// guardarEdicion();
+		} else {
+			agregarLibro();
+		}
+
+		renderizarLibros(libros);
+		actualizarEstadisticas();
+		cerrarModal();
+	});
 });
