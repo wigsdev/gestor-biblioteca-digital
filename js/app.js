@@ -109,14 +109,15 @@ const createButton = (cssClass, id, text) => {
 };
 
 const createImg = (src, cssClass, alt) => {
-  if (!src) {
-    return createElement("div", "book-no-cover", "📖");
-  }
-  const img = document.createElement("img");
-  img.setAttribute("src", src);
-  img.setAttribute("alt", alt);
-  img.classList.add(cssClass);
-  return img;
+	if (!src) {
+		const noSrc = createElement("div", "book-cover-placeholder", "📖");
+		return noSrc;
+	}
+	const img = document.createElement("img");
+	img.setAttribute("src", src);
+	img.setAttribute("alt", alt);
+	img.classList.add(cssClass);
+	return img;
 };
 
 const book = (libro) => {
@@ -127,12 +128,12 @@ const book = (libro) => {
 	const header = createElement("header", "book-header");
 	const categoryYear = createElement(
 		"span",
-		"book-meta-text",
+		"book-meta",
 		`${categoria} · ${anio}`,
 	);
 	const available = createElement(
 		"span",
-		`book-status ${disponible ? "book-status--available" : "book-available--borrowed"}`,
+		`book-status ${disponible ? "book-status--available" : "book-status--borrowed"}`,
 		`${disponible ? "Disponible" : "Prestado"}`,
 	);
 	const body = createElement("div", "book-card-body");
@@ -171,12 +172,158 @@ const renderizarLibros = (books) => {
 };
 
 // ── T-03b: Stats/counters ──
+const actualizarEstadisticas = () => {
+	const statTotal = document.getElementById("stat-total");
+	const statAvailable = document.getElementById("stat-available");
+	const statBorrowed = document.getElementById("stat-borrowed");
 
+	const available = libros.reduce((acc, libro) => {
+		return libro.disponible ? acc + 1 : acc;
+	}, 0);
+
+	const borrowed = libros.reduce((acc, libro) => {
+		return libro.disponible ? acc : acc + 1;
+	}, 0);
+
+	statTotal.textContent = libros.length;
+	statAvailable.textContent = available;
+	statBorrowed.textContent = borrowed;
+};
 // ── T-04a: Add book ──
 
+let libroEditandoId = null;
+
+const btnAdd = document.querySelector("#btn-add");
+const modalOverlay = document.querySelector("#modal-overlay");
+const modalClose = document.querySelector("#modal-close");
+const bookForm = document.querySelector("#book-form");
+const btnCancel = document.querySelector("#btn-cancel");
+
+const inputTitle = document.querySelector("#title");
+const inputAuthor = document.querySelector("#author");
+const inputCategory = document.querySelector("#category");
+const inputYear = document.querySelector("#year");
+const inputCover = document.querySelector("#cover");
+
+const modalTitle = document.querySelector("#modal-title");
+const btnSubmit = document.querySelector("#btn-submit");
+
+const abrirModal = () => {
+	bookForm.reset();
+	libroEditandoId = null;
+	modalOverlay.classList.remove("hidden");
+	modalTitle.textContent = "Agregar libro";
+	btnSubmit.textContent = "Guardar";
+};
+
+const cerrarModal = () => {
+	modalOverlay.classList.add("hidden");
+	bookForm.reset();
+	libroEditandoId = null;
+	modalTitle.textContent = "Agregar libro";
+	btnSubmit.textContent = "Guardar";
+};
+
+const agregarLibro = () => {
+	const nuevoLibro = {
+		id: generarId(),
+		titulo: inputTitle.value.trim(),
+		autor: inputAuthor.value.trim(),
+		categoria: inputCategory.value,
+		anio: Number(inputYear.value),
+		disponible: true,
+		imagen: inputCover.value.trim(),
+	};
+
+	libros.push(nuevoLibro);
+};
+
 // ── T-04b: Form validations ──
+// Valida los campos del formulario de libro (título, autor, categoría, año).
+// Escribe los mensajes de error en los <span class="form-error"> del DOM
+// (no usa alert()) y limpia los mensajes previos en cada ejecución.
+// Retorna true si todo es válido, false si hay al menos un error.
+const validarFormulario = () => {
+	const inputTitle = document.getElementById("title");
+	const inputAuthor = document.getElementById("author");
+	const selectCategory = document.getElementById("category");
+	const inputYear = document.getElementById("year");
+ 
+	const errorTitle = document.getElementById("error-title");
+	const errorAuthor = document.getElementById("error-author");
+	const errorCategory = document.getElementById("error-category");
+	const errorYear = document.getElementById("error-year");
+ 
+	// Limpiar mensajes previos antes de validar de nuevo
+	errorTitle.textContent = "";
+	errorAuthor.textContent = "";
+	errorCategory.textContent = "";
+	errorYear.textContent = "";
+ 
+	let esValido = true;
+ 
+	// Título: no vacío, mínimo 2 caracteres
+	const titulo = inputTitle.value.trim();
+	if (titulo.length < 2) {
+		errorTitle.textContent = "El título es obligatorio (mín. 2 caracteres)";
+		esValido = false;
+	}
+ 
+	// Autor: no vacío, mínimo 2 caracteres
+	const autor = inputAuthor.value.trim();
+	if (autor.length < 2) {
+		errorAuthor.textContent = "El autor es obligatorio (mín. 2 caracteres)";
+		esValido = false;
+	}
+ 
+	// Categoría: debe haber una opción seleccionada
+	if (selectCategory.value === "") {
+		errorCategory.textContent = "Selecciona una categoría";
+		esValido = false;
+	}
+ 
+	// Año: numérico, entre 1900 y el año actual
+	const anioActual = new Date().getFullYear();
+	const anio = Number(inputYear.value);
+	if (
+		inputYear.value.trim() === "" ||
+		Number.isNaN(anio) ||
+		anio < 1900 ||
+		anio > anioActual
+	) {
+		errorYear.textContent = `Ingresa un año válido (1900 - ${anioActual})`;
+		esValido = false;
+	}
+ 
+	// imagen (#cover) no se valida: es un campo opcional
+ 
+	return esValido;
+};
 
 // ── T-05: Delete book ──
+
+	const deleteBook = (id) => {
+		const index = libros.findIndex((libro)=> libro.id === id);
+
+		if(index !== -1){
+			libros.splice(index, 1);
+			renderizarLibros(libros);
+			actualizarEstadisticas();
+		}
+		return;
+	};
+
+	document.querySelector("#book-list").addEventListener("click",(event) =>{
+	const deleteButton = event.target.closest(".btn-delete");
+
+	if(!deleteButton){
+		return;
+	}
+		
+	const id = Number(deleteButton.dataset.id);
+	deleteBook(id);
+} );
+
 
 // ── T-06a: Load edit data ──
 
@@ -198,5 +345,34 @@ const renderizarLibros = (books) => {
 document.addEventListener("DOMContentLoaded", () => {
 	// App init (T-02):
 	renderizarLibros(libros);
-	// actualizarEstadisticas();
+	actualizarEstadisticas();
+
+	// Modal: open
+	btnAdd.addEventListener("click", abrirModal);
+
+	// Modal: close
+	modalClose.addEventListener("click", cerrarModal);
+	btnCancel.addEventListener("click", cerrarModal);
+	modalOverlay.addEventListener("click", (e) => {
+		if (e.target === modalOverlay) cerrarModal();
+	});
+
+	// Form: submit (add or edit)
+	bookForm.addEventListener("submit", (e) => {
+		e.preventDefault();
+
+		// 1. Validar el formulario antes de procesar
+    	if (!validarFormulario()) return;
+
+    	// 2. Si pasa las validaciones, agregar o guardar
+		if (libroEditandoId !== null) {
+			// guardarEdicion();
+		} else {
+			agregarLibro();
+		}
+
+		renderizarLibros(libros);
+		actualizarEstadisticas();
+		cerrarModal();
+	});
 });
