@@ -110,7 +110,7 @@ const createButton = (cssClass, id, text) => {
 
 const createImg = (src, cssClass, alt) => {
 	if (!src) {
-		const noSrc = createElement("div", "book-no-cover", "📖");
+		const noSrc = createElement("div", "book-cover-placeholder", "📖");
 		return noSrc;
 	}
 	const img = document.createElement("img");
@@ -128,12 +128,12 @@ const book = (libro) => {
 	const header = createElement("header", "book-header");
 	const categoryYear = createElement(
 		"span",
-		"book-meta-text",
+		"book-meta",
 		`${categoria} · ${anio}`,
 	);
 	const available = createElement(
 		"span",
-		`book-status ${disponible ? "book-status--available" : "book-available--borrowed"}`,
+		`book-status ${disponible ? "book-status--available" : "book-status--borrowed"}`,
 		`${disponible ? "Disponible" : "Prestado"}`,
 	);
 	const body = createElement("div", "book-card-body");
