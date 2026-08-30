@@ -19,7 +19,7 @@ const libros = [
 		categoria: "Novela",
 		anio: 1967,
 		disponible: true,
-		imagen: "https://covers.openlibrary.org/b/isbn/9780307474728-L.jpg",
+		imagen: "assets/book-cover.jpg",
 	},
 	{
 		id: 2,
