@@ -4,6 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="BookManager - Sistema de gestión de biblioteca digital." />
+    <link rel="icon" type="image/png" href="assets/logo-icon-bg.png" />
+
+    <!-- Open Graph Tags -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="BookManager | Tu Biblioteca Digital Organizada"
+    />
+    <meta
+      property="og:description"
+      content="BookManager es el sistema definitivo para gestionar tu biblioteca. Controla tu catálogo de libros, préstamos, devoluciones y estadísticas."
+    />
+    <meta property="og:image" content="assets/og-banner.jpg" />
+    <meta property="og:url" content="https://www.bookmanager.com" />
+    <meta name="robots" content="index, follow" />
+
     <title>BookManager | Sistema de Gestión de Biblioteca Digital</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
@@ -11,10 +27,12 @@
     <!-- HEADER -->
     <header class="header">
       <div class="header-brand">
-        <div class="logo-icon">📖</div>
+        <div class="logo-icon">
+          <img src="assets/logo.svg" alt="BookManager Logo" />
+        </div>
         <h1>BookManager</h1>
-        <button id="btn-add" class="btn-link-add" type="button">+ Agregar libro</button>
       </div>
+      <button id="btn-add" class="btn btn-add" type="button">+ Agregar libro</button>
     </header>
 
     <!-- MODAL -->
@@ -129,42 +147,43 @@
       <section class="main-content">
         <!-- CONTROLES (BÚSQUEDA Y FILTROS) -->
         <section class="controls-section" aria-label="Controles de búsqueda y filtrado">
-          <div class="controls-search">
-            <span class="search-icon">🔍</span>
-            <input
-              id="search"
-              class="controls-input"
-              type="search"
-              placeholder="Buscar por título, autor o palabra clave..."
-              aria-label="Buscar libro en el catálogo"
-            />
-          </div>
+          <div class="controls-container">
+            <div class="controls-search">
+              <input
+                id="search"
+                class="controls-input"
+                type="search"
+                placeholder="Buscar por título, autor o palabra clave..."
+                aria-label="Buscar libro en el catálogo"
+              />
+            </div>
 
-          <div class="controls-filters">
-            <select id="filter-category" class="controls-select" aria-label="Filtrar por categoría">
-              <option value="">Categoría: Todas</option>
-              <option value="Novela">Novela</option>
-              <option value="Ciencia ficción">Ciencia ficción</option>
-              <option value="Historia">Historia</option>
-              <option value="Tecnología">Tecnología</option>
-              <option value="Fantasía">Fantasía</option>
-              <option value="Infantil">Infantil</option>
-              <option value="Misterio">Misterio</option>
-              <option value="Otros">Otros</option>
-            </select>
+            <div class="controls-filters">
+              <select id="filter-category" class="controls-select" aria-label="Filtrar por categoría">
+                <option value="">Categoría: Todas</option>
+                <option value="Novela">Novela</option>
+                <option value="Ciencia ficción">Ciencia ficción</option>
+                <option value="Historia">Historia</option>
+                <option value="Tecnología">Tecnología</option>
+                <option value="Fantasía">Fantasía</option>
+                <option value="Infantil">Infantil</option>
+                <option value="Misterio">Misterio</option>
+                <option value="Otros">Otros</option>
+              </select>
 
-            <select id="sort" class="controls-select" aria-label="Ordenar catálogo">
-              <option value="title-asc">Ordenar por: Título A-Z</option>
-              <option value="title-desc">Ordenar por: Título Z-A</option>
-              <option value="year-asc">Año más antiguo</option>
-              <option value="year-desc">Año más reciente</option>
-            </select>
+              <select id="sort" class="controls-select" aria-label="Ordenar catálogo">
+                <option value="title-asc">Ordenar por: Título A-Z</option>
+                <option value="title-desc">Ordenar por: Título Z-A</option>
+                <option value="year-asc">Año más antiguo</option>
+                <option value="year-desc">Año más reciente</option>
+              </select>
 
-            <select id="filter-status" class="controls-select" aria-label="Filtrar por estado">
-              <option value="">Estado: Todos</option>
-              <option value="available">Disponibles</option>
-              <option value="borrowed">Prestados</option>
-            </select>
+              <select id="filter-status" class="controls-select" aria-label="Filtrar por estado">
+                <option value="">Estado: Todos</option>
+                <option value="available">Disponibles</option>
+                <option value="borrowed">Prestados</option>
+              </select>
+            </div>
           </div>
         </section>
 
@@ -184,6 +203,11 @@
     <footer class="footer">
       <p>BookManager © 2026 — Proyecto Integrador G4</p>
     </footer>
+
+    <!-- BOTÓN VOLVER ARRIBA -->
+    <button id="btn-scroll-top" class="btn-scroll-top hidden" type="button" aria-label="Volver arriba">
+      ↑
+    </button>
 
     <script src="js/app.js"></script>
   </body>

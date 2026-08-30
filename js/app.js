@@ -375,4 +375,20 @@ document.addEventListener("DOMContentLoaded", () => {
 		actualizarEstadisticas();
 		cerrarModal();
 	});
+
+	// Botón volver arriba (Scroll Back to Top)
+	const btnScrollTop = document.getElementById("btn-scroll-top");
+	if (btnScrollTop) {
+		window.addEventListener("scroll", () => {
+			if (window.scrollY > 300) {
+				btnScrollTop.classList.remove("hidden");
+			} else {
+				btnScrollTop.classList.add("hidden");
+			}
+		});
+
+		btnScrollTop.addEventListener("click", () => {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		});
+	}
 });

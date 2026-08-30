@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 40 540 540" width="100%" height="100%">
+  <!-- Logo oficial de BookManager para la marca del header -->
+  <g fill="#FFFFFF" stroke="#FFFFFF" stroke-linejoin="round" stroke-linecap="round" transform="translate(0, -15) scale(1, 1.2938)">
+    
+    <!-- Borde de la Cubierta Exterior -->
+    <path fill="none" stroke-width="26" d="
+      M 32,66 
+      V 360 
+      C 32,390 110,385 236,407 
+      A 34,34 0 0 0 304,407 
+      C 430,385 508,390 508,360 
+      V 66" 
+    />
+    
+    <!-- Página Interior Izquierda -->
+    <path stroke-width="1" d="
+      M 76,52 
+      C 130,46 195,78 253,98 
+      V 378 
+      C 195,356 130,324 76,330 
+      Z" 
+    />
+    
+    <!-- Página Interior Derecha -->
+    <path stroke-width="1" d="
+      M 464,52 
+      C 410,46 345,78 287,98 
+      V 378 
+      C 345,356 410,324 464,330 
+      Z" 
+    />
+    
+  </g>
+</svg>
