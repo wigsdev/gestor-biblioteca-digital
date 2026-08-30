@@ -248,40 +248,40 @@ const validarFormulario = () => {
 	const inputAuthor = document.getElementById("author");
 	const selectCategory = document.getElementById("category");
 	const inputYear = document.getElementById("year");
- 
+
 	const errorTitle = document.getElementById("error-title");
 	const errorAuthor = document.getElementById("error-author");
 	const errorCategory = document.getElementById("error-category");
 	const errorYear = document.getElementById("error-year");
- 
+
 	// Limpiar mensajes previos antes de validar de nuevo
 	errorTitle.textContent = "";
 	errorAuthor.textContent = "";
 	errorCategory.textContent = "";
 	errorYear.textContent = "";
- 
+
 	let esValido = true;
- 
+
 	// Título: no vacío, mínimo 2 caracteres
 	const titulo = inputTitle.value.trim();
 	if (titulo.length < 2) {
 		errorTitle.textContent = "El título es obligatorio (mín. 2 caracteres)";
 		esValido = false;
 	}
- 
+
 	// Autor: no vacío, mínimo 2 caracteres
 	const autor = inputAuthor.value.trim();
 	if (autor.length < 2) {
 		errorAuthor.textContent = "El autor es obligatorio (mín. 2 caracteres)";
 		esValido = false;
 	}
- 
+
 	// Categoría: debe haber una opción seleccionada
 	if (selectCategory.value === "") {
 		errorCategory.textContent = "Selecciona una categoría";
 		esValido = false;
 	}
- 
+
 	// Año: numérico, entre 1900 y el año actual
 	const anioActual = new Date().getFullYear();
 	const anio = Number(inputYear.value);
@@ -294,41 +294,76 @@ const validarFormulario = () => {
 		errorYear.textContent = `Ingresa un año válido (1900 - ${anioActual})`;
 		esValido = false;
 	}
- 
+
 	// imagen (#cover) no se valida: es un campo opcional
- 
+
 	return esValido;
 };
 
 // ── T-05: Delete book ──
 
-	const deleteBook = (id) => {
-		const index = libros.findIndex((libro)=> libro.id === id);
+const deleteBook = (id) => {
+	const index = libros.findIndex((libro) => libro.id === id);
 
-		if(index !== -1){
-			libros.splice(index, 1);
-			renderizarLibros(libros);
-			actualizarEstadisticas();
-		}
-		return;
-	};
+	if (index !== -1) {
+		libros.splice(index, 1);
+		renderizarLibros(libros);
+		actualizarEstadisticas();
+	}
+	return;
+};
 
-	document.querySelector("#book-list").addEventListener("click",(event) =>{
+document.querySelector("#book-list").addEventListener("click", (event) => {
 	const deleteButton = event.target.closest(".btn-delete");
 
-	if(!deleteButton){
+	if (!deleteButton) {
 		return;
 	}
-		
+
 	const id = Number(deleteButton.dataset.id);
 	deleteBook(id);
-} );
-
+});
 
 // ── T-06a: Load edit data ──
+//
+const loadBookData = (id) => {
+	const bookFind = libros.find((libro) => libro.id === id);
+	const { titulo, autor, categoria, anio, imagen } = bookFind;
+
+	inputTitle.value = titulo;
+	inputAuthor.value = autor;
+	inputCategory.value = categoria;
+	inputYear.value = anio;
+	inputCover.value = imagen;
+};
+
+const bookList = document.getElementById("book-list");
+bookList.addEventListener("click", (evt) => {
+	const btnEdit = evt.target.closest(".btn-edit");
+	if (!btnEdit) return;
+	const dataSetId = btnEdit.dataset.id;
+	libroEditandoId = Number(dataSetId);
+
+	modalOverlay.classList.remove("hidden");
+	modalTitle.textContent = "Editar libro";
+	btnSubmit.textContent = "Guardar Cambios";
+
+	loadBookData(libroEditandoId);
+});
 
 // ── T-06b: Save edit changes ──
+const guardarEdicion = () => {
+	const indexBook = libros.findIndex((libro) => libro.id === libroEditandoId);
+	const bookEdit = libros[indexBook];
 
+	bookEdit.titulo = inputTitle.value;
+	bookEdit.autor = inputAuthor.value;
+	bookEdit.categoria = inputCategory.value;
+	bookEdit.anio = inputYear.value;
+	bookEdit.imagen = inputCover.value;
+
+	libroEditandoId = null;
+};
 // ── T-07: Loan system ──
 
 // ── T-08: Search ──
@@ -362,11 +397,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		e.preventDefault();
 
 		// 1. Validar el formulario antes de procesar
-    	if (!validarFormulario()) return;
+		if (!validarFormulario()) return;
 
-    	// 2. Si pasa las validaciones, agregar o guardar
+		// 2. Si pasa las validaciones, agregar o guardar
 		if (libroEditandoId !== null) {
-			// guardarEdicion();
+			guardarEdicion();
 		} else {
 			agregarLibro();
 		}
