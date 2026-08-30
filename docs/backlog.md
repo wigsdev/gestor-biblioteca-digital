@@ -218,6 +218,39 @@ Implementar la función que genera dinámicamente las tarjetas de libros en el D
 
 ---
 
+### T-02b — Alinear clases de cards con la guía
+
+| Campo              | Valor                                             |
+| ------------------ | ------------------------------------------------- |
+| **Prioridad**      | `priority: medium`                                |
+| **Tipo**           | `type: integration`                               |
+| **Dependencias**   | T-02, T-01b                                       |
+| **Complejidad**    | Baja (medio día)                                  |
+| **Branch**         | `feature/T-02b-alinear-clases-cards`              |
+| **Commit ejemplo** | `fix(T-02b): alinear clases de cards con la guía` |
+
+**Descripción:**
+Corregir las clases CSS generadas por JavaScript para que coincidan con los nombres definidos en la guía de desarrollo y puedan ser estilizadas correctamente por `css/styles.css`.
+
+**Entregables:**
+
+- Usar `book-cover-placeholder` para libros sin imagen
+- Usar `book-status--borrowed` para libros prestados
+- Usar `book-meta` para categoría y año
+- Verificar que las clases generadas por JavaScript coincidan con las clases definidas en `css/styles.css`
+
+**Criterios de aceptación:**
+
+- [ ] El placeholder sin imagen usa la clase `book-cover-placeholder`
+- [ ] Los libros prestados usan las clases `book-status` y `book-status--borrowed`
+- [ ] Categoría y año usan la clase `book-meta`
+- [ ] Las clases anteriores coinciden con la nomenclatura de `docs/guia-desarrollo.md`
+- [ ] Las cards con imagen y sin imagen se muestran correctamente
+- [ ] No se modifican los IDs definidos para JavaScript
+- [ ] La aplicación carga sin errores en consola
+
+---
+
 ### T-03 — Generación de IDs únicos
 
 | Campo | Valor |
@@ -585,7 +618,7 @@ Selector que ordena la lista de libros según el criterio elegido.
 
 ---
 
-### T-12a — Responsive: desktop y tablet
+### T-12a — Responsive: tablet
 
 | Campo | Valor |
 |-------|-------|
@@ -593,28 +626,24 @@ Selector que ordena la lista de libros según el criterio elegido.
 | **Tipo** | `type: style` |
 | **Dependencias** | T-01a, T-01b |
 | **Complejidad** | Media (1-2 días) |
-| **Branch** | `feature/T-12a-layout-desktop-tablet` |
-| **Commit ejemplo** | `style(T-12a): implementar grid responsive para desktop y tablet` |
+| **Branch** | `feature/T-12a-layout-tablet` |
+| **Commit ejemplo** | `style(T-12a): implementar layout responsive para tablet` |
 
 **Descripción:**
-Diseño responsive para pantallas desktop (1024px+) y tablet (768px - 1023px).
+Diseño responsive para pantallas de tablet (768px - 1023px). El layout base del CSS ya soporta pantallas desktop.
 
 **Entregables:**
-- Grid de cards: 3 columnas desktop, 2 columnas tablet
-- Layout de stats y filtros adaptado
-- Modal: centrado, max-width 500px en ambos breakpoints
-- Media query para tablet (768px - 1023px)
-- Tipografía y espaciado ajustados
+- Grid de cards adaptado a 2 columnas en tablet
+- Layout de stats y filtros adaptado para rango tablet (768px - 1023px)
+- Modal centrado en pantalla tablet
+- Media query para tablet (`@media (max-width: 1023px)`)
 
 **Criterios de aceptación:**
-- [ ] Desktop (1024px+): grid 3 columnas
 - [ ] Tablet (768-1023px): grid 2 columnas
-- [ ] Stats y filtros reorganizados en tablet
-- [ ] Modal se ve correctamente centrado en desktop y tablet
-- [ ] Usa CSS Grid y/o Flexbox
-- [ ] Al menos 1 media query
+- [ ] Stats y filtros reorganizados para tablet
+- [ ] Modal se ve correctamente centrado en tablet
+- [ ] Al menos 1 media query para tablet
 - [ ] Sin overflow horizontal
-- [ ] Tipografía legible en ambos tamaños
 
 ---
 
@@ -647,6 +676,36 @@ Diseño responsive para móvil (< 768px).
 - [ ] Sin scroll horizontal
 - [ ] Texto legible sin zoom
 - [ ] Al menos 1 media query para este breakpoint
+
+---
+
+### T-12c — Mejoras del CSS base y refinamiento visual
+
+| Campo | Valor |
+|-------|-------|
+| **Prioridad** | `priority: medium` |
+| **Tipo** | `type: style` |
+| **Dependencias** | T-01b |
+| **Complejidad** | Baja (1 día) |
+| **Branch** | `feature/T-12c-mejoras-css-base` |
+| **Commit ejemplo** | `style(T-12c): incorporar fuente Lora, iconos SVG vectoriales y sombras suaves` |
+
+**Descripción:**
+Refinar los estilos base de `css/styles.css` incorporando la tipografía 'Lora' para encabezados, iconos vectoriales SVG para las acciones de tarjetas (editar/eliminar) y controles de la interfaz, sombras suaves y micro-interacciones.
+
+**Entregables:**
+- Importación de fuente Google Fonts 'Lora' para encabezados y títulos de tarjetas
+- Reemplazo de emojis de texto por iconos vectoriales SVG embebidos en `.btn-edit` y `.btn-delete`
+- Iconos vectoriales SVG embebidos en el buscador `.controls-input` y selector desplegable `.controls-select`
+- Animación de transiciones y elevación suave (`transform: translateY(-3px)`) al interactuar con `.book-card`
+- Variables estandarizadas de sombra (`--shadow-card`, `--shadow-modal`)
+
+**Criterios de aceptación:**
+- [ ] Títulos y encabezados usan la fuente 'Lora'
+- [ ] Botones de edición y eliminación usan iconos vectoriales SVG
+- [ ] Buscador y selectores cuentan con iconos SVG vectoriales de fondo
+- [ ] Tarjetas tienen elevación y sombra sutil en estado hover
+- [ ] Mantiene 100% de compatibilidad con las clases de la guía de desarrollo y `js/app.js`
 
 ---
 
@@ -685,8 +744,9 @@ Función central que aplica búsqueda + filtros + ordenamiento simultáneamente 
 ```
 T-01a (HTML) ─── critical
  ├── T-01b (CSS base) ─── critical
- │    ├── T-12a (Desktop + Tablet) ─── high
- │    └── T-12b (Mobile) ─── high
+ │    ├── T-12a (Tablet) ─── high
+ │    ├── T-12b (Mobile) ─── high
+ │    └── T-12c (Mejoras CSS base) ─── medium
  ├── T-01c (Datos JS) ─── critical
  │    ├── T-03 (Generar ID) ─── high
  │    │    └── T-03b (Contadores) ─── high ← prerequisito de T-04a, T-05, T-07
@@ -711,7 +771,7 @@ T-01a (HTML) ─── critical
 | **1 — Base** | T-01a → T-01b + T-01c (paralelo) → T-02 | Proyecto funcional mínimo (se ven los libros) |
 | **2 — Prerrequisitos CRUD** | T-03 + T-03b (paralelo) | Generación de IDs y estadísticas disponibles antes del CRUD |
 | **3 — CRUD** | T-04a + T-05 + T-07 (paralelo) → T-04b → T-06 | Todas las operaciones CRUD funcionando |
-| **4 — UX** | T-08 + T-09a + T-09b + T-11 (paralelo) + T-12a + T-12b | Búsqueda, filtros, ordenamiento, responsive |
+| **4 — UX** | T-08 + T-09a + T-09b + T-11 (paralelo) + T-12a + T-12b + T-12c | Búsqueda, filtros, ordenamiento, responsive, diseño |
 | **5 — Integración** | T-13 + QA final | Todo funciona combinado sin conflictos |
 
 > El Team Leader decide la ejecución real según disponibilidad del equipo.
@@ -739,6 +799,7 @@ T-01a (HTML) ─── critical
 | T-11 | — | — | — | 🔲 Backlog |
 | T-12a | — | — | — | 🔲 Backlog |
 | T-12b | — | — | — | 🔲 Backlog |
+| T-12c | — | — | — | 🔲 Backlog |
 | T-13 | — | — | — | 🔲 Backlog |
 
 ---
@@ -747,10 +808,10 @@ T-01a (HTML) ─── critical
 
 | Métrica | Valor |
 |---------|-------|
-| Total de tareas | 18 |
+| Total de tareas | 19 |
 | Tareas critical (P0) | 4 |
 | Tareas high (P1) | 10 |
-| Tareas medium (P2) | 3 |
+| Tareas medium (P2) | 4 |
 | Tareas low (P3) | 1 |
-| Tareas de 1 día | 8 |
+| Tareas de 1 día | 9 |
 | Tareas de 1-2 días | 10 |
