@@ -346,6 +346,21 @@ const guardarEdicion = () => {
 };
 // ── T-07: Loan system ──
 
+// Invierte el estado `disponible` del libro con el id indicado
+// y refresca la interfaz (cards + contadores).
+const togglePrestamo = (id) => {
+	const libro = libros.find((libro) => libro.id === id);
+
+	if (!libro) {
+		return;
+	}
+
+	libro.disponible = !libro.disponible;
+
+	renderizarLibros(libros);
+	actualizarEstadisticas();
+};
+
 // ── T-08: Search ──
 
 // ── T-09a: Filter by category ──
@@ -404,7 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			abrirModalEditar(id);
 		}
 		if (target.classList.contains("btn-loan")) {
-			// togglePrestamo(id);
+			togglePrestamo(id);
 		}
 	});
 
