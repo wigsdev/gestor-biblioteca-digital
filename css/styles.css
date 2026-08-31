@@ -1,4 +1,15 @@
+/* BookManager — Main styles */
+/* See docs/guia-desarrollo.md for class naming conventions */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@700&display=swap');
+
+/* ── T-01b: Reset, variables and base styles ── */
 :root {
+  /* Tokens de color de marca */
+  --color-primary: #112A32;
+  --color-primary-light: #1F4E5B;
+  --color-accent: #D97706;
+
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
   --bg-dark: #0f172a;
@@ -12,9 +23,15 @@
   --badge-borrow-bg: #fef3c7;
   --badge-borrow-text: #92400e;
 
+  /* Tokens de tipografía */
+  --font-title: 'Lora', Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
   --radius-lg: 12px;
   --radius-md: 8px;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0px 4px 8px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0px 12px 24px -8px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -24,7 +41,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--bg-main);
   color: var(--text-dark);
 }
@@ -34,6 +51,13 @@ body {
   background-color: var(--bg-dark);
   padding: 0.85rem 2rem;
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-brand {
@@ -45,28 +69,72 @@ body {
 .logo-icon {
   background-color: #ea580c;
   color: white;
-  padding: 0.35rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
+}
+
+.logo-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Soporte para logo rectangular completo <img> en la marca */
+.header-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .header h1 {
+  font-family: var(--font-title); /* Estilo de fuente Lora para el título de marca */
   color: white;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .btn-link-add {
-  background: none;
+  background-color: #ea580c; /* MODIFICADO: De estilo transparente a botón destacado */
+  color: #ffffff;
   border: none;
-  color: #94a3b8;
-  margin-left: 1.5rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .btn-link-add:hover {
+  opacity: 0.9;
+}
+
+/* AGREGADO: Clase oficial del botón del header según docs/guia-desarrollo.md */
+.btn-add {
+  background-color: #ea580c;
   color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-add:hover {
+  opacity: 0.9;
+}
+
+.btn-add:active {
+  transform: scale(0.98);
 }
 
 /* LAYOUT PRINCIPAL */
@@ -80,7 +148,14 @@ body {
 }
 
 /* PANEL LATERAL */
+.sidebar {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+}
+
 .sidebar-title {
+  font-family: var(--font-title); /* Estilo de fuente Lora para títulos de sección */
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -101,6 +176,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
+  box-shadow: var(--shadow-card); /* Sombra de tarjeta para dar elevación */
 }
 
 .stat-icon {
@@ -129,8 +205,30 @@ body {
 }
 
 .stat-value {
+  font-family: var(--font-title); /* Fuente Lora para los valores numéricos de estadísticas */
   font-size: 1.25rem;
   font-weight: 700;
+}
+
+/* AGREGADO: Fallback para formato de estadísticas simple (<span class="stats-item">) en main */
+.stats-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-item strong {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
 }
 
 .info-banner {
@@ -153,10 +251,22 @@ body {
 
 /* CONTROLES */
 .controls-section {
+  position: sticky;
+  top: 4.8rem;
+  z-index: 90;
+  margin-bottom: 1.5rem;
+}
+
+.controls-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
   display: flex;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  align-items: center;
   flex-wrap: wrap;
+  box-shadow: var(--shadow-card);
 }
 
 .controls-search {
@@ -182,6 +292,15 @@ body {
   background-color: var(--bg-card);
   outline: none;
   font-size: 0.85rem;
+  /* Icono vectorial SVG de lupa integrado en el campo de búsqueda */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+}
+
+.controls-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(17, 42, 50, 0.1);
 }
 
 .controls-filters {
@@ -190,13 +309,18 @@ body {
 }
 
 .controls-select {
-  padding: 0.5rem 0.85rem;
+  padding: 0.5rem 2rem 0.5rem 0.85rem;
   border: 1px solid var(--border-color);
   border-radius: 18px;
   background-color: var(--bg-card);
   font-size: 0.8rem;
   color: var(--text-dark);
   cursor: pointer;
+  /* Icono vectorial SVG para la flecha desplegable custom */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) center;
 }
 
 .catalog-header {
@@ -207,6 +331,7 @@ body {
 }
 
 .catalog-header h2 {
+  font-family: var(--font-title); /* Fuente Lora para el título principal del catálogo */
   font-size: 1.3rem;
   font-weight: 700;
 }
@@ -228,9 +353,15 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card); /* Sombra base para tarjetas del catálogo */
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s; /* Transición suave para animación de hover */
+}
+
+.book-card:hover {
+  transform: translateY(-3px); /* Elevación visual al pasar el cursor sobre la tarjeta */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
 }
 
 .book-cover {
@@ -240,10 +371,11 @@ body {
   background-color: #cbd5e1;
 }
 
-.book-no-cover {
+/* MODIFICADO: Nombre oficial según T-02b / docs/guia-desarrollo.md */
+.book-cover-placeholder {
   width: 100%;
   height: 180px;
-  background-color: #cbd5e1;
+  background: linear-gradient(135deg, #E8EEF0, #cbd5e1); /* Gradiente suave para el contenedor placeholder sin imagen */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,12 +390,13 @@ body {
 }
 
 .book-header {
+  padding: 0.75rem 1rem 0.25rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
 }
 
+/* MODIFICADO: Nombre oficial según T-02b / docs/guia-desarrollo.md */
 .book-meta {
   font-size: 0.75rem;
   font-weight: 700;
@@ -271,28 +404,55 @@ body {
   color: var(--text-muted);
 }
 
-.badge {
+/* MODIFICADO: Nombre oficial del badge según T-02b / docs/guia-desarrollo.md */
+.book-status {
   font-size: 0.7rem;
   font-weight: 600;
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
+  display: inline-block;
 }
 
-.badge-available {
+/* MODIFICADO: Nombre oficial según T-02b / docs/guia-desarrollo.md */
+.book-status--available {
   background-color: var(--badge-avail-bg);
   color: var(--badge-avail-text);
 }
 
-.badge-borrowed {
+/* MODIFICADO: Nombre oficial según T-02b / docs/guia-desarrollo.md */
+.book-status--borrowed {
   background-color: var(--badge-borrow-bg);
   color: var(--badge-borrow-text);
 }
 
+.book-card-body {
+  padding: 0 1rem 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .book-title {
-  font-size: 1rem;
+  font-family: var(--font-title); /* Fuente Lora para el título del libro */
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 0.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+}
+
+/* ACCESIBILIDAD TECLADO (:focus-visible) */
+.btn:focus-visible,
+.controls-input:focus-visible,
+.controls-select:focus-visible,
+.modal-close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .book-author {
@@ -304,40 +464,91 @@ body {
 .book-id {
   font-size: 0.75rem;
   color: var(--text-muted);
-  margin-bottom: 1rem;
+  margin-top: auto;
+  font-family: monospace;
 }
 
 .book-actions {
+  padding: 0.75rem 1rem 1rem 1rem;
   margin-top: auto;
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
 
-.btn-toggle {
+/* AGREGADO: Clase base para todos los botones según docs/guia-desarrollo.md */
+.btn {
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* MODIFICADO: Nombre oficial del botón de préstamo según T-02b / docs/guia-desarrollo.md */
+.btn-loan {
   flex: 1;
   background-color: var(--primary-btn);
   color: white;
   border: none;
   padding: 0.5rem;
+  text-align: center;
   border-radius: var(--radius-md);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
 }
 
-.btn-icon {
-  background: white;
+.btn-loan:hover {
+  opacity: 0.9;
+}
+
+/* MODIFICADO: Botón de edición con icono vectorial SVG integrado */
+.btn-edit {
+  background-color: white;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   width: 36px;
   height: 36px;
-  display: flex;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  font-size: 0; /* Oculta el emoji de texto si existe */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
-.btn-icon-delete:hover {
+.btn-edit:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+/* MODIFICADO: Botón de eliminación con icono vectorial SVG integrado */
+.btn-delete {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0; /* Oculta el emoji de texto si existe */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2'%3E%3Cpolyline points='3 6 5 6 21 6'/%3E%3Cpath d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.btn-delete:hover {
   background-color: #fee2e2;
   border-color: #fca5a5;
 }
@@ -347,24 +558,30 @@ body {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.4);
   display: flex; justify-content: center; align-items: center;
   z-index: 1000;
 }
 
-.modal-overlay.hidden { display: none; }
+.modal-overlay.hidden { display: none !important; }
 
 .modal {
   background-color: var(--bg-card);
   width: 100%; max-width: 480px;
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-modal); /* Sombra de elevación para la ventana modal */
 }
 
 .modal-header {
   padding: 1.25rem;
   border-bottom: 1px solid var(--border-color);
   display: flex; justify-content: space-between;
+}
+
+.modal-header h2 {
+  font-family: var(--font-title); /* Fuente Lora para el título del modal */
+  font-size: 1.2rem;
 }
 
 .modal-subtitle { font-size: 0.8rem; color: var(--text-muted); }
@@ -381,10 +598,15 @@ body {
 .form-label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
 
 .form-input, .form-select {
-  width: 100%; padding: 0.5rem;
+  width: 100%; padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   outline: none;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(17, 42, 50, 0.08); /* Resaltado de enfoque accesible para campos de formulario */
 }
 
 .form-error { color: #dc2626; font-size: 0.75rem; display: block; margin-top: 0.2rem; }
@@ -393,14 +615,14 @@ body {
 
 .btn-primary {
   background-color: var(--primary-btn); color: white;
-  border: none; padding: 0.5rem 1rem;
+  border: none; padding: 0.6rem 1rem;
   border-radius: var(--radius-md); cursor: pointer; flex: 1;
 }
 
 .btn-secondary {
   background-color: transparent;
   border: 1px solid var(--border-color);
-  padding: 0.5rem 1rem; border-radius: var(--radius-md);
+  padding: 0.6rem 1rem; border-radius: var(--radius-md);
   cursor: pointer;
 }
 
@@ -411,6 +633,42 @@ body {
   color: var(--text-muted);
 }
 
+/* BOTÓN VOLVER ARRIBA (BACK TO TOP) */
+.btn-scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--primary-btn);
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, background-color 0.2s, opacity 0.3s;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-scroll-top.hidden {
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-scroll-top:hover {
+  background-color: #ea580c;
+  transform: translateY(-3px);
+}
+
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; }
 }
+/* ── T-12a: Adaptación responsive para pantallas medianas / tablets (<= 1023px) ── */
+
+/* ── T-12b: Adaptación responsive para pantallas pequeñas / móviles (<= 767px) ── */
