@@ -335,6 +335,13 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-icon-svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .btn-icon-delete:hover {
@@ -411,6 +418,112 @@ body {
   color: var(--text-muted);
 }
 
-@media (max-width: 900px) {
-  .main { grid-template-columns: 1fr; }
+/* ==========================================
+   MEDIA QUERY: TABLETA (max-width: 1024px)
+   ========================================== */
+@media (max-width: 1024px) {
+  .main {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .sidebar-title {
+    display: none;
+  }
+
+  /* Tarjetas de estadísticas en rejilla superior horizontal */
+  .stats-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+  }
+
+  .info-banner {
+    display: none;
+  }
+
+  /* Catálogo de libros a 2 columnas */
+  .catalog-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* ==========================================
+   MEDIA QUERY: MÓVIL (max-width: 640px)
+   ========================================== */
+@media (max-width: 640px) {
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+  .btn-link-add {
+    display: none;
+  }
+
+  /* Estadísticas acomodadas en matriz de 2x2 */
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+  }
+
+  /* Buscador y selectores apilados verticalmente */
+  .controls-section {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .controls-search {
+    min-width: 100%;
+  }
+
+  .controls-filters {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .controls-select {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* Catálogo a 1 sola columna ocupando el ancho disponible */
+  .catalog-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .catalog-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .catalog-count {
+    font-size: 0.75rem;
+  }
+
+  .book-cover, 
+  .book-no-cover {
+    height: 160px;
+  }
 }

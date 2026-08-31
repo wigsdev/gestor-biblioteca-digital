@@ -1,378 +1,385 @@
-// BookManager — Main logic
-// See docs/guia-desarrollo.md for selectors, structure and conventions
+// BookManager — Full Application Logic
 
-// 'use strict' (optional): enables strict mode,
-// prevents undeclared variables and surfaces silent errors.
-// Uncomment if team agrees to use it:
-// 'use strict';
-
-// ── T-01c: Initial data ──
-
-// Array de libros precargados.
-// Propiedades: id, titulo, autor, categoria, anio, disponible, imagen
-// - imagen: URL de portada ("" si no hay, para probar el placeholder en T-02)
-const libros = [
-	{
-		id: 1,
-		titulo: "Cien años de soledad",
-		autor: "Gabriel García Márquez",
-		categoria: "Novela",
-		anio: 1967,
-		disponible: true,
-		imagen: "assets/book-cover.jpg",
-	},
-	{
-		id: 2,
-		titulo: "Fundación",
-		autor: "Isaac Asimov",
-		categoria: "Ciencia ficción",
-		anio: 1951,
-		disponible: false,
-		imagen: "https://covers.openlibrary.org/b/isbn/9780553293357-L.jpg",
-	},
-	{
-		id: 3,
-		titulo: "Sapiens: De animales a dioses",
-		autor: "Yuval Noah Harari",
-		categoria: "Historia",
-		anio: 2011,
-		disponible: true,
-		imagen: "",
-	},
-	{
-		id: 4,
-		titulo: "Clean Code",
-		autor: "Robert C. Martin",
-		categoria: "Tecnología",
-		anio: 2008,
-		disponible: false,
-		imagen: "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg",
-	},
-	{
-		id: 5,
-		titulo: "El nombre del viento",
-		autor: "Patrick Rothfuss",
-		categoria: "Fantasía",
-		anio: 2007,
-		disponible: true,
-		imagen: "",
-	},
-	{
-		id: 6,
-		titulo: "1984",
-		autor: "George Orwell",
-		categoria: "Novela",
-		anio: 1949,
-		disponible: false,
-		imagen: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg",
-	},
-	{
-		id: 7,
-		titulo: "Breve historia del tiempo",
-		autor: "Stephen Hawking",
-		categoria: "Otros",
-		anio: 1988,
-		disponible: true,
-		imagen: "",
-	},
-	{
-		id: 8,
-		titulo: "Dune",
-		autor: "Frank Herbert",
-		categoria: "Ciencia ficción",
-		anio: 1965,
-		disponible: true,
-		imagen: "https://covers.openlibrary.org/b/isbn/9780441013593-L.jpg",
-	},
+// ── T-01c: Estado de la aplicación ──
+let libros = [
+  {
+    id: 1,
+    titulo: "Cien años de soledad",
+    autor: "Gabriel García Márquez",
+    categoria: "Novela",
+    anio: 1967,
+    disponible: true,
+    imagen: "assets/book-cover.jpg",
+  },
+  {
+    id: 2,
+    titulo: "Fundación",
+    autor: "Isaac Asimov",
+    categoria: "Ciencia ficción",
+    anio: 1951,
+    disponible: false,
+    imagen: "https://covers.openlibrary.org/b/isbn/9780553293357-L.jpg",
+  },
+  {
+    id: 3,
+    titulo: "Sapiens: De animales a dioses",
+    autor: "Yuval Noah Harari",
+    categoria: "Historia",
+    anio: 2011,
+    disponible: true,
+    imagen: "",
+  },
+  {
+    id: 4,
+    titulo: "Clean Code",
+    autor: "Robert C. Martin",
+    categoria: "Tecnología",
+    anio: 2008,
+    disponible: false,
+    imagen: "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg",
+  },
+  {
+    id: 5,
+    titulo: "El nombre del viento",
+    autor: "Patrick Rothfuss",
+    categoria: "Fantasía",
+    anio: 2007,
+    disponible: true,
+    imagen: "",
+  },
+  {
+    id: 6,
+    titulo: "1984",
+    autor: "George Orwell",
+    categoria: "Novela",
+    anio: 1949,
+    disponible: false,
+    imagen: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg",
+  },
+  {
+    id: 7,
+    titulo: "Breve historia del tiempo",
+    autor: "Stephen Hawking",
+    categoria: "Otros",
+    anio: 1988,
+    disponible: true,
+    imagen: "",
+  },
+  {
+    id: 8,
+    titulo: "Dune",
+    autor: "Frank Herbert",
+    categoria: "Ciencia ficción",
+    anio: 1965,
+    disponible: true,
+    imagen: "https://covers.openlibrary.org/b/isbn/9780441013593-L.jpg",
+  },
 ];
 
-// ── T-03: ID generation ──
+// SVG Icons
+const iconEditSVG = `<svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+const iconDeleteSVG = `<svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
 
-// ── T-02: Catalog rendering ──
+// Referencias del DOM
+const searchInput = document.getElementById("search");
+const filterCategorySelect = document.getElementById("filter-category");
+const filterStatusSelect = document.getElementById("filter-status");
+const sortSelect = document.getElementById("sort");
+const bookList = document.getElementById("book-list");
+
+const statTotal = document.getElementById("stat-total");
+const statAvailable = document.getElementById("stat-available");
+const statBorrowed = document.getElementById("stat-borrowed");
+const statCategories = document.getElementById("stat-categories");
+const catalogCount = document.getElementById("catalog-count");
+
+// Referencias del Modal y Formulario
+const modalOverlay = document.getElementById("modal-overlay");
+const modalTitle = document.getElementById("modal-title");
+const btnAdd = document.getElementById("btn-add");
+const modalClose = document.getElementById("modal-close");
+const btnCancel = document.getElementById("btn-cancel");
+const bookForm = document.getElementById("book-form");
+
+const inputIdHidden = document.getElementById("book-id-hidden");
+const inputTitle = document.getElementById("title");
+const inputAuthor = document.getElementById("author");
+const selectCategory = document.getElementById("category");
+const inputYear = document.getElementById("year");
+const inputCover = document.getElementById("cover");
+
+// ── Generación de Elementos DOM ──
 const createElement = (element, cssClass, text = "") => {
-	const tag = document.createElement(element);
-	if (cssClass) {
-		const cssArr = cssClass.split(" ");
-		tag.classList.add(...cssArr);
-	}
-	tag.textContent = text;
-	return tag;
+  const tag = document.createElement(element);
+  if (cssClass) {
+    const cssArr = cssClass.split(" ");
+    tag.classList.add(...cssArr);
+  }
+  tag.textContent = text;
+  return tag;
 };
 
 const createButton = (cssClass, id, text) => {
-	const button = document.createElement("button");
-	button.setAttribute("data-id", id);
-	button.setAttribute("type", "button");
-	button.classList.add("btn", cssClass);
-	button.textContent = text;
-	return button;
+  const button = document.createElement("button");
+  button.setAttribute("data-id", id);
+  button.setAttribute("type", "button");
+  button.className = cssClass;
+  button.textContent = text;
+  return button;
 };
 
 const createImg = (src, cssClass, alt) => {
-	if (!src) {
-		const noSrc = createElement("div", "book-cover-placeholder", "📖");
-		return noSrc;
-	}
-	const img = document.createElement("img");
-	img.setAttribute("src", src);
-	img.setAttribute("alt", alt);
-	img.classList.add(cssClass);
-	return img;
+  if (!src) {
+    return createElement("div", "book-no-cover", "📖");
+  }
+  const img = document.createElement("img");
+  img.setAttribute("src", src);
+  img.setAttribute("alt", alt);
+  img.classList.add(cssClass);
+  img.onerror = () => {
+    img.replaceWith(createElement("div", "book-no-cover", "📖"));
+  };
+  return img;
 };
 
-const book = (libro) => {
-	const { id, titulo, autor, categoria, anio, disponible, imagen } = libro;
+const createBookCard = (libroItem) => {
+  const { id, titulo, autor, categoria, anio, disponible, imagen } = libroItem;
 
-	const article = createElement("article", "book-card");
-	const cover = createImg(imagen, "book-cover", titulo);
-	const header = createElement("header", "book-header");
-	const categoryYear = createElement(
-		"span",
-		"book-meta",
-		`${categoria} · ${anio}`,
-	);
-	const available = createElement(
-		"span",
-		`book-status ${disponible ? "book-status--available" : "book-status--borrowed"}`,
-		`${disponible ? "Disponible" : "Prestado"}`,
-	);
-	const body = createElement("div", "book-card-body");
-	const title = createElement("h3", "book-title", titulo);
-	const author = createElement("p", "book-author", autor);
-	const idBook = createElement("span", "book-id", `ID: ${id}`);
-	const footer = createElement("footer", "book-actions");
-	const btnBorrow = createButton(
-		"btn-loan",
-		id,
-		`${disponible ? "Prestar" : "Devolver"}`,
-	);
-	const btnEdit = createButton("btn-edit", id, "✏️");
-	const btnDelete = createButton("btn-delete", id, "🗑️");
+  const article = createElement("article", "book-card");
+  const cover = createImg(imagen, "book-cover", titulo);
 
-	header.append(categoryYear, available);
-	body.append(title, author, idBook);
-	footer.append(btnBorrow, btnEdit, btnDelete);
+  const bookInfo = createElement("div", "book-info");
+  const header = createElement("div", "book-header");
+  const categoryYear = createElement(
+    "span",
+    "book-meta",
+    `${categoria.toUpperCase()} · ${anio}`
+  );
+  const badge = createElement(
+    "span",
+    `badge ${disponible ? "badge-available" : "badge-borrowed"}`,
+    disponible ? "Disponible" : "Prestado"
+  );
+  header.append(categoryYear, badge);
 
-	article.append(cover, header, body, footer);
+  const title = createElement("h3", "book-title", titulo);
+  const author = createElement("p", "book-author", autor);
+  const idBook = createElement("p", "book-id", `ID: ${id}`);
 
-	return article;
+  const footer = createElement("div", "book-actions");
+  
+  const btnBorrow = createButton(
+    "btn-toggle",
+    id,
+    disponible ? "Prestar" : "Devolver"
+  );
+  btnBorrow.addEventListener("click", () => toggleEstadoLibro(id));
+
+  const btnEdit = document.createElement("button");
+  btnEdit.type = "button";
+  btnEdit.className = "btn-icon";
+  btnEdit.innerHTML = iconEditSVG;
+  btnEdit.addEventListener("click", () => abrirModalEdicion(libroItem));
+
+  const btnDelete = document.createElement("button");
+  btnDelete.type = "button";
+  btnDelete.className = "btn-icon btn-icon-delete";
+  btnDelete.innerHTML = iconDeleteSVG;
+  btnDelete.addEventListener("click", () => eliminarLibro(id));
+
+  footer.append(btnBorrow, btnEdit, btnDelete);
+  bookInfo.append(header, title, author, idBook, footer);
+  article.append(cover, bookInfo);
+
+  return article;
+};
+
+// ── Renderizado y Estadísticas ──
+const actualizarEstadisticas = () => {
+  if (statTotal) statTotal.textContent = libros.length.toLocaleString();
+  
+  const disponiblesCount = libros.filter((l) => l.disponible).length;
+  if (statAvailable) statAvailable.textContent = disponiblesCount.toLocaleString();
+  
+  const prestadosCount = libros.filter((l) => !l.disponible).length;
+  if (statBorrowed) statBorrowed.textContent = prestadosCount.toLocaleString();
+
+  const categoriasUnicas = new Set(libros.map((l) => l.categoria));
+  if (statCategories) statCategories.textContent = categoriasUnicas.size;
 };
 
 const renderizarLibros = (books) => {
-	const bookList = document.getElementById("book-list");
-	const fragment = document.createDocumentFragment();
+  if (!bookList) return;
 
-	bookList.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+  bookList.innerHTML = "";
 
-	books.forEach((libro) => {
-		fragment.append(book(libro));
-	});
+  books.forEach((libroItem) => {
+    fragment.append(createBookCard(libroItem));
+  });
 
-	bookList.append(fragment);
+  bookList.append(fragment);
+
+  if (catalogCount) {
+    catalogCount.textContent = `Mostrando ${books.length} de ${libros.length} libros`;
+  }
+
+  actualizarEstadisticas();
 };
 
-// ── T-03b: Stats/counters ──
-const actualizarEstadisticas = () => {
-	const statTotal = document.getElementById("stat-total");
-	const statAvailable = document.getElementById("stat-available");
-	const statBorrowed = document.getElementById("stat-borrowed");
-
-	const available = libros.reduce((acc, libro) => {
-		return libro.disponible ? acc + 1 : acc;
-	}, 0);
-
-	const borrowed = libros.reduce((acc, libro) => {
-		return libro.disponible ? acc : acc + 1;
-	}, 0);
-
-	statTotal.textContent = libros.length;
-	statAvailable.textContent = available;
-	statBorrowed.textContent = borrowed;
+// ── Filtrado y Ordenación ──
+const filtrarPorCategoria = (categoria) => {
+  if (!categoria || categoria === "" || categoria === "Todas") {
+    return [...libros];
+  }
+  return libros.filter((libroItem) => libroItem.categoria === categoria);
 };
-// ── T-04a: Add book ──
 
-let libroEditandoId = null;
+const aplicarFiltros = () => {
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+  const cat = filterCategorySelect ? filterCategorySelect.value : "";
+  const estado = filterStatusSelect ? filterStatusSelect.value : "";
+  const orden = sortSelect ? sortSelect.value : "title-asc";
 
-const btnAdd = document.querySelector("#btn-add");
-const modalOverlay = document.querySelector("#modal-overlay");
-const modalClose = document.querySelector("#modal-close");
-const bookForm = document.querySelector("#book-form");
-const btnCancel = document.querySelector("#btn-cancel");
+  let resultado = filtrarPorCategoria(cat);
 
-const inputTitle = document.querySelector("#title");
-const inputAuthor = document.querySelector("#author");
-const inputCategory = document.querySelector("#category");
-const inputYear = document.querySelector("#year");
-const inputCover = document.querySelector("#cover");
+  resultado = resultado.filter((libroItem) => {
+    const coincideTexto =
+      libroItem.titulo.toLowerCase().includes(query) ||
+      libroItem.autor.toLowerCase().includes(query);
 
-const modalTitle = document.querySelector("#modal-title");
-const btnSubmit = document.querySelector("#btn-submit");
+    let coincideEstado = true;
+    if (estado === "available") coincideEstado = libroItem.disponible;
+    if (estado === "borrowed") coincideEstado = !libroItem.disponible;
 
+    return coincideTexto && coincideEstado;
+  });
+
+  // Ordenación
+  resultado.sort((a, b) => {
+    if (orden === "title-asc") return a.titulo.localeCompare(b.titulo);
+    if (orden === "title-desc") return b.titulo.localeCompare(a.titulo);
+    if (orden === "year-asc") return a.anio - b.anio;
+    if (orden === "year-desc") return b.anio - a.anio;
+    return 0;
+  });
+
+  renderizarLibros(resultado);
+};
+
+// ── Modificaciones del Estado ──
+const toggleEstadoLibro = (id) => {
+  libros = libros.map((libroItem) => {
+    if (libroItem.id === id) {
+      return { ...libroItem, disponible: !libroItem.disponible };
+    }
+    return libroItem;
+  });
+  aplicarFiltros();
+};
+
+const eliminarLibro = (id) => {
+  libros = libros.filter((libroItem) => libroItem.id !== id);
+  aplicarFiltros();
+};
+
+// ── Gestión del Modal y Formulario ──
 const abrirModal = () => {
-	bookForm.reset();
-	libroEditandoId = null;
-	modalOverlay.classList.remove("hidden");
-	modalTitle.textContent = "Agregar libro";
-	btnSubmit.textContent = "Guardar";
+  if (modalOverlay) modalOverlay.classList.remove("hidden");
 };
 
 const cerrarModal = () => {
-	modalOverlay.classList.add("hidden");
-	bookForm.reset();
-	libroEditandoId = null;
-	modalTitle.textContent = "Agregar libro";
-	btnSubmit.textContent = "Guardar";
+  if (modalOverlay) modalOverlay.classList.add("hidden");
+  limpiarFormulario();
 };
 
-const agregarLibro = () => {
-	const nuevoLibro = {
-		id: generarId(),
-		titulo: inputTitle.value.trim(),
-		autor: inputAuthor.value.trim(),
-		categoria: inputCategory.value,
-		anio: Number(inputYear.value),
-		disponible: true,
-		imagen: inputCover.value.trim(),
-	};
-
-	libros.push(nuevoLibro);
+const limpiarFormulario = () => {
+  bookForm.reset();
+  inputIdHidden.value = "";
+  modalTitle.textContent = "Agregar Nuevo Libro";
+  limpiarErrores();
 };
 
-// ── T-04b: Form validations ──
-// Valida los campos del formulario de libro (título, autor, categoría, año).
-// Escribe los mensajes de error en los <span class="form-error"> del DOM
-// (no usa alert()) y limpia los mensajes previos en cada ejecución.
-// Retorna true si todo es válido, false si hay al menos un error.
+const limpiarErrores = () => {
+  document.querySelectorAll(".form-error").forEach((el) => (el.textContent = ""));
+};
+
+const abrirModalEdicion = (libroItem) => {
+  inputIdHidden.value = libroItem.id;
+  inputTitle.value = libroItem.titulo;
+  inputAuthor.value = libroItem.autor;
+  selectCategory.value = libroItem.categoria;
+  inputYear.value = libroItem.anio;
+  inputCover.value = libroItem.imagen || "";
+
+  modalTitle.textContent = "Editar Libro";
+  abrirModal();
+};
+
 const validarFormulario = () => {
-	const inputTitle = document.getElementById("title");
-	const inputAuthor = document.getElementById("author");
-	const selectCategory = document.getElementById("category");
-	const inputYear = document.getElementById("year");
- 
-	const errorTitle = document.getElementById("error-title");
-	const errorAuthor = document.getElementById("error-author");
-	const errorCategory = document.getElementById("error-category");
-	const errorYear = document.getElementById("error-year");
- 
-	// Limpiar mensajes previos antes de validar de nuevo
-	errorTitle.textContent = "";
-	errorAuthor.textContent = "";
-	errorCategory.textContent = "";
-	errorYear.textContent = "";
- 
-	let esValido = true;
- 
-	// Título: no vacío, mínimo 2 caracteres
-	const titulo = inputTitle.value.trim();
-	if (titulo.length < 2) {
-		errorTitle.textContent = "El título es obligatorio (mín. 2 caracteres)";
-		esValido = false;
-	}
- 
-	// Autor: no vacío, mínimo 2 caracteres
-	const autor = inputAuthor.value.trim();
-	if (autor.length < 2) {
-		errorAuthor.textContent = "El autor es obligatorio (mín. 2 caracteres)";
-		esValido = false;
-	}
- 
-	// Categoría: debe haber una opción seleccionada
-	if (selectCategory.value === "") {
-		errorCategory.textContent = "Selecciona una categoría";
-		esValido = false;
-	}
- 
-	// Año: numérico, entre 1900 y el año actual
-	const anioActual = new Date().getFullYear();
-	const anio = Number(inputYear.value);
-	if (
-		inputYear.value.trim() === "" ||
-		Number.isNaN(anio) ||
-		anio < 1900 ||
-		anio > anioActual
-	) {
-		errorYear.textContent = `Ingresa un año válido (1900 - ${anioActual})`;
-		esValido = false;
-	}
- 
-	// imagen (#cover) no se valida: es un campo opcional
- 
-	return esValido;
+  limpiarErrores();
+  let esValido = true;
+
+  if (!inputTitle.value.trim()) {
+    document.getElementById("error-title").textContent = "El título es obligatorio.";
+    esValido = false;
+  }
+
+  if (!inputAuthor.value.trim()) {
+    document.getElementById("error-author").textContent = "El autor es obligatorio.";
+    esValido = false;
+  }
+
+  if (!selectCategory.value) {
+    document.getElementById("error-category").textContent = "Seleccione una categoría.";
+    esValido = false;
+  }
+
+  const anio = parseInt(inputYear.value, 10);
+  if (!inputYear.value || isNaN(anio) || anio < 0 || anio > new Date().getFullYear()) {
+    document.getElementById("error-year").textContent = "Ingrese un año válido.";
+    esValido = false;
+  }
+
+  return esValido;
 };
 
-// ── T-05: Delete book ──
+bookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!validarFormulario()) return;
 
-	const deleteBook = (id) => {
-		const index = libros.findIndex((libro)=> libro.id === id);
+  const id = inputIdHidden.value ? parseInt(inputIdHidden.value, 10) : null;
+  const nuevoLibro = {
+    id: id || Date.now(),
+    titulo: inputTitle.value.trim(),
+    autor: inputAuthor.value.trim(),
+    categoria: selectCategory.value,
+    anio: parseInt(inputYear.value, 10),
+    disponible: id ? libros.find((l) => l.id === id).disponible : true,
+    imagen: inputCover.value.trim(),
+  };
 
-		if(index !== -1){
-			libros.splice(index, 1);
-			renderizarLibros(libros);
-			actualizarEstadisticas();
-		}
-		return;
-	};
+  if (id) {
+    libros = libros.map((l) => (l.id === id ? nuevoLibro : l));
+  } else {
+    libros.push(nuevoLibro);
+  }
 
-	document.querySelector("#book-list").addEventListener("click",(event) =>{
-	const deleteButton = event.target.closest(".btn-delete");
+  cerrarModal();
+  aplicarFiltros();
+});
 
-	if(!deleteButton){
-		return;
-	}
-		
-	const id = Number(deleteButton.dataset.id);
-	deleteBook(id);
-} );
+// ── Event Listeners ──
+if (btnAdd) btnAdd.addEventListener("click", abrirModal);
+if (modalClose) modalClose.addEventListener("click", cerrarModal);
+if (btnCancel) btnCancel.addEventListener("click", cerrarModal);
 
+if (searchInput) searchInput.addEventListener("input", aplicarFiltros);
+if (filterCategorySelect) filterCategorySelect.addEventListener("change", aplicarFiltros);
+if (filterStatusSelect) filterStatusSelect.addEventListener("change", aplicarFiltros);
+if (sortSelect) sortSelect.addEventListener("change", aplicarFiltros);
 
-// ── T-06a: Load edit data ──
-
-// ── T-06b: Save edit changes ──
-
-// ── T-07: Loan system ──
-
-// ── T-08: Search ──
-
-// ── T-09a: Filter by category ──
-
-// ── T-09b: Filter by status ──
-
-// ── T-11: Sort ──
-
-// ── T-13: Integration ──
-
-// ── Entry point ──
+// ── Punto de entrada ──
 document.addEventListener("DOMContentLoaded", () => {
-	// App init (T-02):
-	renderizarLibros(libros);
-	actualizarEstadisticas();
-
-	// Modal: open
-	btnAdd.addEventListener("click", abrirModal);
-
-	// Modal: close
-	modalClose.addEventListener("click", cerrarModal);
-	btnCancel.addEventListener("click", cerrarModal);
-	modalOverlay.addEventListener("click", (e) => {
-		if (e.target === modalOverlay) cerrarModal();
-	});
-
-	// Form: submit (add or edit)
-	bookForm.addEventListener("submit", (e) => {
-		e.preventDefault();
-
-		// 1. Validar el formulario antes de procesar
-    	if (!validarFormulario()) return;
-
-    	// 2. Si pasa las validaciones, agregar o guardar
-		if (libroEditandoId !== null) {
-			// guardarEdicion();
-		} else {
-			agregarLibro();
-		}
-
-		renderizarLibros(libros);
-		actualizarEstadisticas();
-		cerrarModal();
-	});
+  aplicarFiltros();
 });
