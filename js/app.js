@@ -313,54 +313,34 @@ const deleteBook = (id) => {
 	return;
 };
 
-document.querySelector("#book-list").addEventListener("click", (event) => {
-	const deleteButton = event.target.closest(".btn-delete");
-
-	if (!deleteButton) {
-		return;
-	}
-
-	const id = Number(deleteButton.dataset.id);
-	deleteBook(id);
-});
-
 // ── T-06a: Load edit data ──
-//
-const loadBookData = (id) => {
+const abrirModalEditar = (id) => {
 	const bookFind = libros.find((libro) => libro.id === id);
-	const { titulo, autor, categoria, anio, imagen } = bookFind;
+	if (!bookFind) return;
 
-	inputTitle.value = titulo;
-	inputAuthor.value = autor;
-	inputCategory.value = categoria;
-	inputYear.value = anio;
-	inputCover.value = imagen;
-};
+	libroEditandoId = id;
+	inputTitle.value = bookFind.titulo;
+	inputAuthor.value = bookFind.autor;
+	inputCategory.value = bookFind.categoria;
+	inputYear.value = bookFind.anio;
+	inputCover.value = bookFind.imagen || "";
 
-const bookList = document.getElementById("book-list");
-bookList.addEventListener("click", (evt) => {
-	const btnEdit = evt.target.closest(".btn-edit");
-	if (!btnEdit) return;
-	const dataSetId = btnEdit.dataset.id;
-	libroEditandoId = Number(dataSetId);
-
-	modalOverlay.classList.remove("hidden");
 	modalTitle.textContent = "Editar libro";
-	btnSubmit.textContent = "Guardar Cambios";
-
-	loadBookData(libroEditandoId);
-});
+	btnSubmit.textContent = "Guardar cambios";
+	modalOverlay.classList.remove("hidden");
+};
 
 // ── T-06b: Save edit changes ──
 const guardarEdicion = () => {
 	const indexBook = libros.findIndex((libro) => libro.id === libroEditandoId);
+	if (indexBook === -1) return;
 	const bookEdit = libros[indexBook];
 
-	bookEdit.titulo = inputTitle.value;
-	bookEdit.autor = inputAuthor.value;
+	bookEdit.titulo = inputTitle.value.trim();
+	bookEdit.autor = inputAuthor.value.trim();
 	bookEdit.categoria = inputCategory.value;
-	bookEdit.anio = inputYear.value;
-	bookEdit.imagen = inputCover.value;
+	bookEdit.anio = Number(inputYear.value);
+	bookEdit.imagen = inputCover.value.trim();
 
 	libroEditandoId = null;
 };
@@ -409,6 +389,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		renderizarLibros(libros);
 		actualizarEstadisticas();
 		cerrarModal();
+	});
+
+	// Catalog: event delegation (edit, delete, loan)
+	document.querySelector("#book-list").addEventListener("click", (e) => {
+		const target = e.target.closest(".btn-delete, .btn-edit, .btn-loan");
+		if (!target) return;
+		const id = Number(target.dataset.id);
+
+		if (target.classList.contains("btn-delete")) {
+			deleteBook(id);
+		}
+		if (target.classList.contains("btn-edit")) {
+			abrirModalEditar(id);
+		}
+		if (target.classList.contains("btn-loan")) {
+			// togglePrestamo(id);
+		}
 	});
 
 	// Botón volver arriba (Scroll Back to Top)
