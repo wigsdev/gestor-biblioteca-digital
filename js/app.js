@@ -362,6 +362,29 @@ const togglePrestamo = (id) => {
 };
 
 // ── T-08: Search ──
+	const normalizarTexto = (texto) => {
+		return texto
+		.toString()
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g,"");
+	};
+
+	const buscarLibros = (texto) => {
+		const termino = normalizarTexto(texto.trim());
+		if(!termino){
+			return libros;
+		}
+
+		const palabras = termino.split(/\s+/);
+		return libros.filter((libro) => {
+			const contenido = normalizarTexto(
+				`${libro.titulo} ${libro.autor} ${libro.categoria} ${libro.anio}`
+			);
+
+			return palabras.every((palabra)=> contenido.includes(palabra));
+		});
+	};
 
 // ── T-09a: Filter by category ──
 
@@ -376,6 +399,22 @@ document.addEventListener("DOMContentLoaded", () => {
 	// App init (T-02):
 	renderizarLibros(libros);
 	actualizarEstadisticas();
+
+	//Search
+	const inputSearch = document.getElementById("search");
+
+	inputSearch.addEventListener("input", (e) => {
+		const resultados = buscarLibros(e.target.value);
+		renderizarLibros(resultados);
+		const catalogCount = document.getElementById("catalog-count");
+
+		if(resultados.length ===1){
+			catalogCount.textContent = "1 libro encontrado";
+			}
+		else{
+			catalogCount.textContent = `${resultados.length} libros encontrados`;
+		}
+	});
 
 	// Modal: open
 	btnAdd.addEventListener("click", abrirModal);
