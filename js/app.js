@@ -165,6 +165,12 @@ const renderizarLibros = books => {
 	})
 
 	bookList.append(fragment)
+
+	const catalogCount = document.getElementById("catalog-count");
+
+	if (catalogCount) {
+		catalogCount.textContent = `Mostrando ${books.length} de ${libros.length} libros`;
+	}
 }
 
 // ── T-03b: Stats/counters ──
@@ -172,6 +178,7 @@ const actualizarEstadisticas = () => {
 	const statTotal = document.getElementById('stat-total')
 	const statAvailable = document.getElementById('stat-available')
 	const statBorrowed = document.getElementById('stat-borrowed')
+	const statCategories = document.getElementById('stat-categories')
 
 	const available = libros.reduce((acc, libro) => {
 		return libro.disponible ? acc + 1 : acc
@@ -181,9 +188,12 @@ const actualizarEstadisticas = () => {
 		return libro.disponible ? acc : acc + 1
 	}, 0)
 
+	const categories = new Set(libros.map(libro => libro.categoria)).size
+
 	statTotal.textContent = libros.length
 	statAvailable.textContent = available
 	statBorrowed.textContent = borrowed
+	statCategories.textContent = categories
 }
 // ── T-04a: Add book ──
 
@@ -344,29 +354,29 @@ const togglePrestamo = (id) => {
 }
 
 // ── T-08: Search ──
-	const normalizarTexto = (texto) => {
-		return texto
+const normalizarTexto = (texto) => {
+	return texto
 		.toString()
 		.toLowerCase()
 		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g,"");
-	};
+		.replace(/[\u0300-\u036f]/g, "");
+};
 
-	const buscarLibros = (texto) => {
-		const termino = normalizarTexto(texto.trim());
-		if(!termino){
-			return libros;
-		}
+const buscarLibros = (texto) => {
+	const termino = normalizarTexto(texto.trim());
+	if (!termino) {
+		return libros;
+	}
 
-		const palabras = termino.split(/\s+/);
-		return libros.filter((libro) => {
-			const contenido = normalizarTexto(
-				`${libro.titulo} ${libro.autor} ${libro.categoria} ${libro.anio}`
-			);
+	const palabras = termino.split(/\s+/);
+	return libros.filter((libro) => {
+		const contenido = normalizarTexto(
+			`${libro.titulo} ${libro.autor} ${libro.categoria} ${libro.anio}`
+		);
 
-			return palabras.every((palabra)=> contenido.includes(palabra));
-		});
-	};
+		return palabras.every((palabra) => contenido.includes(palabra));
+	});
+};
 
 // ── T-09a: Filter by category ──
 
@@ -375,7 +385,7 @@ const togglePrestamo = (id) => {
 // ── T-11: Sort ──
 const ordenarLibros = (criterio, listaLibros) => {
 	const copia = listaLibros.slice();
- 
+
 	const comparadores = {
 		"title-asc": (a, b) =>
 			a.titulo.localeCompare(b.titulo, "es", { sensitivity: "base" }),
@@ -384,12 +394,12 @@ const ordenarLibros = (criterio, listaLibros) => {
 		"year-asc": (a, b) => a.anio - b.anio,
 		"year-desc": (a, b) => b.anio - a.anio,
 	};
- 
+
 	const comparador = comparadores[criterio];
 	if (!comparador) {
 		return copia;
 	}
- 
+
 	return copia.sort(comparador);
 };
 
@@ -403,23 +413,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//Search
 	const inputSearch = document.getElementById("search");
-
-	inputSearch.addEventListener("input", (e) => {
-		const resultados = buscarLibros(e.target.value);
-		renderizarLibros(resultados);
-		const catalogCount = document.getElementById("catalog-count");
-
-		if(resultados.length ===1){
-			catalogCount.textContent = "1 libro encontrado";
-			}
-		else{
-			catalogCount.textContent = `${resultados.length} libros encontrados`;
-		}
-	});
+	if (inputSearch) {
+		inputSearch.addEventListener("input", (e) => {
+			const resultados = buscarLibros(e.target.value);
+			renderizarLibros(resultados);
+		});
+	}
 
 	// Sort: reordena catalogo
 	const selectSort = document.getElementById("sort");
- 
+
 	selectSort.addEventListener("change", (e) => {
 		const ordenados = ordenarLibros(e.target.value, libros);
 		renderizarLibros(ordenados);
