@@ -129,6 +129,9 @@ body {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	padding-block: clamp(0.875rem, 0.8239rem + 0.2273vw, 1rem);
 	margin-bottom: clamp(1rem, 0.5909rem + 1.8182vw, 2rem);
+	position: sticky;
+	top: 0;
+	z-index: 100;
 }
 
 .header-container {
@@ -171,6 +174,12 @@ body {
 }
 
 /* sidebar */
+
+.sidebar {
+	position: sticky;
+	top: 5rem;
+	align-self: start;
+}
 
 .sidebar-title {
 	font-size: clamp(1rem, 0.9489rem + 0.2273vw, 1.125rem);
@@ -294,6 +303,9 @@ body {
 
 .controls-section {
 	margin-bottom: clamp(1.25rem, 1.1477rem + 0.4545vw, 1.5rem);
+	position: sticky;
+	top: 4.8rem;
+	z-index: 90;
 }
 
 .controls-container {
@@ -580,6 +592,15 @@ body {
 	border-color: #fca5a5;
 }
 
+/* ACCESIBILIDAD TECLADO (:focus-visible) */
+.btn:focus-visible,
+.controls-input:focus-visible,
+.controls-select:focus-visible,
+.modal-close:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}
+
 /* MODAL */
 .modal-overlay {
 	position: fixed;
@@ -595,7 +616,7 @@ body {
 }
 
 .modal-overlay.hidden {
-	display: none;
+	display: none !important;
 }
 
 .modal {
@@ -727,7 +748,7 @@ body {
 }
 
 .btn-scroll-top.hidden {
-	display: none;
+	display: none !important;
 	opacity: 0;
 	pointer-events: none;
 }
