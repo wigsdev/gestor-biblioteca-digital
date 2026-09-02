@@ -176,9 +176,11 @@ body {
 /* sidebar */
 
 .sidebar {
-	position: sticky;
-	top: 5rem;
-	align-self: start;
+	@media (width > 62em) {
+		position: sticky;
+		top: 5rem;
+		align-self: start;
+	}
 }
 
 .sidebar-title {

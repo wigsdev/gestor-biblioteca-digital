@@ -415,7 +415,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			catalogCount.textContent = `${resultados.length} libros encontrados`;
 		}
 	});
-
 	// Modal: open
 	btnAdd.addEventListener('click', abrirModal)
 
