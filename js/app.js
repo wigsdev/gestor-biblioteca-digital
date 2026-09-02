@@ -7,10 +7,6 @@
 // 'use strict';
 
 // ── T-01c: Initial data ──
-
-// Array de libros precargados.
-// Propiedades: id, titulo, autor, categoria, anio, disponible, imagen
-// - imagen: URL de portada ("" si no hay, para probar el placeholder en T-02)
 const libros = [
 	{
 		id: 1,
@@ -239,10 +235,6 @@ const agregarLibro = () => {
 }
 
 // ── T-04b: Form validations ──
-// Valida los campos del formulario de libro (título, autor, categoría, año).
-// Escribe los mensajes de error en los <span class="form-error"> del DOM
-// (no usa alert()) y limpia los mensajes previos en cada ejecución.
-// Retorna true si todo es válido, false si hay al menos un error.
 const validarFormulario = () => {
 	const inputTitle = document.getElementById('title')
 	const inputAuthor = document.getElementById('author')
@@ -254,37 +246,32 @@ const validarFormulario = () => {
 	const errorCategory = document.getElementById('error-category')
 	const errorYear = document.getElementById('error-year')
 
-	// Limpiar mensajes previos antes de validar de nuevo
-	errorTitle.textContent = ''
-	errorAuthor.textContent = ''
-	errorCategory.textContent = ''
-	errorYear.textContent = ''
+	errorTitle.textContent = "";
+	errorAuthor.textContent = "";
+	errorCategory.textContent = "";
+	errorYear.textContent = "";
 
 	let esValido = true
 
-	// Título: no vacío, mínimo 2 caracteres
-	const titulo = inputTitle.value.trim()
+	const titulo = inputTitle.value.trim();
 	if (titulo.length < 2) {
 		errorTitle.textContent = 'El título es obligatorio (mín. 2 caracteres)'
 		esValido = false
 	}
 
-	// Autor: no vacío, mínimo 2 caracteres
-	const autor = inputAuthor.value.trim()
+	const autor = inputAuthor.value.trim();
 	if (autor.length < 2) {
 		errorAuthor.textContent = 'El autor es obligatorio (mín. 2 caracteres)'
 		esValido = false
 	}
 
-	// Categoría: debe haber una opción seleccionada
-	if (selectCategory.value === '') {
-		errorCategory.textContent = 'Selecciona una categoría'
-		esValido = false
+	if (selectCategory.value === "") {
+		errorCategory.textContent = "Selecciona una categoría";
+		esValido = false;
 	}
 
-	// Año: numérico, entre 1900 y el año actual
-	const anioActual = new Date().getFullYear()
-	const anio = Number(inputYear.value)
+	const anioActual = new Date().getFullYear();
+	const anio = Number(inputYear.value);
 	if (
 		inputYear.value.trim() === '' ||
 		Number.isNaN(anio) ||
@@ -294,8 +281,6 @@ const validarFormulario = () => {
 		errorYear.textContent = `Ingresa un año válido (1900 - ${anioActual})`
 		esValido = false
 	}
-
-	// imagen (#cover) no se valida: es un campo opcional
 
 	return esValido
 }
@@ -345,11 +330,8 @@ const guardarEdicion = () => {
 	libroEditandoId = null
 }
 // ── T-07: Loan system ──
-
-// Invierte el estado `disponible` del libro con el id indicado
-// y refresca la interfaz (cards + contadores).
-const togglePrestamo = id => {
-	const libro = libros.find(libro => libro.id === id)
+const togglePrestamo = (id) => {
+	const libro = libros.find((libro) => libro.id === id);
 
 	if (!libro) {
 		return
@@ -391,6 +373,25 @@ const togglePrestamo = id => {
 // ── T-09b: Filter by status ──
 
 // ── T-11: Sort ──
+const ordenarLibros = (criterio, listaLibros) => {
+	const copia = listaLibros.slice();
+ 
+	const comparadores = {
+		"title-asc": (a, b) =>
+			a.titulo.localeCompare(b.titulo, "es", { sensitivity: "base" }),
+		"title-desc": (a, b) =>
+			b.titulo.localeCompare(a.titulo, "es", { sensitivity: "base" }),
+		"year-asc": (a, b) => a.anio - b.anio,
+		"year-desc": (a, b) => b.anio - a.anio,
+	};
+ 
+	const comparador = comparadores[criterio];
+	if (!comparador) {
+		return copia;
+	}
+ 
+	return copia.sort(comparador);
+};
 
 // ── T-13: Integration ──
 
@@ -415,6 +416,15 @@ document.addEventListener('DOMContentLoaded', () => {
 			catalogCount.textContent = `${resultados.length} libros encontrados`;
 		}
 	});
+
+	// Sort: reordena catalogo
+	const selectSort = document.getElementById("sort");
+ 
+	selectSort.addEventListener("change", (e) => {
+		const ordenados = ordenarLibros(e.target.value, libros);
+		renderizarLibros(ordenados);
+	});
+
 	// Modal: open
 	btnAdd.addEventListener('click', abrirModal)
 
