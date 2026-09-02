@@ -1,214 +1,305 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="BookManager - Sistema de gestión de biblioteca digital." />
-    <link rel="icon" type="image/png" href="assets/logo-icon-bg.png" />
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta
+			name="description"
+			content="BookManager - Sistema de gestión de biblioteca digital."
+		>
+		<link rel="icon" type="image/png" href="assets/logo-icon-bg.png">
 
-    <!-- Open Graph Tags -->
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content="BookManager | Tu Biblioteca Digital Organizada"
-    />
-    <meta
-      property="og:description"
-      content="BookManager es el sistema definitivo para gestionar tu biblioteca. Controla tu catálogo de libros, préstamos, devoluciones y estadísticas."
-    />
-    <meta property="og:image" content="assets/og-banner.jpg" />
-    <meta property="og:url" content="https://www.bookmanager.com" />
-    <meta name="robots" content="index, follow" />
+		<!-- Open Graph Tags -->
+		<meta property="og:type" content="website">
+		<meta
+			property="og:title"
+			content="BookManager | Tu Biblioteca Digital Organizada"
+		>
+		<meta
+			property="og:description"
+			content="BookManager es el sistema definitivo para gestionar tu biblioteca. Controla tu catálogo de libros, préstamos, devoluciones y estadísticas."
+		>
+		<meta property="og:image" content="assets/og-banner.jpg">
+		<meta property="og:url" content="https://www.bookmanager.com">
+		<meta name="robots" content="index, follow">
 
-    <title>BookManager | Sistema de Gestión de Biblioteca Digital</title>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="header-brand">
-        <div class="logo-icon">
-          <img src="assets/logo.svg" alt="BookManager Logo" />
-        </div>
-        <h1>BookManager</h1>
-      </div>
-      <button id="btn-add" class="btn btn-add" type="button">+ Agregar libro</button>
-    </header>
+		<title>BookManager | Sistema de Gestión de Biblioteca Digital</title>
+		<link rel="stylesheet" href="css/styles.css">
+	</head>
+	<body>
+		<!-- HEADER -->
+		<header class="header">
+			<div class="header-container container">
+				<div class="logo">
+					<img src="assets/logo.svg" alt="logo" class="logo-icon">
+					<h1 class="logo-name">BookManager</h1>
+				</div>
+				<button id="btn-add" class="btn btn-add" type="button">
+					+ Agregar libro
+				</button>
+			</div>
+		</header>
 
-    <!-- MODAL -->
-    <div id="modal-overlay" class="modal-overlay hidden">
-      <div class="modal">
-        <div class="modal-header">
-          <div>
-            <h2 id="modal-title">Agregar Nuevo Libro</h2>
-            <p class="modal-subtitle">Complete los datos para registrar un libro en el catálogo.</p>
-          </div>
-          <button id="modal-close" class="modal-close" type="button">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form id="book-form" class="form" novalidate>
-            <input type="hidden" id="book-id-hidden" value="" />
-            
-            <div class="form-group">
-              <label class="form-label" for="title">Título del libro</label>
-              <input class="form-input" id="title" type="text" placeholder="Ej. Cien años de soledad" />
-              <span class="form-error" id="error-title" aria-live="polite"></span>
-            </div>
+		<!-- MODAL -->
+		<div id="modal-overlay" class="modal-overlay hidden">
+			<div class="modal">
+				<div class="modal-header">
+					<div>
+						<h2 id="modal-title">Agregar Nuevo Libro</h2>
+						<p class="modal-subtitle">
+							Complete los datos para registrar un libro en el catálogo.
+						</p>
+					</div>
+					<button id="modal-close" class="modal-close" type="button">
+						&times;
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="book-form" class="form" novalidate>
+						<input type="hidden" id="book-id-hidden" value="">
 
-            <div class="form-group">
-              <label class="form-label" for="author">Autor del libro</label>
-              <input class="form-input" id="author" type="text" placeholder="Ej. Gabriel García Márquez" />
-              <span class="form-error" id="error-author" aria-live="polite"></span>
-            </div>
+						<div class="form-group">
+							<label class="form-label" for="title">Título del libro</label>
+							<input
+								class="form-input"
+								id="title"
+								type="text"
+								placeholder="Ej. Cien años de soledad"
+							>
+							<span
+								class="form-error"
+								id="error-title"
+								aria-live="polite"
+							></span>
+						</div>
 
-            <div class="form-group">
-              <label class="form-label" for="category">Categoría</label>
-              <select class="form-select" id="category">
-                <option value="">Seleccionar categoría</option>
-                <option value="Novela">Novela</option>
-                <option value="Ciencia ficción">Ciencia ficción</option>
-                <option value="Historia">Historia</option>
-                <option value="Tecnología">Tecnología</option>
-                <option value="Fantasía">Fantasía</option>
-                <option value="Infantil">Infantil</option>
-                <option value="Misterio">Misterio</option>
-                <option value="Otros">Otros</option>
-              </select>
-              <span class="form-error" id="error-category" aria-live="polite"></span>
-            </div>
+						<div class="form-group">
+							<label class="form-label" for="author">Autor del libro</label>
+							<input
+								class="form-input"
+								id="author"
+								type="text"
+								placeholder="Ej. Gabriel García Márquez"
+							>
+							<span
+								class="form-error"
+								id="error-author"
+								aria-live="polite"
+							></span>
+						</div>
 
-            <div class="form-group">
-              <label class="form-label" for="year">Año de publicación</label>
-              <input class="form-input" id="year" type="number" placeholder="Ej. 1967" />
-              <span class="form-error" id="error-year" aria-live="polite"></span>
-            </div>
+						<div class="form-group">
+							<label class="form-label" for="category">Categoría</label>
+							<select class="form-select" id="category">
+								<option value="">Seleccionar categoría</option>
+								<option value="Novela">Novela</option>
+								<option value="Ciencia ficción">Ciencia ficción</option>
+								<option value="Historia">Historia</option>
+								<option value="Tecnología">Tecnología</option>
+								<option value="Fantasía">Fantasía</option>
+								<option value="Infantil">Infantil</option>
+								<option value="Misterio">Misterio</option>
+								<option value="Otros">Otros</option>
+							</select>
+							<span
+								class="form-error"
+								id="error-category"
+								aria-live="polite"
+							></span>
+						</div>
 
-            <div class="form-group">
-              <label class="form-label" for="cover">URL de imagen (opcional)</label>
-              <input class="form-input" id="cover" type="url" placeholder="https://..." />
-            </div>
+						<div class="form-group">
+							<label class="form-label" for="year">Año de publicación</label>
+							<input
+								class="form-input"
+								id="year"
+								type="number"
+								placeholder="Ej. 1967"
+							>
+							<span
+								class="form-error"
+								id="error-year"
+								aria-live="polite"
+							></span>
+						</div>
 
-            <div class="form-actions">
-              <button id="btn-submit" class="btn btn-primary" type="submit">Agregar libro</button>
-              <button id="btn-cancel" class="btn btn-secondary" type="button">Cancelar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+						<div class="form-group">
+							<label class="form-label" for="cover"
+								>URL de imagen (opcional)</label
+							>
+							<input
+								class="form-input"
+								id="cover"
+								type="url"
+								placeholder="https://..."
+							>
+						</div>
 
-    <main class="main">
-      <!-- PANEL LATERAL DE ESTADÍSTICAS -->
-      <aside class="sidebar">
-        <h2 class="sidebar-title">Resumen de Biblioteca</h2>
-        
-  <section id="stats" class="stats-section" aria-live="polite">
-    <div class="stat-card">
-      <img src="assets/Frame.svg" alt="Total de libros" class="stat-icon icon-total" />
-      <div class="stat-info">
-        <span class="stat-label">Total de libros</span>
-        <strong id="stat-total" class="stat-value">0</strong>
-      </div>
-    </div>
+						<div class="form-actions">
+							<button id="btn-submit" class="btn btn-primary" type="submit">
+								Agregar libro
+							</button>
+							<button id="btn-cancel" class="btn btn-secondary" type="button">
+								Cancelar
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
-    <div class="stat-card">
-      <img src="assets/Frame (1).svg" alt="Disponibles" class="stat-icon icon-available" />
-      <div class="stat-info">
-        <span class="stat-label">Disponibles</span>
-        <strong id="stat-available" class="stat-value">0</strong>
-      </div>
-    </div>
+		<main class="main container">
+			<!-- PANEL LATERAL DE ESTADÍSTICAS -->
+			<aside class="sidebar">
+				<h2 class="sidebar-title">Resumen de Biblioteca</h2>
 
-    <div class="stat-card">
-      <img src="assets/Frame (2).svg" alt="Prestados" class="stat-icon icon-borrowed" />
-      <div class="stat-info">
-        <span class="stat-label">Prestados</span>
-        <strong id="stat-borrowed" class="stat-value">0</strong>
-      </div>
-    </div>
+				<section id="stats" class="stats-section" aria-live="polite">
+					<div class="stat-card">
+						<img
+							src="assets/Frame.svg"
+							alt="Total de libros"
+							class="stat-icon icon-total"
+						>
+						<div class="stat-info">
+							<span class="stat-label">Total de libros</span>
+							<strong id="stat-total" class="stat-value">0</strong>
+						</div>
+					</div>
 
-    <div class="stat-card">
-      <img src="assets/Frame (3).svg" alt="Categorías" class="stat-icon icon-categories" />
-      <div class="stat-info">
-        <span class="stat-label">Categorías</span>
-        <strong id="stat-categories" class="stat-value">0</strong>
-      </div>
-    </div>
-  </section>
+					<div class="stat-card">
+						<img
+							src="assets/Frame (1).svg"
+							alt="Disponibles"
+							class="stat-icon icon-available"
+						>
+						<div class="stat-info">
+							<span class="stat-label">Disponibles</span>
+							<strong id="stat-available" class="stat-value">0</strong>
+						</div>
+					</div>
 
-        <!-- BANNER INFORMATIVO -->
-        <div class="info-banner">
-          <h3>Actualización Diaria</h3>
-          <p>Se han devuelto 14 libros hoy. Recuerde revisar la sección de libros vencidos al final de la jornada.</p>
-        </div>
-      </aside>
+					<div class="stat-card">
+						<img
+							src="assets/Frame (2).svg"
+							alt="Prestados"
+							class="stat-icon icon-borrowed"
+						>
+						<div class="stat-info">
+							<span class="stat-label">Prestados</span>
+							<strong id="stat-borrowed" class="stat-value">0</strong>
+						</div>
+					</div>
 
-      <!-- CONTENIDO PRINCIPAL -->
-      <section class="main-content">
-        <!-- CONTROLES (BÚSQUEDA Y FILTROS) -->
-        <section class="controls-section" aria-label="Controles de búsqueda y filtrado">
-          <div class="controls-container">
-            <div class="controls-search">
-              <input
-                id="search"
-                class="controls-input"
-                type="search"
-                placeholder="Buscar por título, autor o palabra clave..."
-                aria-label="Buscar libro en el catálogo"
-              />
-            </div>
+					<div class="stat-card">
+						<img
+							src="assets/Frame (3).svg"
+							alt="Categorías"
+							class="stat-icon icon-categories"
+						>
+						<div class="stat-info">
+							<span class="stat-label">Categorías</span>
+							<strong id="stat-categories" class="stat-value">0</strong>
+						</div>
+					</div>
+				</section>
+				<!-- BANNER INFORMATIVO -->
+				<!-- <div class="info-banner"> -->
+				<!-- 	<h3>Actualización Diaria</h3> -->
+				<!-- 	<p> -->
+				<!-- 		Se han devuelto 14 libros hoy. Recuerde revisar la sección de libros -->
+				<!-- 		vencidos al final de la jornada. -->
+				<!-- 	</p> -->
+				<!-- </div> -->
+			</aside>
 
-            <div class="controls-filters">
-              <select id="filter-category" class="controls-select" aria-label="Filtrar por categoría">
-                <option value="">Categoría: Todas</option>
-                <option value="Novela">Novela</option>
-                <option value="Ciencia ficción">Ciencia ficción</option>
-                <option value="Historia">Historia</option>
-                <option value="Tecnología">Tecnología</option>
-                <option value="Fantasía">Fantasía</option>
-                <option value="Infantil">Infantil</option>
-                <option value="Misterio">Misterio</option>
-                <option value="Otros">Otros</option>
-              </select>
+			<!-- CONTENIDO PRINCIPAL -->
+			<section class="main-content">
+				<!-- CONTROLES (BÚSQUEDA Y FILTROS) -->
+				<section
+					class="controls-section"
+					aria-label="Controles de búsqueda y filtrado"
+				>
+					<div class="controls-container">
+						<div class="controls-search">
+							<input
+								id="search"
+								class="controls-input"
+								type="search"
+								placeholder="Buscar por título, autor o palabra clave..."
+								aria-label="Buscar libro en el catálogo"
+							>
+						</div>
 
-              <select id="sort" class="controls-select" aria-label="Ordenar catálogo">
-                <option value="title-asc">Ordenar por: Título A-Z</option>
-                <option value="title-desc">Ordenar por: Título Z-A</option>
-                <option value="year-asc">Año más antiguo</option>
-                <option value="year-desc">Año más reciente</option>
-              </select>
+						<div class="controls-filters">
+							<select
+								id="filter-category"
+								class="controls-select"
+								aria-label="Filtrar por categoría"
+							>
+								<option value="">Categoría: Todas</option>
+								<option value="Novela">Novela</option>
+								<option value="Ciencia ficción">Ciencia ficción</option>
+								<option value="Historia">Historia</option>
+								<option value="Tecnología">Tecnología</option>
+								<option value="Fantasía">Fantasía</option>
+								<option value="Infantil">Infantil</option>
+								<option value="Misterio">Misterio</option>
+								<option value="Otros">Otros</option>
+							</select>
 
-              <select id="filter-status" class="controls-select" aria-label="Filtrar por estado">
-                <option value="">Estado: Todos</option>
-                <option value="available">Disponibles</option>
-                <option value="borrowed">Prestados</option>
-              </select>
-            </div>
-          </div>
-        </section>
+							<select
+								id="sort"
+								class="controls-select"
+								aria-label="Ordenar catálogo"
+							>
+								<option value="title-asc">Ordenar por: Título A-Z</option>
+								<option value="title-desc">Ordenar por: Título Z-A</option>
+								<option value="year-asc">Año más antiguo</option>
+								<option value="year-desc">Año más reciente</option>
+							</select>
 
-        <!-- CABECERA DEL CATÁLOGO -->
-        <div class="catalog-header">
-          <h2>Catálogo General</h2>
-          <span id="catalog-count" class="catalog-count">Mostrando 0 de 0 libros</span>
-        </div>
+							<select
+								id="filter-status"
+								class="controls-select"
+								aria-label="Filtrar por estado"
+							>
+								<option value="">Estado: Todos</option>
+								<option value="available">Disponibles</option>
+								<option value="borrowed">Prestados</option>
+							</select>
+						</div>
+					</div>
+				</section>
 
-        <!-- REJILLA DE LIBROS -->
-        <section class="catalog-section">
-          <div id="book-list" class="catalog-grid"></div>
-        </section>
-      </section>
-    </main>
+				<!-- CABECERA DEL CATÁLOGO -->
+				<div class="catalog-header">
+					<h2>Catálogo General</h2>
+					<span id="catalog-count" class="catalog-count"
+						>Mostrando 0 de 0 libros</span
+					>
+				</div>
 
-    <footer class="footer">
-      <p>BookManager © 2026 — Proyecto Integrador G4</p>
-    </footer>
+				<!-- REJILLA DE LIBROS -->
+				<section class="catalog-section">
+					<div id="book-list" class="catalog-grid"></div>
+				</section>
+			</section>
+		</main>
 
-    <!-- BOTÓN VOLVER ARRIBA -->
-    <button id="btn-scroll-top" class="btn-scroll-top hidden" type="button" aria-label="Volver arriba">
-      ↑
-    </button>
+		<footer class="footer">
+			<p>BookManager © 2026 — Proyecto Integrador G4</p>
+		</footer>
 
-    <script src="js/app.js"></script>
-  </body>
+		<!-- BOTÓN VOLVER ARRIBA -->
+		<button
+			id="btn-scroll-top"
+			class="btn-scroll-top hidden"
+			type="button"
+			aria-label="Volver arriba"
+		>
+			↑
+		</button>
+
+		<script src="js/app.js"></script>
+	</body>
 </html>
