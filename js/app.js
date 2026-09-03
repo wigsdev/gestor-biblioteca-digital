@@ -222,8 +222,15 @@ const inputCover = document.querySelector('#cover')
 const modalTitle = document.querySelector('#modal-title')
 const btnSubmit = document.querySelector('#btn-submit')
 
+const limpiarErroresFormulario = () => {
+	document.querySelectorAll('.form-error').forEach((error) => {
+		error.textContent = ''
+	})
+}
+
 const abrirModal = () => {
 	bookForm.reset()
+	limpiarErroresFormulario()
 	libroEditandoId = null
 	modalOverlay.classList.remove('hidden')
 	modalTitle.textContent = 'Agregar libro'
@@ -236,6 +243,7 @@ const cerrarModal = () => {
 	libroEditandoId = null
 	modalTitle.textContent = 'Agregar libro'
 	btnSubmit.textContent = 'Guardar'
+	limpiarErroresFormulario()
 }
 
 const agregarLibro = () => {
@@ -499,6 +507,35 @@ document.addEventListener('DOMContentLoaded', () => {
 		aplicarFiltrosYOrden()
 		actualizarEstadisticas()
 		cerrarModal()
+	})
+
+	// Limpieza de errores en tiempo real al escribir o corregir
+	inputTitle?.addEventListener('input', e => {
+		if (e.target.value.trim().length >= 2) {
+			document.getElementById('error-title').textContent = ''
+		}
+	})
+	inputAuthor?.addEventListener('input', e => {
+		if (e.target.value.trim().length >= 2) {
+			document.getElementById('error-author').textContent = ''
+		}
+	})
+	inputCategory?.addEventListener('change', e => {
+		if (e.target.value !== '') {
+			document.getElementById('error-category').textContent = ''
+		}
+	})
+	inputYear?.addEventListener('input', e => {
+		const anio = Number(e.target.value)
+		const anioActual = new Date().getFullYear()
+		if (
+			e.target.value.trim() !== '' &&
+			!Number.isNaN(anio) &&
+			anio >= 1900 &&
+			anio <= anioActual
+		) {
+			document.getElementById('error-year').textContent = ''
+		}
 	})
 
 	// Catalog: event delegation (edit, delete, loan)
