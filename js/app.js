@@ -395,6 +395,18 @@ const filtrarPorCategoria = (categoria, listaLibros = libros) => {
 }
 
 // ── T-09b: Filter by status ──
+const filtrarPorEstado = (estado, listaLibros = libros) => {
+	if (!estado || estado ==='' || estado == 'all') {
+		return listaLibros.slice()		
+	}
+	if (estado === 'available') {
+		return listaLibros.filter((libro) => libro.disponible)
+	}
+	if (estado === "borrowed") {
+		return listaLibros.filter((libro) => !libro.disponible)		
+	}
+	return listaLibros.slice()
+}
 
 // ── T-11: Sort ──
 const ordenarLibros = (criterio, listaLibros) => {
@@ -511,5 +523,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			const filtrados = filtrarPorCategoria(e.target.value, libros)
 			renderizarLibros(filtrados)
 		})
+	}
+
+	// Filtro por estado (T-09b)
+	const selectStatusFilter = document.getElementById('filter-status')
+	if (selectStatusFilter) {
+		selectStatusFilter.addEventListener('change', (e) => {
+			const filtrados = filtrarPorEstado(e.target.value, libros)
+			renderizarLibros(filtrados)
+		})		
 	}
 })
