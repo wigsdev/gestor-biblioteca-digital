@@ -310,7 +310,7 @@ const deleteBook = id => {
 
 	if (index !== -1) {
 		libros.splice(index, 1)
-		renderizarLibros(libros)
+		aplicarFiltrosYOrden()
 		actualizarEstadisticas()
 	}
 	return
@@ -357,7 +357,7 @@ const togglePrestamo = (id) => {
 
 	libro.disponible = !libro.disponible
 
-	renderizarLibros(libros)
+	aplicarFiltrosYOrden()
 	actualizarEstadisticas()
 }
 
@@ -430,29 +430,47 @@ const ordenarLibros = (criterio, listaLibros) => {
 };
 
 // ── T-13: Integration ──
+const aplicarFiltrosYOrden = () => {
+	const query = document.getElementById('search')?.value || ''
+	const category = document.getElementById('filter-category')?.value || ''
+	const status = document.getElementById('filter-status')?.value || ''
+	const sortOrder = document.getElementById('sort')?.value || 'title-asc'
+
+	let resultado = buscarLibros(query, libros)
+	resultado = filtrarPorCategoria(category, resultado)
+	resultado = filtrarPorEstado(status, resultado)
+	resultado = ordenarLibros(sortOrder, resultado)
+
+	renderizarLibros(resultado)
+}
 
 // ── Entry point ──
 document.addEventListener('DOMContentLoaded', () => {
 	// App init (T-02):
-	renderizarLibros(libros)
+	aplicarFiltrosYOrden()
 	actualizarEstadisticas()
 
 	//Search
 	const inputSearch = document.getElementById("search");
 	if (inputSearch) {
-		inputSearch.addEventListener("input", (e) => {
-			const resultados = buscarLibros(e.target.value);
-			renderizarLibros(resultados);
-		});
+		inputSearch.addEventListener("input", aplicarFiltrosYOrden);
 	}
 
 	// Sort: reordena catalogo
 	const selectSort = document.getElementById("sort");
+	selectSort.addEventListener("change", aplicarFiltrosYOrden);
 
-	selectSort.addEventListener("change", (e) => {
-		const ordenados = ordenarLibros(e.target.value, libros);
-		renderizarLibros(ordenados);
-	});
+	// Filtro por categoría (T-09a) 
+	const selectCategoryFilter = document.getElementById('filter-category')
+	if (selectCategoryFilter) {
+		selectCategoryFilter.addEventListener('change', aplicarFiltrosYOrden)
+	}
+
+	// Filtro por estado (T-09b)
+	const selectStatusFilter = document.getElementById('filter-status')
+	if (selectStatusFilter) {
+		selectStatusFilter.addEventListener('change', aplicarFiltrosYOrden)		
+	}
 
 	// Modal: open
 	btnAdd.addEventListener('click', abrirModal)
@@ -478,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			agregarLibro()
 		}
 
-		renderizarLibros(libros)
+		aplicarFiltrosYOrden()
 		actualizarEstadisticas()
 		cerrarModal()
 	})
@@ -514,23 +532,5 @@ document.addEventListener('DOMContentLoaded', () => {
 		btnScrollTop.addEventListener('click', () => {
 			window.scrollTo({ top: 0, behavior: 'smooth' })
 		})
-	}
-
-	// Filtro por categoría (T-09a) 
-	const selectCategoryFilter = document.getElementById('filter-category')
-	if (selectCategoryFilter) {
-		selectCategoryFilter.addEventListener('change', (e) => {
-			const filtrados = filtrarPorCategoria(e.target.value, libros)
-			renderizarLibros(filtrados)
-		})
-	}
-
-	// Filtro por estado (T-09b)
-	const selectStatusFilter = document.getElementById('filter-status')
-	if (selectStatusFilter) {
-		selectStatusFilter.addEventListener('change', (e) => {
-			const filtrados = filtrarPorEstado(e.target.value, libros)
-			renderizarLibros(filtrados)
-		})		
 	}
 })
