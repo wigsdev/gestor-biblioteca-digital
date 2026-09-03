@@ -83,6 +83,14 @@ const libros = [
 ]
 
 // ── T-03: ID generation ──
+const generarId = () => {
+	if (libros.length === 0) {
+		return 1
+	}
+
+	const maxId = Math.max(...libros.map(libro => libro.id))
+	return maxId + 1
+}
 
 // ── T-02: Catalog rendering ──
 const createElement = (element, cssClass, text = '') => {
