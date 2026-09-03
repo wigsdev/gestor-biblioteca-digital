@@ -387,6 +387,12 @@ const buscarLibros = (texto) => {
 };
 
 // ── T-09a: Filter by category ──
+const filtrarPorCategoria = (categoria, listaLibros = libros) => {
+	if (!categoria || categoria === '' || categoria === "Todas") {
+		return listaLibros.slice()
+	}
+	return listaLibros.filter(libro => libro.categoria === categoria)
+}
 
 // ── T-09b: Filter by status ──
 
@@ -495,6 +501,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		btnScrollTop.addEventListener('click', () => {
 			window.scrollTo({ top: 0, behavior: 'smooth' })
+		})
+	}
+
+	// Filtro por categoría (T-09a) 
+	const selectCategoryFilter = document.getElementById('filter-category')
+	if (selectCategoryFilter) {
+		selectCategoryFilter.addEventListener('change', (e) => {
+			const filtrados = filtrarPorCategoria(e.target.value, libros)
+			renderizarLibros(filtrados)
 		})
 	}
 })
