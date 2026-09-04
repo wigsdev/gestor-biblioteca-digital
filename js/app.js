@@ -444,7 +444,7 @@ const aplicarFiltrosYOrden = () => {
 	const status = document.getElementById('filter-status')?.value || ''
 	const sortOrder = document.getElementById('sort')?.value || 'title-asc'
 
-	let resultado = buscarLibros(query, libros)
+	let resultado = buscarLibros(query)
 	resultado = filtrarPorCategoria(category, resultado)
 	resultado = filtrarPorEstado(status, resultado)
 	resultado = ordenarLibros(sortOrder, resultado)
