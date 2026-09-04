@@ -1,85 +1,79 @@
-<div align="center">
-
 # BookManager
 
-**Sistema de gestión de biblioteca digital**
+Sistema de gestión de biblioteca digital desarrollado como Single Page Application (SPA) nativa en JavaScript ES6+, HTML5 semántico y CSS3 adaptativo.
 
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/es/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
-
-[![GitHub issues](https://img.shields.io/github/issues/wigsdev/gestor-biblioteca-digital?style=flat-square)](https://github.com/wigsdev/gestor-biblioteca-digital/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/wigsdev/gestor-biblioteca-digital?style=flat-square)](https://github.com/wigsdev/gestor-biblioteca-digital/pulls)
-[![GitHub last commit](https://img.shields.io/github/last-commit/wigsdev/gestor-biblioteca-digital?style=flat-square)](https://github.com/wigsdev/gestor-biblioteca-digital/commits/main)
-[![License](https://img.shields.io/badge/license-ISC-blue?style=flat-square)](./LICENSE)
-
-<p align="center">
-  Aplicación web interactiva para administrar un catálogo de libros.<br>
-  Desarrollada con JavaScript Vanilla, sin frameworks ni librerías externas.
-</p>
-
----
-
-[Funcionalidades](#-funcionalidades) · [Demo](#-demo) · [Instalación](#-instalación) · [Estructura](#-estructura-del-proyecto) · [Contribuir](#-contribuir) · [Equipo](#-equipo)
-
-</div>
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 
 ---
 
 ## Acerca del proyecto
 
-BookManager es una aplicación web que permite administrar el catálogo de una biblioteca digital. Los usuarios pueden visualizar, agregar, modificar, eliminar, buscar, filtrar y ordenar libros, así como gestionar el estado de préstamo de cada uno.
+BookManager es una aplicación web interactiva que permite administrar el catálogo de una biblioteca digital en tiempo real. Los usuarios pueden visualizar, agregar, modificar, eliminar, buscar, filtrar y ordenar libros, así como gestionar el estado de préstamo de cada uno.
 
-El proyecto se desarrolla como parte de un proyecto integrador con duración de 3 semanas, enfocado en aplicar fundamentos de JavaScript: funciones, arreglos, objetos y manipulación del DOM.
+El proyecto fue desarrollado por el **Grupo G4** como proyecto integrador, enfocado en aplicar fundamentos avanzados de JavaScript Vanilla ES6+: funciones, arreglos, objetos, algoritmos inmutables y manipulación nativa del DOM sin dependencias externas.
+
+---
+
+## Demo en vivo
+
+* **Ver aplicación desplegada:** [https://wigsdev.github.io/gestor-biblioteca-digital/](https://wigsdev.github.io/gestor-biblioteca-digital/)
+
+---
+
+## Capturas del proyecto
+
+### Vista Desktop (Escritorio)
+![Vista Desktop](assets/capturas/desktop.png)
+
+### Vista Laptop (Portátil)
+![Vista Laptop](assets/capturas/laptop.png)
+
+### Vista Tablet
+![Vista Tablet](assets/capturas/tablet.png)
+
+### Vista Mobile (Móvil)
+![Vista Mobile](assets/capturas/mobile.png)
 
 ---
 
 ## Funcionalidades
 
 | Funcionalidad | Descripción |
-|---------------|-------------|
-| Catálogo dinámico | Renderizado de libros generado con JavaScript |
-| CRUD completo | Agregar, editar y eliminar libros |
-| Sistema de préstamos | Toggle disponible/prestado por libro |
-| Buscador en tiempo real | Filtrado por título o autor (case-insensitive) |
-| Filtros | Por categoría y por estado de disponibilidad |
-| Ordenamiento | Por título (A-Z, Z-A) y por año (asc, desc) |
-| Estadísticas | Contadores dinámicos: total, disponibles, prestados |
-| Validaciones | Formulario validado con mensajes en la interfaz |
-| Responsive | Adaptado a Desktop, Tablet y Mobile |
-
----
-
-## Demo
-
-> La demo estará disponible una vez completada la fase de desarrollo.
-
-<!-- Descomentar cuando esté desplegado:
-[Ver Demo en vivo](https://wigsdev.github.io/gestor-biblioteca-digital/)
--->
+| --- | --- |
+| Catálogo dinámico | Renderizado eficiente de libros generado con JavaScript usando `DocumentFragment` |
+| CRUD completo | Agregar, editar y eliminar libros de forma reactiva en memoria RAM |
+| Sistema de préstamos | Conmutación del estado disponible/prestado por libro con badges e iconos dinámicos |
+| Buscador en tiempo real | Búsqueda insensible a mayúsculas y acentos (`normalize("NFD")` Unicode) |
+| Filtros inmutables | Filtrado por categoría y por estado de disponibilidad usando `.slice()` y `.filter()` |
+| Ordenamiento multicriterio | Orden alfabético en español con `localeCompare("es")` y por año de publicación |
+| Estadísticas dinámicas | Contadores en tiempo real usando los métodos `reduce()` y `new Set()` |
+| Validaciones UI | Formulario validado con mensajes en tiempo real (`input`/`change`) sin uso de `alert()` |
+| Responsive Design | Layout adaptado a Desktop, Laptop, Tablet y Mobile con CSS Grid y Flexbox |
 
 ---
 
 ## Tecnologías
 
-| Tecnología | Uso |
-|-----------|-----|
-| HTML5 | Estructura semántica |
-| CSS3 | Estilos, Grid, Flexbox, Media Queries |
-| JavaScript ES6+ | Lógica, DOM, Eventos |
-| Git & GitHub | Control de versiones y colaboración |
+| Tecnología | Uso en el proyecto |
+| --- | --- |
+| HTML5 | Estructura semántica del documento y accesibilidad ARIA |
+| CSS3 | Estilos, CSS Grid, Flexbox, variables en `:root` y Media Queries |
+| JavaScript ES6+ | Lógica de negocio, eventos, manipulación del DOM y arquitectura inmutable |
+| Git & GitHub | Control de versiones y despliegue continuo en GitHub Pages |
 
-**Restricciones:** No se permite el uso de frameworks (React, Vue, Angular), librerías (jQuery, Bootstrap para lógica) ni herramientas de bundling.
+> **Restricciones técnicas:** Desarrollado 100% nativo sin frameworks (React, Vue, Angular), sin librerías externas (jQuery, Bootstrap) y sin bundlers. Cero dependencias `node_modules`.
 
 ---
 
-## Instalación
+## Instalación y ejecución
 
 ### Prerrequisitos
 
-- [Git](https://git-scm.com/) instalado
-- Un navegador web moderno (Chrome, Firefox, Edge)
-- Un editor de código ([VS Code](https://code.visualstudio.com/) recomendado)
+* Un navegador web moderno (Google Chrome, Mozilla Firefox, Microsoft Edge, Safari).
+* [Git](https://git-scm.com/) instalado en el sistema.
 
 ### Clonar el repositorio
 
@@ -88,21 +82,22 @@ git clone https://github.com/wigsdev/gestor-biblioteca-digital.git
 cd gestor-biblioteca-digital
 ```
 
-### Ejecutar el proyecto
+### Ejecutar la aplicación
 
-No requiere instalación de dependencias. Abre `index.html` directamente en el navegador:
-
-```bash
-# Opción 1: abrir directamente
-open index.html        # macOS
-xdg-open index.html    # Linux
-start index.html       # Windows
-```
+Al ser un proyecto nativo en JavaScript, no requiere instalación de paquetes ni dependencias `npm`. Abre directamente `index.html` en tu navegador:
 
 ```bash
-# Opción 2: usar Live Server (VS Code extension)
-# Instalar extensión "Live Server" → clic derecho en index.html → "Open with Live Server"
+# En macOS
+open index.html
+
+# En Linux
+xdg-open index.html
+
+# En Windows
+start index.html
 ```
+
+También puedes utilizar la extensión **Live Server** de VS Code haciendo clic derecho sobre `index.html` y seleccionando *Open with Live Server*.
 
 ---
 
@@ -110,106 +105,67 @@ start index.html       # Windows
 
 ```
 gestor-biblioteca-digital/
-├── index.html                   ← Página principal
+├── index.html                   # Página principal (HTML5 semántico)
 ├── css/
-│   └── styles.css               ← Estilos (variables, layout, responsive)
+│   └── styles.css               # Estilos globales, variables CSS y responsive
 ├── js/
-│   └── app.js                   ← Lógica (funciones, eventos, DOM)
-├── docs/
-│   ├── proyecto-G4.md           ← Enunciado original del proyecto
-│   ├── backlog.md               ← Product Backlog (tareas y criterios)
-│   ├── workflow.md              ← Convenciones y flujo de trabajo
-│   └── guia-desarrollo.md       ← Guía técnica (IDs, clases, estructura)
-├── scripts/
-│   └── crear-issues.sh          ← Script para setup de GitHub Issues
-├── .github/
-│   └── PULL_REQUEST_TEMPLATE.md ← Plantilla para Pull Requests
-├── .gitignore
-├── package.json
-└── README.md                    ← Este archivo
+│   └── app.js                   # Lógica principal (Funciones, Eventos, DOM, Pipeline)
+├── assets/                      # Recursos gráficos del proyecto
+│   ├── logo.svg                 # Identotipo del sistema
+│   ├── logo-icon-bg.png
+│   ├── og-banner.jpg
+│   └── capturas/                # Galería de capturas de la interfaz
+│       ├── desktop.png
+│       ├── laptop.png
+│       ├── tablet.png
+│       └── mobile.png
+├── docs/                        # Documentación del proyecto
+│   ├── proyecto-G4.md           # Enunciado original y rúbrica del proyecto integrador
+│   ├── backlog.md               # Product Backlog con el desglose de tareas
+│   ├── workflow.md              # Convenciones de Git y flujo de trabajo
+│   ├── guia-desarrollo.md       # Guía de selectores, IDs y estructura HTML
+│   └── revision-diseno.md       # Notas y revisiones del diseño de interfaz
+├── package.json                 # Configuración del proyecto
+├── LICENSE                      # Licencia MIT oficial
+└── README.md                    # Documentación principal
 ```
 
 ---
 
-## Contribuir
+## Equipo de desarrollo (Grupo G4)
 
-Este proyecto usa un flujo de trabajo estructurado. Antes de contribuir, lee la documentación:
-
-- **[Workflow y Convenciones](./docs/workflow.md)** — Branching, Conventional Commits, PR template, Code Review
-- **[Product Backlog](./docs/backlog.md)** — Tareas disponibles, criterios de aceptación, dependencias
-
-### Flujo rápido
-
-```bash
-# 1. Actualizar main
-git checkout main
-git pull origin main
-
-# 2. Crear branch de la tarea asignada
-git checkout -b feature/T-XXx-descripcion
-
-# 3. Desarrollar y hacer commits
-git add .
-git commit -m "feat(T-XXx): descripción del cambio"
-
-# 4. Push y crear PR
-git push -u origin feature/T-XXx-descripcion
-# Crear PR en GitHub con la plantilla
-```
-
-### Convenciones
-
-| Aspecto | Convención |
-|---------|-----------|
-| Commits | [Conventional Commits v1.0.0](https://www.conventionalcommits.org/) |
-| Branches | `feature/T-XXx-descripcion-corta` |
-| Merge | Squash and merge |
-| Review | Aprobación del Team Leader requerida |
+| Rol | Nombre | Usuario GitHub |
+| --- | --- | --- |
+| Team Leader / Dev | Wilmer Gulcochía Sánchez | [@wigsdev](https://github.com/wigsdev) |
+| Developer | Miriam Hortencia Huamán Ayala | [@Miriamhha](https://github.com/Miriamhha) |
+| Developer | Javier Flores Encarnación | [@JavierFloresenc](https://github.com/JavierFloresenc) |
+| Developer | Rosmery Del Pilar Medina Linares | [@rousmedina](https://github.com/rousmedina) |
+| Developer | Víctor Daniel Dávila Sánchez | [@danieldaviladev](https://github.com/danieldaviladev) |
+| Developer | Marco Antonio Chile Andrade | [@marcochile](https://github.com/marcochile) |
 
 ---
 
-## Equipo
+## Documentación del repositorio
 
-| Rol | Nombre | GitHub |
-|-----|--------|--------|
-| Team Leader | Wilmer | [@wigsdev](https://github.com/wigsdev) |
-
-> Los desarrolladores se registran al ser asignados a tareas en el [Project Board](https://github.com/wigsdev/gestor-biblioteca-digital/projects).
-
----
-
-## Documentación
-
-| Documento | Descripción |
-|-----------|-------------|
-| [Enunciado del proyecto](./docs/proyecto-G4.md) | Requerimientos originales del proyecto integrador |
-| [Product Backlog](./docs/backlog.md) | 19 tareas con prioridades, dependencias y criterios de aceptación |
-| [Workflow](./docs/workflow.md) | Convenciones de Git, PR, Code Review y Definition of Done |
-| [Guía de Desarrollo](./docs/guia-desarrollo.md) | IDs, clases, selectores, estructura HTML, variables CSS |
+* **[Enunciado del Proyecto](./docs/proyecto-G4.md)** — Requerimientos y especificaciones del proyecto integrador.
+* **[Product Backlog](./docs/backlog.md)** — Tareas, prioridades y criterios de aceptación.
+* **[Workflow y Convenciones](./docs/workflow.md)** — Reglas de branching, Conventional Commits y Pull Requests.
+* **[Guía de Desarrollo](./docs/guia-desarrollo.md)** — Guía de estilos, IDs, clases y selectores DOM.
+* **[Revisión de Diseño](./docs/revision-diseno.md)** — Especificaciones y revisión del diseño UI.
 
 ---
 
 ## Roadmap
 
-- [x] Documentación y planificación
-- [x] Estructura del proyecto
-- [ ] Fase 1 — Base (HTML + CSS + Datos)
-- [ ] Fase 2 — CRUD (Agregar, Editar, Eliminar, Préstamos)
-- [ ] Fase 3 — UX (Búsqueda, Filtros, Ordenamiento, Responsive)
-- [ ] Fase 4 — Integración y QA final
+- [x] Planificación, arquitectura de software y Product Backlog.
+- [x] Estructura semántica HTML5 y tokens de diseño CSS3.
+- [x] Operaciones CRUD en memoria RAM (Agregar, Editar, Eliminar, Préstamos).
+- [x] Búsqueda flexible insaciable a tildes, filtros inmutables y ordenamiento.
+- [x] Delegación de eventos, pipeline de control e integración de `DOMContentLoaded`.
+- [x] Despliegue en vivo en GitHub Pages y documentación completa.
 
 ---
 
 ## Licencia
 
-Distribuido bajo la licencia ISC. Ver `package.json` para más información.
-
----
-
-<div align="center">
-
-**Hecho con JavaScript Vanilla**
-
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repositorio-181717?style=for-the-badge&logo=github)](https://github.com/wigsdev/gestor-biblioteca-digital)
-
-</div>
+Distribuido bajo la Licencia MIT. Ver el archivo [LICENSE](./LICENSE) para más detalles.

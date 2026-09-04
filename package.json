@@ -17,7 +17,7 @@
     "responsive"
   ],
   "author": "wigsdev",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wigsdev/gestor-biblioteca-digital.git"
