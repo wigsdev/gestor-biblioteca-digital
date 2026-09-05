@@ -5,6 +5,7 @@ Sistema de gestión de biblioteca digital desarrollado como Single Page Applicat
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Version](https://img.shields.io/badge/version-v1.0.0-green?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 
 ---
@@ -126,6 +127,7 @@ gestor-biblioteca-digital/
 │   ├── guia-desarrollo.md       # Guía de selectores, IDs y estructura HTML
 │   └── revision-diseno.md       # Notas y revisiones del diseño de interfaz
 ├── package.json                 # Configuración del proyecto
+├── CHANGELOG.md                 # Historial oficial de cambios (SemVer 2.0)
 ├── LICENSE                      # Licencia MIT oficial
 └── README.md                    # Documentación principal
 ```
@@ -149,6 +151,7 @@ gestor-biblioteca-digital/
 
 * **[Enunciado del Proyecto](./docs/proyecto-G4.md)** — Requerimientos y especificaciones del proyecto integrador.
 * **[Product Backlog](./docs/backlog.md)** — Tareas, prioridades y criterios de aceptación.
+* **[Historial de Cambios (CHANGELOG)](./CHANGELOG.md)** — Registro detallado de versiones y releases (SemVer 2.0).
 * **[Workflow y Convenciones](./docs/workflow.md)** — Reglas de branching, Conventional Commits y Pull Requests.
 * **[Guía de Desarrollo](./docs/guia-desarrollo.md)** — Guía de estilos, IDs, clases y selectores DOM.
 * **[Revisión de Diseño](./docs/revision-diseno.md)** — Especificaciones y revisión del diseño UI.

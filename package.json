@@ -1,6 +1,6 @@
 {
   "name": "gestor-biblioteca-digital",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "BookManager — Sistema de gestión de biblioteca digital. Aplicación web interactiva con JavaScript Vanilla.",
   "main": "index.html",
   "scripts": {

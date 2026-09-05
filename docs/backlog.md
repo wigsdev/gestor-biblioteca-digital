@@ -735,7 +735,116 @@ Función central que aplica búsqueda + filtros + ordenamiento simultáneamente 
 - [ ] Limpiar búsqueda respeta filtros activos
 - [ ] Función central combina criterios antes de renderizar
 - [ ] Se usa `some()` o `every()` en la lógica
-- [ ] Sin conflictos entre funcionalidades
+---
+
+### T-14 — Persistencia de Datos en LocalStorage
+
+| Campo | Valor |
+|-------|-------|
+| **Prioridad** | `priority: high` |
+| **Tipo** | `type: feature` |
+| **Dependencias** | T-13 |
+| **Complejidad** | Media (1 día) |
+| **Branch** | `feature/T-14-persistencia-localstorage` |
+| **Commit ejemplo** | `feat(T-14): guardar y cargar estado de libros en localStorage` |
+
+**Descripción:**
+Sincronizar el array `libros` con `localStorage` del navegador para evitar la pérdida de información al recargar la página (`F5`).
+
+**Entregables:**
+- Helper `guardarLibrosEnStorage()` que guarde `libros` serializado en JSON en `localStorage`
+- Helper `cargarLibrosDeStorage()` que recupere la lista guardada o cargue los 8 libros precargados por defecto si no existen datos previos
+- Invocación automática de guardado tras `agregarLibro()`, `guardarEdicion()`, `deleteBook()` y `togglePrestamo()`
+
+**Criterios de aceptación:**
+- [ ] Al iniciar (`DOMContentLoaded`), carga la información persistida en `localStorage` si existe
+- [ ] Si es la primera visita del usuario, carga el array inicial de 8 libros
+- [ ] Operaciones de alta, edición, baja y préstamo actualizan inmediatamente `localStorage`
+- [ ] Al presionar `F5` o cerrar y abrir el navegador, todos los cambios persisten correctamente
+- [ ] Sin errores en consola si `localStorage` está vacío o deshabilitado
+
+---
+
+### T-15 — Sistema de Notificaciones Flotantes (Toast Alerts)
+
+| Campo | Valor |
+|-------|-------|
+| **Prioridad** | `priority: medium` |
+| **Tipo** | `type: feature` |
+| **Dependencias** | T-01b, T-13 |
+| **Complejidad** | Media (1 día) |
+| **Branch** | `feature/T-15-notificaciones-toast` |
+| **Commit ejemplo** | `feat(T-15): implementar sistema de notificaciones toast flotantes` |
+
+**Descripción:**
+Proporcionar retroalimentación visual inmediata al usuario cuando realiza cualquier acción en el sistema (agregar, editar, eliminar o prestar).
+
+**Entregables:**
+- Contenedor flotante `<div id="toast-container">` en `index.html` con posición fija
+- Estilos CSS en `styles.css` para notificaciones con animación `slideIn` y `fadeOut`
+- Función helper `mostrarToast(mensaje, tipo)` con variantes: `success`, `danger`, `info`
+- Integración de notificaciones al completar las operaciones del CRUD
+
+**Criterios de aceptación:**
+- [ ] Aparecen alertas flotantes en la esquina superior/inferior del viewport
+- [ ] Soporta notificaciones verdes (éxito), rojas (eliminación/error) y amarillas/azules (información)
+- [ ] Las notificaciones se autodestruyen automáticamente tras 3 segundos
+- [ ] Se activa un aviso visual adecuado al agregar, editar, eliminar o conmutar préstamo de un libro
+
+---
+
+### T-16 — Modal de Confirmación de Eliminación
+
+| Campo | Valor |
+|-------|-------|
+| **Prioridad** | `priority: medium` |
+| **Tipo** | `type: feature` |
+| **Dependencias** | T-05, T-11 |
+| **Complejidad** | Baja (1 día) |
+| **Branch** | `feature/T-16-modal-confirmacion-eliminar` |
+| **Commit ejemplo** | `feat(T-16): agregar modal de confirmación antes de eliminar un libro` |
+
+**Descripción:**
+Prevenir la eliminación accidental de libros agregando una ventana modal de confirmación antes de remover el elemento de la memoria.
+
+**Entregables:**
+- Modal `<div id="modal-confirm-overlay" class="modal-overlay hidden">` en `index.html`
+- Texto descriptivo indicando el título del libro seleccionado para eliminación
+- Botones `[Confirmar Eliminación]` y `[Cancelar]`
+- Lógica JS que capture la decisión del usuario antes de invocar `deleteBook(id)`
+
+**Criterios de aceptación:**
+- [ ] Hacer clic en el botón 🗑️ abre el modal de confirmación en lugar de borrar inmediatamente
+- [ ] El texto del modal muestra el nombre del libro seleccionado
+- [ ] Al hacer clic en "Cancelar" o presionar `ESC`, se cierra el modal sin alterar los datos
+- [ ] Al hacer clic en "Confirmar", elimina el libro, sincroniza con `localStorage` y actualiza la UI
+
+---
+
+### T-17 — Botón 'Limpiar Filtros' (Reset de Filtros)
+
+| Campo | Valor |
+|-------|-------|
+| **Prioridad** | `priority: low` |
+| **Tipo** | `type: feature` |
+| **Dependencias** | T-13 |
+| **Complejidad** | Baja (0.5 días) |
+| **Branch** | `feature/T-17-limpiar-filtros` |
+| **Commit ejemplo** | `feat(T-17): implementar botón para restablecer todos los filtros` |
+
+**Descripción:**
+Facilitar la restauración instantánea del catálogo completo al estado inicial limpiando todos los filtros activos en un solo clic.
+
+**Entregables:**
+- Botón `<button id="btn-reset-filters">` en la barra de herramientas
+- Función `limpiarFiltros()` que vacíe la caja de búsqueda y resetee los selectores
+- Invocación de `aplicarFiltrosYOrden()` para renderizar el catálogo completo
+
+**Criterios de aceptación:**
+- [ ] Botón "Limpiar filtros" integrado visualmente en la barra de herramientas
+- [ ] Al hacer clic, borra el campo de búsqueda `#search` y resetea los selectores `#filter-category`, `#filter-status` y `#sort`
+- [ ] Re-renderiza el catálogo mostrando todos los libros nuevamente
+- [ ] Se oculta automáticamente si no hay ningún filtro o búsqueda activa (opcional)
 
 ---
 
@@ -746,7 +855,8 @@ T-01a (HTML) ─── critical
  ├── T-01b (CSS base) ─── critical
  │    ├── T-12a (Tablet) ─── high
  │    ├── T-12b (Mobile) ─── high
- │    └── T-12c (Mejoras CSS base) ─── medium
+ │    ├── T-12c (Mejoras CSS base) ─── medium
+ │    └── T-15 (Toast Alerts) ─── medium [+ T-13]
  ├── T-01c (Datos JS) ─── critical
  │    ├── T-03 (Generar ID) ─── high
  │    │    └── T-03b (Contadores) ─── high ← prerequisito de T-04a, T-05, T-07
@@ -756,12 +866,15 @@ T-01a (HTML) ─── critical
  │         │    │    ├── T-04b (Validaciones) ─── high
  │         │    │    └── T-06 (Editar libros) ─── high
  │         │    ├── T-05 (Eliminar) ─── high
+ │         │    │    └── T-16 (Modal Confirmar Eliminar) ─── medium [+ T-11]
  │         │    └── T-07 (Préstamos) ─── high
  │         ├── T-08 (Buscador) ─── medium
  │         ├── T-09a (Filtro categoría) ─── medium
  │         ├── T-09b (Filtro estado) ─── medium
  │         ├── T-11 (Ordenamiento) ─── medium
  │         └── T-13 (Integración) ─── low [+ T-08, T-09a, T-09b, T-11]
+ │              ├── T-14 (LocalStorage) ─── high
+ │              └── T-17 (Limpiar Filtros) ─── low
 ```
 
 ## Fases de ejecución sugeridas
@@ -773,6 +886,7 @@ T-01a (HTML) ─── critical
 | **3 — CRUD** | T-04a + T-05 + T-07 (paralelo) → T-04b → T-06 | Todas las operaciones CRUD funcionando |
 | **4 — UX** | T-08 + T-09a + T-09b + T-11 (paralelo) + T-12a + T-12b + T-12c | Búsqueda, filtros, ordenamiento, responsive, diseño |
 | **5 — Integración** | T-13 + QA final | Todo funciona combinado sin conflictos |
+| **6 — Mejoras MVP v2.0** | T-14 + T-15 + T-16 + T-17 | Persistencia LocalStorage, Toast Alerts, Modal Confirmar y Reset Filtros |
 
 > El Team Leader decide la ejecución real según disponibilidad del equipo.
 
@@ -801,6 +915,10 @@ T-01a (HTML) ─── critical
 | T-12b | — | — | — | 🔲 Backlog |
 | T-12c | — | — | — | 🔲 Backlog |
 | T-13 | — | — | — | 🔲 Backlog |
+| T-14 | — | — | — | 🔲 Backlog |
+| T-15 | — | — | — | 🔲 Backlog |
+| T-16 | — | — | — | 🔲 Backlog |
+| T-17 | — | — | — | 🔲 Backlog |
 
 ---
 
@@ -808,10 +926,11 @@ T-01a (HTML) ─── critical
 
 | Métrica | Valor |
 |---------|-------|
-| Total de tareas | 19 |
+| Total de tareas | 23 |
 | Tareas critical (P0) | 4 |
-| Tareas high (P1) | 10 |
-| Tareas medium (P2) | 4 |
-| Tareas low (P3) | 1 |
-| Tareas de 1 día | 9 |
-| Tareas de 1-2 días | 10 |
+| Tareas high (P1) | 11 |
+| Tareas medium (P2) | 6 |
+| Tareas low (P3) | 2 |
+| Tareas de 1 día | 12 |
+| Tareas de 1-2 días | 11 |
+
