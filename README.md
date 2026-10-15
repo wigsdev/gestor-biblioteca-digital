@@ -7,6 +7,8 @@ Sistema de gestión de biblioteca digital desarrollado como Single Page Applicat
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Version](https://img.shields.io/badge/version-v1.0.0-green?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](./CONTRIBUTING.md)
+[![Good First Issues](https://img.shields.io/github/issues/wigsdev/gestor-biblioteca-digital/good%20first%20issue?color=7057ff&label=good%20first%20issue&style=flat-square)](https://github.com/wigsdev/gestor-biblioteca-digital/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ---
 
@@ -152,6 +154,7 @@ gestor-biblioteca-digital/
 * **[Enunciado del Proyecto](./docs/proyecto-G4.md)** — Requerimientos y especificaciones del proyecto integrador.
 * **[Product Backlog](./docs/backlog.md)** — Tareas, prioridades y criterios de aceptación.
 * **[Historial de Cambios (CHANGELOG)](./CHANGELOG.md)** — Registro detallado de versiones y releases (SemVer 2.0).
+* **[Guía de Contribución (CONTRIBUTING)](./CONTRIBUTING.md)** — Cómo participar, flujo de ramas y envío de Pull Requests.
 * **[Workflow y Convenciones](./docs/workflow.md)** — Reglas de branching, Conventional Commits y Pull Requests.
 * **[Guía de Desarrollo](./docs/guia-desarrollo.md)** — Guía de estilos, IDs, clases y selectores DOM.
 * **[Revisión de Diseño](./docs/revision-diseno.md)** — Especificaciones y revisión del diseño UI.
@@ -166,6 +169,15 @@ gestor-biblioteca-digital/
 - [x] Búsqueda flexible insaciable a tildes, filtros inmutables y ordenamiento.
 - [x] Delegación de eventos, pipeline de control e integración de `DOMContentLoaded`.
 - [x] Despliegue en vivo en GitHub Pages y documentación completa.
+
+---
+
+## 🤝 Contribuir al proyecto
+
+¡Las contribuciones de la comunidad son bienvenidas! Este proyecto es ideal para desarrolladores que desean practicar manipulación pura del DOM con JavaScript Vanilla, accesibilidad y maquetación adaptativa en un proyecto real.
+
+* 📖 Revisa nuestra **[Guía de Contribución](./CONTRIBUTING.md)** para conocer las pautas de estilo, convenciones de commit y pasos para clonar el repositorio.
+* 🎯 Explora las tareas abiertas ideales para principiantes: [**Issues con `good first issue`**](https://github.com/wigsdev/gestor-biblioteca-digital/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) y tareas generales con [**`help wanted`**](https://github.com/wigsdev/gestor-biblioteca-digital/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 
 ---
 
